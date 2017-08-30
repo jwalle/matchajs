@@ -5,9 +5,11 @@
   "author": "jwalle",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "dependencies": {
-    "express": "^4.15.4"
+    "ejs": "^2.5.7",
+    "express": "^4.15.4",
+    "nodemon": "^1.11.0"
   }
 }
