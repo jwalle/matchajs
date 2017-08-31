@@ -11,5 +11,20 @@
     "ejs": "^2.5.7",
     "express": "^4.15.4",
     "nodemon": "^1.11.0"
-  }
+  },
+  "devDependencies": {
+    "webpack": "^3.5.5"
+  },
+  "scripts": {
+    "dev" : "./node_modules/.bin/webpack public/app.js public/log.js public/bundle.js --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jwalle/matchajs.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jwalle/matchajs/issues"
+  },
+  "homepage": "https://github.com/jwalle/matchajs#readme"
 }

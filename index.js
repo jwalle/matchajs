@@ -22,9 +22,9 @@
     </div>
     <br/>
     <div class="jumbotron"> <p>
-            This is place to put content. You can put slider, short description about your website and place some links for navigation.
-        </p></div>
+        This is place to put content. You can put slider, short description about your website and place some links for navigation.
+    </p></div>
 </div>
-<script src="/public/app.js"></script>
+<script src="/public/bundle.js"></script>
 </body>
 </html>
