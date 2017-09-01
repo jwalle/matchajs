@@ -5,18 +5,20 @@
   "author": "jwalle",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon -L server.js"
+	"start": "nodemon server.js",
+    "dev": "./node_modules/.bin/webpack public/app.js public/log.js public/bundle.js --watch"
   },
   "dependencies": {
     "ejs": "^2.5.7",
     "express": "^4.15.4",
-    "nodemon": "^1.11.0"
+    "jquery": "^3.2.1",
+    "less": "^2.7.2",
+    "less-middleware": "^2.2.1",
+    "nodemon": "^1.11.0",
+    "popper.js": "^1.12.5"
   },
   "devDependencies": {
     "webpack": "^3.5.5"
-  },
-  "scripts": {
-    "dev" : "./node_modules/.bin/webpack public/app.js public/log.js public/bundle.js --watch"
   },
   "repository": {
     "type": "git",
