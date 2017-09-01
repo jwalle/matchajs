@@ -16,7 +16,7 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">Home<span class="sr-only">(current)</span></a></li>
                 <li><a href="/about">About <%= test %></a></li>
-                <li><a href="/contact">Contact us</a></li>
+                <li><a href="/contact">Contact me</a></li>
             </ul>
         </nav>
     </div>

@@ -1,12 +1,8 @@
 version: "2"
 services:
   node:
-    image: "node:8"
-    command: npm install
-    environment:
-      - NODE_ENV=production
+    build : .
     volumes:
-      - ./:/usr/src/app
-    expose:
-      - "8060"
-    tty: true
+      - ./app:/usr/src/app
+    ports:
+        - "3030:3000"
