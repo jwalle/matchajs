@@ -1,5 +1,12 @@
 {
+<<<<<<< HEAD
   "verbose": true,
   "ignore": ["src/*", "public/*"],
   "ext" : "js json"
+=======
+	"env": {
+		"NODE_ENV": "development"
+	},
+	"ext": "js json hjs"
+>>>>>>> ea711df1ab687d2f3edb7b7e05d9c6ff807f4546
 }

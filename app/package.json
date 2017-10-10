@@ -8,10 +8,15 @@
     "npm": "3.10.10"
   },
   "scripts": {
+<<<<<<< HEAD
     "watch": "./node_modules/.bin/webpack -d --watch",
     "build": "gulp && ./node_modules/.bin/webpack",
     "start": "./node_modules/.bin/node-dev --poll server/server.js",
     "dev": "concurrently \"npm run start\" \"npm run watch\""
+=======
+	"start": "nodemon -L server.js",
+    "dev": "./node_modules/.bin/webpack public/app.js public/log.js public/bundle.js --watch"
+>>>>>>> ea711df1ab687d2f3edb7b7e05d9c6ff807f4546
   },
   "license": "MIT",
   "dependencies": {
