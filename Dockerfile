@@ -1,14 +1,15 @@
 FROM node:latest
 
-RUN npm install nodemon -g
-
 WORKDIR /usr/src/app
 
-copy app/package.json .
+RUN npm install bower -g
 
 RUN npm install
 
-COPY . .
+RUN bower install --allow-root
+
+RUN npm run build
 
 EXPOSE 3000
-CMD [ "npm", "start" ]
+
+CMD ["npm", "start"]
