@@ -9,5 +9,12 @@ services:
     command: sh -c 'npm install; ./node_modules/.bin/bower install --allow-root; npm run build; npm run dev'
     ports:
         - 3000:3000
-    network_mode: "host"
     tty : true
+    links :
+        - mongo
+  mongo:
+    image: mongo
+    volumes:
+      - /Users/jwalle/github/matchajs/app/data:/data/db
+    ports:
+      - "27017:27017"
