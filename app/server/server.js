@@ -5,6 +5,7 @@ const path = require('path');
 const mongodb = require('mongodb');
 const assert = require('assert');
 const cmd = require('node-cmd');
+const request = require('request');
 const client = mongodb.MongoClient;
 
 /* eslint-disable no-console */
@@ -38,13 +39,30 @@ client.connect(uri, function (err, db) {
 });
 
 let createCapped = function (db, callback) {
-    db.createCollection('maCollec', {'capped': true, 'size': 100000, 'max': 5000},
+    db.createCollection('maCollec4', {'capped': true, 'size': 100000, 'max': 5000},
     function (mongoError, results) {
         console.log('collection CREATED !!!');
         callback();
         }
     );
 };
+
+app.get('/getUser', function (req, res) {
+    let options = {
+        url: 'https://randomuser.me/api/',
+        dataType: 'json'
+    };
+    request.get(options, function(error, response, body) {
+        console.log('test');
+        if (!error) {
+            console.log(body);
+            res.send(body);
+        }
+        else {
+            console.log('error request user : ', error);
+        }
+    })
+});
 
 app.listen(port, function (err) {
   if (err) {
