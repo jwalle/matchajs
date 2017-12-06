@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
 if [ "$(uname)" == "Darwin" ]; then
-	mkdir /goinfre/Virtualbox\ VMs;
-	mkdir /goinfre/.docker;
-	docker-machine create default --driver virtualbox;
+	mkdir /goinfre/Virtualbox\ VMs
+	mkdir /goinfre/.docker
+	ln -s /goinfre/.docker ~/.docker
+	ln -s /goinfre/Virtualbox\ VMs ~/Virtualbox\ VMs
+	docker-machine create default --driver virtualbox
 	docker-machine start
 	docker-machine env
 	eval $(docker-machine env)

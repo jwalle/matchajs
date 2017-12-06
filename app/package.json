@@ -1,7 +1,7 @@
 {
-  "name": "test-StationF",
+  "name": "matcha.js",
   "version": "1.0.0",
-  "description": "test-technique",
+  "description": "SiteDeRencontre",
   "author": "jwalle",
   "engines": {
     "node": "6.9.4",
