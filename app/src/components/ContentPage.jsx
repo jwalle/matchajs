@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import UserPage from './userPage.jsx';
 
 export default class ContentPage extends React.Component {
   constructor(props) {
@@ -11,24 +12,13 @@ export default class ContentPage extends React.Component {
   }
 
   componentWillMount () {
-    this.getUser();
-  }
-
-  getUser() {
-    let self = this;
-    axios.get(`/getUser`)
-         .then(res => {
-           const user = res.data;
-           self.setState({ user });
-         })
-        .catch(err => console.log('error axios user :', err))
   }
 
   render() {
     return (
       <div>
-          <h1>Content goes here !!!!</h1>
-          <p> {this.state.user} </p>
+          <h1>Welcome</h1>
+          <UserPage/>
       </div>
     );
   }

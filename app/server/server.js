@@ -25,6 +25,41 @@ const app = express();
 app.use(express.static(path.join( __dirname, '../public')));
 
 
+function getUser() {
+    return new Promise(function (resolve, error) {
+        let options = {
+            url: 'https://randomuser.me/api/?nat=gb,fr,dk,ca,us,de',
+            dataType: 'json'
+        };
+        request.get(options, function(error, response, body) {
+            if (!error) {                                           // && response.statusCode === 200
+                resolve(body);
+            }
+            else {
+                reject('error request user : ', error);
+            }
+        })
+    })
+}
+
+function fillDb(user) {
+    client.connect(uri, function (err, db) {
+        db.collection('users').insertOne(
+            {user : user}
+        );
+        db.close();
+    })
+}
+
+app.get('/getUser', function (req, res, next)  {
+        getUser()
+            .then((response) =>  {
+            fillDb(response);
+            console.log('PLOP', response);
+            res.send(response);
+            })
+            .catch(next);
+});
 
 app.get('*', function (req, res) {
   res.sendFile(path.join( __dirname, '../public/index.html'));
@@ -47,22 +82,6 @@ let createCapped = function (db, callback) {
     );
 };
 
-app.get('/getUser', function (req, res) {
-    let options = {
-        url: 'https://randomuser.me/api/',
-        dataType: 'json'
-    };
-    request.get(options, function(error, response, body) {
-        console.log('test');
-        if (!error) {
-            console.log(body);
-            res.send(body);
-        }
-        else {
-            console.log('error request user : ', error);
-        }
-    })
-});
 
 app.listen(port, function (err) {
   if (err) {
