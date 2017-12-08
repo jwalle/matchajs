@@ -25,7 +25,7 @@ const app = express();
 app.use(express.static(path.join( __dirname, '../public')));
 
 
-function getUser() {
+function makeUser() {
     return new Promise(function (resolve, error) {
         let options = {
             url: 'https://randomuser.me/api/?nat=gb,fr,dk,ca,us,de',
@@ -42,23 +42,54 @@ function getUser() {
     })
 }
 
+function getUser(username) {
+    return new Promise(function(resolve, error) {
+        client.connect(uri, function (err, db) {
+            if (err) throw err;
+            let query = {username}
+            db.collection('users').find(query).toArray(function (err, result) {
+                if (err) throw err;
+                resolve(result);
+                db.close();
+            })
+        })
+    })
+}
+
 function fillDb(user) {
     client.connect(uri, function (err, db) {
         db.collection('users').insertOne(
-            {user : user}
+            {
+                username :  user.login.username,
+                password :  user.login.password,
+                email:      user.email,
+                gender :    user.gender,
+                firstname:  user.name.first,
+                lastname:   user.name.last,
+                dob:        user.dob,
+                registered: user.registered,
+                picture:    user.picture,
+                city:       user.location.city,
+                nat:        user.nat
+            }
         );
         db.close();
     })
 }
 
-app.get('/getUser', function (req, res, next)  {
-        getUser()
-            .then((response) =>  {
+app.get('/getUser/:id', function (req, res, next)  {
+        makeUser()
+            .then((response) => {
+            return JSON.parse(response).results[0]
+        })
+            .then((response) => {
             fillDb(response);
-            console.log('PLOP', response);
-            res.send(response);
-            })
-            .catch(next);
+        }).then(() => {
+            getUser(req.params.id)
+                .then((response) => {
+                res.send(response);
+                })
+        }).catch(next);
 });
 
 app.get('*', function (req, res) {

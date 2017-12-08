@@ -12,12 +12,9 @@ export default class UserPage extends React.Component {
         this.getAge = this.getAge.bind(this);
 
         this.state = {
-            user: [],
-            login: [],
-            picture: [],
-            location: [],
-            age:0,
-            gender: 'F'
+            user : [],
+            pictures: [],
+            age: 1
         }
     }
 
@@ -36,34 +33,30 @@ export default class UserPage extends React.Component {
         let self = this;
         axios({
             method: 'get',
-            url: '/getUser',
-            responseType: 'json'})
+            url: '/getUser/' + this.props.params.idUser,
+            responseType: 'json'
+        })
             .then(res => {
-                const user = res.data.results[0];
-                const login = user.login;
-                const picture = user.picture;
-                const location = user.location;
-                console.log(res.data.results[0]);
-                self.setState({ user, login, picture, location });
+                self.setState({
+                    user : res.data[0],
+                    pictures : res.data[0].picture
+                });
             })
             .then(this.getAge)
             .catch(err => console.log('error axios user :', err))
     }
     render() {
         const user = this.state.user;
-        const login = this.state.login;
-        const picture = this.state.picture;
-        const location = this.state.location;
+        const pictures = this.state.pictures;
         return (
             <div>
-                <h1>username : {login.username}</h1>
+                <h1>username : {user.username}</h1>
                 <Image
-                    src={picture.large}
+                    src={pictures.large}
                     alt='Profil picture'
                     responsive
                 />
-                <p>{this.state.age} - {user.gender === 'male' ? 'M' : 'F' } - {location.city}</p>
-
+                <p>{this.state.age} - {user.gender === 'male' ? 'M' : 'F' } - {user.city}</p>
             </div>
         );
     }
