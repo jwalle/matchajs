@@ -17,3 +17,5 @@ elif ["$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" || "MINGW64_NT" ]; then
 	echo "windows"
 fi
 
+
+# Arch : systemctl start docker.service

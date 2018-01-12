@@ -17,13 +17,13 @@ cmd.get(
        }
 );
 
-const uri = "mongodb://192.168.99.100:27017/dummy";
+// const uri = "mongodb://192.168.99.100:27017/dummy";
+const uri = "mongodb://matchajs_mongo_1:27017/dummy";
 
 const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(express.static(path.join( __dirname, '../public')));
-
 
 function makeUser() {
     return new Promise(function (resolve, error) {
@@ -77,6 +77,17 @@ function fillDb(user) {
     })
 }
 
+app.get('/makeUser', function (req, res, next)  {
+    makeUser()
+        .then((response) => {
+            console.log('MAKING AN USER !!!!');
+            return JSON.parse(response).results[0]
+        })
+        .then((response) => {
+            fillDb(response);
+        }).catch(next);
+});
+
 app.get('/getUser/:id', function (req, res, next)  {
         makeUser()
             .then((response) => {
@@ -96,23 +107,22 @@ app.get('*', function (req, res) {
   res.sendFile(path.join( __dirname, '../public/index.html'));
 });
 
-// client.connect(uri, function (err, db) {
-//    assert.equal(null, err);
-//    console.log("CONNECTED !!!");
-//    createCapped(db, function () {
-//        db.close();
-//    });
-// });
-//
-// let createCapped = function (db, callback) {
-//     db.createCollection('maCollec4', {'capped': true, 'size': 100000, 'max': 5000},
-//     function (mongoError, results) {
-//         console.log('collection CREATED !!!');
-//         callback();
-//         }
-//     );
-// };
+client.connect(uri, function (err, db) {
+   assert.equal(null, err);
+   console.log("CONNECTED !!!");
+   createCapped(db, function () {
+       db.close();
+   });
+});
 
+let createCapped = function (db, callback) {
+    db.createCollection('maCollec4', {'capped': true, 'size': 100000, 'max': 5000},
+    function (mongoError, results) {
+        console.log('collection CREATED !!!');
+        callback();
+        }
+    );
+};
 
 app.listen(port, function (err) {
   if (err) {

@@ -12,6 +12,7 @@ services:
         - mongo
   mongo:
     image: mongo
+
     volumes:
         - ./app/data/db:/app/data/db
     ports:

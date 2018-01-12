@@ -8,7 +8,17 @@ export default class ContentPage extends React.Component {
     this.state = {
       user: []
     }
+
+    this.makeUser = this.makeUser.bind(this);
   }
+
+    makeUser() {
+        return axios
+            .get('/makeUser')
+            .then(res => this.setState({
+            }))
+            .catch(err => console.log('getLogin error : '  + err));
+    }
 
   componentWillMount () {
   }
@@ -17,6 +27,9 @@ export default class ContentPage extends React.Component {
     return (
       <div>
           <h1>Welcome</h1>
+          <button className="btn btn-primary" style={{float:'left'}} onClick={() => this.makeUser()}>
+              Make User
+          </button>
       </div>
     );
   }
