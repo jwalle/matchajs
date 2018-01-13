@@ -1,0 +1,38 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    width: 300px;
+    background-color: lightblue;
+}
+
+.cardUserName {
+    font-size: 2.0em;
+}
+
+.cardInfo {
+    color: red;
+    display: flex;
+    flex-direction: column;
+}
+
+.bottomInfo {
+    background-color: lightgrey;
+    height: 50px;
+}
+
+.topInfo {
+    display: flex;
+    height: 150px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.topInfo p {
+    font-size: 1.5em;
+}
+
+.cardImage {
+    height: 120px;
+    margin: 5px;
+}

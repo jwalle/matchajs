@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Button, Image, FormControl } from 'react-bootstrap';
 import moment from 'moment';
-
+import UserCard from "./userCard.jsx";
 
 export default class UserPage extends React.Component {
     constructor(props) {
@@ -57,6 +57,11 @@ export default class UserPage extends React.Component {
                     responsive
                 />
                 <p>{this.state.age} - {user.gender === 'male' ? 'M' : 'F' } - {user.city}</p>
+                <UserCard
+                    user={user}
+                    picture={pictures.large}
+                    age={this.state.age}
+                />
             </div>
         );
     }
