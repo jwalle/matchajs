@@ -53,7 +53,7 @@ CREATE TABLE `photos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `link` varchar(255) NOT NULL,
   `idUser` int(11) NOT NULL,
-  `created` date DEFAULT NULL,
+  `created` varchar(255) DEFAULT NULL,
   `isProfil` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `photosUpdate` FOREIGN KEY (`idUser`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE

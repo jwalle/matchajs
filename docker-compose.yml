@@ -1,5 +1,11 @@
 version: "3"
+
+
 services:
+
+### node.js Server Container ##################################
+
+
   web:
     image : node:boron
     volumes:
@@ -10,18 +16,29 @@ services:
         - 3000:3000
     links :
         - mysql
+
+### MySQL Container #########################################
+
+
   mysql:
-    image: mysql
+    build:
+        context: ./mysql
+    user: "1000:50"
     environment:
       MYSQL_DATABASE: matchadb
       MYSQL_USER: jwalle
       MYSQL_PASSWORD: 1234
       MYSQL_ROOT_PASSWORD: root
     volumes:
-        - ./app/data/db:/var/lib/mysql
+          - ./app/data/db:/var/lib/mysql
+          - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     ports:
       - 3306
-    restart: unless-stopped
+
+
+### phpMyAdmin Container ####################################
+
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     links:
