@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 services:
   web:
     image : node:boron
@@ -9,21 +9,25 @@ services:
     ports:
         - 3000:3000
     links :
-        - mongo
-  mongo:
-    image: mongo
-
-    volumes:
-        - ./app/data/db:/app/data/db
-    ports:
-      - "27017:27017"
-  mongoexpress:
-    image: mongo-express
-    links:
-      - mongo
-    ports:
-      - "8081:8081"
+        - mysql
+  mysql:
+    image: mysql
     environment:
-      - WEB_USER='user'
-      - WEB_PASS='pass'
-    command: sh -c 'sleep 10 && tini -s -- node app'
+      MYSQL_DATABASE: matchadb
+      MYSQL_USER: jwalle
+      MYSQL_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+        - ./app/data/db:/var/lib/mysql
+    ports:
+      - 3306
+    restart: unless-stopped
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mysql
+    ports:
+      - 8181:80
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
