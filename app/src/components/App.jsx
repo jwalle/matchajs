@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import style from './App.css';
+import NavigationBar from './navigationBar/navigation.jsx';
 
 class App extends React.Component {
   constructor(props){
@@ -9,16 +10,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <nav className='navbar navbar-default navbar-fixed-top'>
-          <div className={'container-fluid ' + style.navbar}>
-            <div className='navbar-header'>
-              <button type='button' className='navbar-toggle collapsed' data-toggle='collapse' data-target='#bs-example-navbar-collapse-1' aria-expanded='false'>
-                <span className='sr-only'>Toggle navigation</span>
-              </button>
-              <Link className='navbar-brand' to='/'>myMatcha</Link>
-            </div>
-          </div>
-        </nav>
+        <NavigationBar />
         {this.props.children}
         <div className='container'>
           <footer className='footer'>

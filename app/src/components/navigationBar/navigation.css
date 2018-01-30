@@ -1,0 +1,106 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    outline: none;
+}
+
+#page {
+    width: 100%;
+    padding-top: 65px;
+}
+
+.fixed {
+    position: fixed;
+}
+
+#navigation {
+    position: absolute;
+    height: 66px;
+    background: #104da1;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+#navigation .navLeft, #navigation .navRight{
+    position: absolute;
+}
+
+#navigation .navLeft>*, #navigation .navRight>*{
+    float: left;
+}
+
+#navigation .navRight{
+    right: 0;
+    padding-right: 15px;
+}
+
+#navigation .navLeft {
+    left: 0;
+    padding-left: 15px;
+}
+
+#navigation .navLeft>* {
+    float: left;
+}
+
+#logo {
+
+}
+
+.navLinks a {
+    padding: 4px 23px 0;
+    font-size: 17px;
+    line-height: 61px;
+}
+
+.navItem li {
+    float: left;
+    position: relative;
+}
+
+.navItem li>a {
+    position: relative;
+    display: block;
+    color: black;
+}
+
+.navNotif {
+    margin-right: -3px;
+}
+
+.navUser {
+    float: left;
+    position: relative;
+}
+
+.navUserImage {
+    height: 60px;
+    position: relative;
+    display: block;
+    padding: 13px 12px 0;
+}
+
+.navUserImage .navUserThumb {
+    display: block;
+    border-radius: 20px;
+    overflow: hidden;
+    width: 40px;
+    height: 40px;
+    position: relative;
+}
+
+#mainContent {
+    width: 100%;
+    background: black;
+}
