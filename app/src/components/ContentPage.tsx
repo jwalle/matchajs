@@ -1,18 +1,18 @@
-import React from 'react';
+import * as React from 'react';
 import axios from 'axios';
 
-export default class ContentPage extends React.Component {
-  constructor(props) {
+export interface ContentPageProps {
+
+}
+
+export default class ContentPage extends React.Component<ContentPageProps, {}> {
+  constructor(props : any) {
     super(props);
 
-    this.state = {
-      user: []
-    }
-
     this.makeUser = this.makeUser.bind(this);
-  }
-
-    makeUser() {
+}
+  
+  makeUser() {
         return axios
             .get('/makeUser')
             .then(res => this.setState({
@@ -21,6 +21,7 @@ export default class ContentPage extends React.Component {
     }
 
   componentWillMount () {
+
   }
 
   render() {

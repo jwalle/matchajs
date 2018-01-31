@@ -1,12 +1,8 @@
-import React from 'react';
-import axios from 'axios';
-import { Button, Image, FormControl } from 'react-bootstrap';
-import style from './navigation.css';
+import * as React from 'react';
+
+var style = require('./navigation.css');
 
 export default class NavigationBar extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return (
@@ -24,7 +20,7 @@ export default class NavigationBar extends React.Component {
                         <li id={style.mailbox}><a href="/messages">|msg|</a></li>
                     </ul>
                     <div className={style.navUser}>
-                        <a href="/profile" className={style.navUserImage} title>
+                        <a href="/profile" className={style.navUserImage}>
                         <span className={style.navUserThumb}>
                             <img src="http://via.placeholder.com/120x120" alt="pseudo here"/>
                         </span>

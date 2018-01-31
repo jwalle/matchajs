@@ -1,12 +1,23 @@
-import React from 'react';
+import * as React from 'react';
 import axios from 'axios';
 import { Button, Image, FormControl } from 'react-bootstrap';
-import moment from 'moment';
-import UserCard from "./userCard.jsx";
-import path from 'path';
+import * as moment from 'moment';
+import UserCard from "./userCard";
+// import path from 'path';
 
-export default class UserPage extends React.Component {
-    constructor(props) {
+export interface userPageProps {
+    params : any,
+    match: any
+}
+
+export interface UserPageState {
+    user: any,
+    picture: any,
+    age: any
+}
+
+export default class UserPage extends React.Component<userPageProps, UserPageState> {
+    constructor(props : any) {
         super(props);
 
         this.getUser = this.getUser.bind(this);
@@ -22,6 +33,7 @@ export default class UserPage extends React.Component {
 
     componentWillMount () {
         this.getUser();
+        console.log('COUCOU');
     }
 
     getAge() {
@@ -48,7 +60,7 @@ export default class UserPage extends React.Component {
         let self = this;
         axios({
             method: 'get',
-            url: '/getUser/' + this.props.params.idUser,
+            url: '/getUser/' + this.props.match.params.idUser,
             responseType: 'json'
         })
             .then(res => {

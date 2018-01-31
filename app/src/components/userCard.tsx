@@ -1,9 +1,15 @@
-import React from 'react';
+import * as React from 'react';
 import { Button, Image, FormControl } from 'react-bootstrap';
-import style from './userCard.css';
+var style = require('./userCard.css');
 
-export default class UserCard extends React.Component {
-    constructor(props) {
+export interface userCardProps {
+    user : any,
+    picture: any,
+    age : any
+}
+
+export default class UserCard extends React.Component<userCardProps> {
+    constructor(props : any) {
         super(props);
 
         this.state = {
