@@ -1,19 +1,13 @@
 {
   "compilerOptions": {
-      "outDir": "./public/js",
+      "outDir": "./public",
       "sourceMap": true,
+      "strict": true,
       "noImplicitAny": true,
       "module": "commonjs",
+      "moduleResolution": "node",
       "target": "es5",
       "jsx": "react"
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js"
-  ],
-  "exclude": [
-    "public",
-    "node_modules"
-  ]
+  "include": ["./src/**/*"],
 }

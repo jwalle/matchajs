@@ -1,8 +1,14 @@
-.navbar {
-    background-color: #2d3d4f;
-    color: white;
-}
-
-.container-fluid {
-    background-color: #9acfea;
-}
+body {
+    padding-top: 70px;
+  }
+  .table .btn-link {
+    padding: 0px 12px;
+  }
+  .panel-footer .pagination {
+    margin: 0;
+  }
+  .footer {
+    padding: 15px 0;
+    margin-top: 50px;
+    border-top: 1px solid #ddd;
+  }

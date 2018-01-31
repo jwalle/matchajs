@@ -177,20 +177,10 @@ app.get('/getUser/:id', function (req, res)  {
             res.send(response);
         })
 });
-
-
+ 
 app.get('*', function (req, res) {
   res.sendFile(path.join( __dirname, '../public/index.html'));
 });
-
-// let createCapped = function (db, callback) {
-//     db.createCollection('maCollec4', {'capped': true, 'size': 100000, 'max': 5000},
-//     function (mongoError, results) {
-//         console.log('collection CREATED !!!');
-//         callback();
-//         }
-//     );
-// };
 
 app.listen(port, function (err) {
   if (err) {

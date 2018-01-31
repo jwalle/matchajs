@@ -1,5 +1,6 @@
 import * as React from 'react';
 import NavigationBar from './navigationBar/navigation';
+require('./app.css');
 
 interface Props {
   children : any

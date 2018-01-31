@@ -1,4 +1,6 @@
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 
 const BUILD_DIR = path.resolve(__dirname, 'public/js');
@@ -11,42 +13,52 @@ module.exports = {
     poll: 1000
   },
   resolve: {
-    extensions: ['', '.ts', '.tsx', ".js", ".json"]
+    extensions: ['.ts', '.tsx', ".js", ".json"]
 },
-  context: path.resolve(basePath, 'src'),
+  context: path.join(basePath, 'src'),
   entry: {
-    app: './index.tsx',
-    // appStyles: './**/*.css'
+      main: './index.tsx',
+      main_css: path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.css'),
   },
+    // appStyles: '',
   output: {
     path: BUILD_DIR,
-    filename: 'bundle.js'
+    filename: '[name].js'
   },
   module : {
     loaders : [
+      { test: /\.css$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' }) },
+      { test : /\.tsx?$/, exclude : '/node_modules/', loader : 'ts-loader' },
       {
-        test : /\.tsx?$/,
-        exclude : '/node_modules/',
-        loader : 'ts-loader'
-      },{
-        test: /\.css$/,
-        loader: 'style-loader',
-    }, {
-        test: /\.css$/,
-        loader: 'css-loader',
-        query: {
-            modules: true,
-            localIdentName: '[name]__[local]___[hash:base64:5]'
-        }
-    },{
         test: /\.(jpe?g|png|gif|svg)$/i,
         include: PHOTOS_DIR,
-        loader: "file-loader?name=../photos/[name].[ext]"}
+        loader: "file-loader?name=../photos/[name].[ext]"
+      },{
+        test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url-loader?limit=10000&mimetype=application/font-woff'
+      },
+      {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url-loader?limit=10000&mimetype=application/octet-stream'
+      },
+      {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'file-loader'
+      },
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
+      },
     ]
   },
   devtool: 'inline-source-map',
   devServer: {
     port: 8080,
     noInfo: true,
-  }
+  },
+  plugins: [
+    new ExtractTextPlugin('[name].[hash].css'),
+    new HtmlWebpackPlugin({title: 'Matcha', template: 'index.html' }),
+    new webpack.ProvidePlugin({ $: 'jquery', jQuery: 'jquery' }),
+  ],
 };
