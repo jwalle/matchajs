@@ -40,6 +40,7 @@ build/Release
 app/node_modules/
 jspm_packages/
 app/public/
+app/data
 
 # Typescript v1 declaration files
 typings/
