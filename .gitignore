@@ -41,6 +41,7 @@ app/node_modules/
 jspm_packages/
 app/public/
 app/data
+.vscode
 
 # Typescript v1 declaration files
 typings/
