@@ -1,0 +1,43 @@
+{
+  "name": "api_matcha.js",
+  "version": "1.0.0",
+  "description": "SiteDeRencontre",
+  "author": "jwalle",
+  "engines": {
+    "node": "6.9.4",
+    "npm": "3.10.10"
+  },
+  "scripts": {
+    "dev": "./node_modules/.bin/node-dev --poll server.js",
+    "start": "npm server.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "compression": "1.6.1",
+    "download-file": "^0.1.5",
+    "express": "4.13.4",
+    "ip": "^1.1.5",
+    "jquery": "2.2.3",
+    "moment": "^2.19.3",
+    "multer": "^1.3.0",
+    "mysql": "^2.15.0",
+    "node-cmd": "^3.0.0",
+    "nodemon": "^1.12.5",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "babel-core": "6.21.0",
+    "babel-loader": "6.2.10",
+    "babel-preset-es2015": "6.18.0",
+    "babel-preset-react": "6.16.0",
+    "eslint": "3.12.2",
+    "eslint-config-semistandard": "7.0.0",
+    "eslint-config-standard": "6.2.1",
+    "eslint-plugin-import": "2.2.0",
+    "eslint-plugin-promise": "3.4.0",
+    "eslint-plugin-react": "6.8.0",
+    "eslint-plugin-standard": "2.0.1",
+    "main-bower-files": "2.13.1",
+    "node-dev": "^3.1.3"
+  }
+}

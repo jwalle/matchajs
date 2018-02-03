@@ -3,6 +3,10 @@ import axios from 'axios';
 import { Button, Image, FormControl } from 'react-bootstrap';
 import * as moment from 'moment';
 import UserCard from "./userCard";
+
+const localeIp = "http://localhost/api";
+// const localeIp = "http://192.168.99.100:3000/api";
+
 // import path from 'path';
 
 export interface userPageProps {
@@ -45,7 +49,7 @@ export default class UserPage extends React.Component<userPageProps, UserPageSta
         let self = this;
         axios({
             method: 'get',
-            url: '/getProfilePhoto/' + self.state.user.id,
+            url: localeIp + '/getProfilePhoto/' + self.state.user.id,
             responseType: 'json'
         })
             .then(res => {
@@ -60,7 +64,7 @@ export default class UserPage extends React.Component<userPageProps, UserPageSta
         let self = this;
         axios({
             method: 'get',
-            url: '/getUser/' + this.props.match.params.idUser,
+            url: localeIp + '/getUser/' + this.props.match.params.idUser,
             responseType: 'json'
         })
             .then(res => {

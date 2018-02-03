@@ -153,7 +153,7 @@ function fillDb(user) {
     });
 }
 
-app.get('/makeUser', function (req, res, next)  {
+app.get('/api/makeUser', function (req, res, next)  {
     makeUser()
         .then((response) => {
             console.log('MAKING AN USER !!!!');
@@ -164,22 +164,18 @@ app.get('/makeUser', function (req, res, next)  {
         }).catch(next);
 });
 
-app.get('/getProfilePhoto/:id', function (req, res)  {
+app.get('/api/getProfilePhoto/:id', function (req, res)  {
     getUserProfilePhoto(req.params.id)
         .then((response) => {
             res.send(response);
         })
 });
 
-app.get('/getUser/:id', function (req, res)  {
+app.get('/api/getUser/:id', function (req, res)  {
     getUser(req.params.id)
         .then((response) => {
             res.send(response);
         })
-});
- 
-app.get('*', function (req, res) {
-  res.sendFile(path.join( __dirname, '../public/index.html'));
 });
 
 app.listen(port, function (err) {

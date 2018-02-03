@@ -53,8 +53,10 @@ module.exports = {
   },
   devtool: 'inline-source-map',
   devServer: {
+    host: '0.0.0.0',
     port: 8080,
     noInfo: true,
+    historyApiFallback: true,
   },
   plugins: [
     new ExtractTextPlugin('[name].[hash].css'),

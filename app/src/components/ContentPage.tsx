@@ -1,5 +1,7 @@
 import * as React from 'react';
 import axios from 'axios';
+// const localeIp = "http://192.168.99.100:3000";
+const localeIp = "/api";
 
 export interface ContentPageProps {
 
@@ -14,7 +16,7 @@ export default class ContentPage extends React.Component<ContentPageProps, {}> {
   
   makeUser() {
         return axios
-            .get('/makeUser')
+            .get(localeIp + '/makeUser')
             .then(res => this.setState({
             }))
             .catch(err => console.log('getLogin error : '  + err));

@@ -1,24 +1,48 @@
-version: "2"
-
+version: "3"
 
 services:
 
-### node.js Server Container ##################################
+### nginx Server Container #######################################
 
+  nginx:
+    image : nginx
+    volumes:
+      - ./nginx:/etc/nginx
+    expose:
+        - '80'
+    ports:
+        - 80:80
+    links :
+        - api
+        - react
 
-  web:
+### react.js dev Container #####################################
+
+  react:
     image : node:boron
     volumes:
       - ./app:/usr/src/app
     working_dir: /usr/src/app
-    command: sh -c 'npm install; ./node_modules/.bin/bower install --allow-root; npm run build; npm run dev'
+    command: sh -c 'npm install; npm run dev'
+    ports:
+        - 8080:8080
+    links :
+        - api
+
+### node.js Server Container ##################################
+
+  api:
+    image : node:boron
+    volumes:
+      - ./api:/usr/src/app
+    working_dir: /usr/src/app
+    command: sh -c 'npm install; npm run dev'
     ports:
         - 3000:3000
     links :
         - mysql
 
 ### MySQL Container #########################################
-
 
   mysql:
     build:
@@ -37,7 +61,6 @@ services:
 
 
 ### phpMyAdmin Container ####################################
-
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

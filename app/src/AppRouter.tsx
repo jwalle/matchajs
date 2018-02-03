@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Router } from 'react-router';
-import { BrowserRouter, Route , Switch} from 'react-router-dom';
+import { HashRouter, Route , Switch} from 'react-router-dom';
 
 import App from './components/App';
 
@@ -12,7 +12,7 @@ export class AppRouter extends React.Component<{}> {
 
     render() {
         return(
-            <BrowserRouter>
+            <HashRouter>
                     <App>
                         <Switch>
                             <Route exact path='/' component={ContentPage} />
@@ -20,6 +20,6 @@ export class AppRouter extends React.Component<{}> {
                             <Route component={NotFoundPage} />
                         </Switch>
                     </App>
-            </BrowserRouter>
+            </HashRouter>
         )};
 }

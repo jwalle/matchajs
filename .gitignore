@@ -38,6 +38,7 @@ build/Release
 
 # Dependency directories
 app/node_modules/
+api/node_modules/
 jspm_packages/
 app/public/
 app/data
