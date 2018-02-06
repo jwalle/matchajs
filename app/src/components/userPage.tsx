@@ -4,8 +4,10 @@ import { Button, Image, FormControl } from 'react-bootstrap';
 import * as moment from 'moment';
 import UserCard from "./userCard";
 
-const localeIp = "http://localhost/api";
-// const localeIp = "http://192.168.99.100:3000/api";
+//const localeIp = "http://localhost/api";
+//const localeIp = "http://192.168.99.100/api";
+//const localeIp = "http://192.168.99.100/api";
+const localeIp = "/api";
 
 // import path from 'path';
 
@@ -54,7 +56,7 @@ export default class UserPage extends React.Component<userPageProps, UserPageSta
         })
             .then(res => {
                 self.setState({
-                    picture : require(`../../data/photos/${res.data[0].link}`)
+                    picture : require(`../../data/photos/${res.data[0].link}`), //plop
                 });
             })
             .catch(err => console.log('error axios profilePhoto :', err))
