@@ -60,7 +60,6 @@ services:
     ports:
       - 3306
 
-
 ### phpMyAdmin Container ####################################
 
   phpmyadmin:

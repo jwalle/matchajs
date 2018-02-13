@@ -2,28 +2,26 @@ import * as React from 'react';
 import axios from 'axios';
 import { Button, Image, FormControl } from 'react-bootstrap';
 import * as moment from 'moment';
-import UserCard from "./userCard";
+import UserCard from './userCard';
 
-//const localeIp = "http://localhost/api";
-//const localeIp = "http://192.168.99.100/api";
-//const localeIp = "http://192.168.99.100/api";
-const localeIp = "/api";
+// const localeIp = "http://localhost/api";
+// const localeIp = "http://192.168.99.100/api";
+// const localeIp = "http://192.168.99.100/api";
+const localeIp = '/api';
 
-// import path from 'path';
-
-export interface userPageProps {
-    params : any,
-    match: any
+export interface UserPageProps {
+    params: any;
+    match: any;
 }
 
 export interface UserPageState {
-    user: any,
-    picture: any,
-    age: any
+    user: any;
+    picture: any;
+    age: any;
 }
 
-export default class UserPage extends React.Component<userPageProps, UserPageState> {
-    constructor(props : any) {
+export default class UserPage extends React.Component<UserPageProps, UserPageState> {
+    constructor(props: UserPageProps) {
         super(props);
 
         this.getUser = this.getUser.bind(this);
@@ -31,19 +29,19 @@ export default class UserPage extends React.Component<userPageProps, UserPageSta
         this.getProfilePhoto = this.getProfilePhoto.bind(this);
 
         this.state = {
-            user : [],
+            user: [],
             picture: [],
             age: 1
-        }
+        };
     }
 
-    componentWillMount () {
+    componentWillMount() {
         this.getUser();
         console.log('COUCOU');
     }
 
     getAge() {
-        let age = parseInt(moment(this.state.user.dob, "YYYY-MM-DD h:mm:ss").fromNow());
+        let age = parseInt(moment(this.state.user.dob, 'YYYY-MM-DD h:mm:ss').fromNow(), 10);
         this.setState({ age });
     }
 
@@ -56,10 +54,10 @@ export default class UserPage extends React.Component<userPageProps, UserPageSta
         })
             .then(res => {
                 self.setState({
-                    picture : require(`../../data/photos/${res.data[0].link}`), //plop
+                    picture: require(`../../data/photos/${res.data[0].link}`), // plop
                 });
             })
-            .catch(err => console.log('error axios profilePhoto :', err))
+            .catch(err => console.log('error axios profilePhoto :', err));
     }
 
     getUser() {
@@ -71,34 +69,33 @@ export default class UserPage extends React.Component<userPageProps, UserPageSta
         })
             .then(res => {
                 self.setState({
-                    user : res.data[0]
+                    user: res.data.user[0]
                 });
             })
             .then(this.getProfilePhoto)
             .then(this.getAge)
-            .catch(err => console.log('error axios user :', err))
+            .catch(err => console.log('error axios user :', err));
     }
 
     render() {
         const user = this.state.user;
         const picture = this.state.picture;
         return (
-            picture ?
-            <div>
-                <h1>username : {user.username}</h1>
-                <Image
-                    src={picture}
-                    alt='Profile picture'
-                    responsive
-                />
-                <p>{this.state.age} - {user.gender === 'male' ? 'M' : 'F' } - {user.city}</p>
-                <UserCard
-                    user={user}
-                    picture={picture}
-                    age={this.state.age}
-                />
-            </div>
-                : null
+            picture ? (
+                <div>
+                    <h1>username : {user.login}</h1>
+                    <Image
+                        src={picture}
+                        alt="Profile picture"
+                    />
+                    <p>{this.state.age} - {user.gender === 'male' ? 'M' : 'F'} - {user.city}</p>
+                    <UserCard
+                        user={user}
+                        picture={picture}
+                        age={this.state.age}
+                    />
+                </div>
+            ) : null
         );
     }
-};
+}

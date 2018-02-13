@@ -3,7 +3,7 @@ import NavigationBar from './navigationBar/navigation';
 require('./app.css');
 
 interface Props {
-  children : any
+  children: any;
 }
 
 export default class App extends React.Component<Props, {}> {
@@ -12,12 +12,10 @@ export default class App extends React.Component<Props, {}> {
     return (
       <div>
         <NavigationBar />
-        {this.props.children}
-        <div className='container'>
-          <footer className='footer'>
-            &copy; 2017 - jwalle
-          </footer>
+        <div id="main-container">
+          {this.props.children}
         </div>
+        <footer className="footer">&copy; 2017 - jwalle</footer>
       </div>
     );
   }

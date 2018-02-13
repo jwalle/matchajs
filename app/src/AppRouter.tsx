@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Router } from 'react-router';
-import { HashRouter, Route , Switch} from 'react-router-dom';
+import { HashRouter, Route , Switch } from 'react-router-dom';
 
 import App from './components/App';
 
@@ -15,11 +15,12 @@ export class AppRouter extends React.Component<{}> {
             <HashRouter>
                     <App>
                         <Switch>
-                            <Route exact path='/' component={ContentPage} />
+                            <Route exact path="/" component={ContentPage} />
                             <Route path="/user/:idUser" component={UserPage}/>
                             <Route component={NotFoundPage} />
                         </Switch>
                     </App>
             </HashRouter>
-        )};
+        );
+     }
 }

@@ -2,24 +2,21 @@ import * as React from 'react';
 import { Button, Image, FormControl } from 'react-bootstrap';
 var style = require('./userCard.css');
 
-export interface userCardProps {
-    user : any,
-    picture: any,
-    age : any
+export interface UserCardProps {
+    user: any;
+    picture: any;
+    age: any;
 }
 
-export default class UserCard extends React.Component<userCardProps> {
-    constructor(props : any) {
+export default class UserCard extends React.Component<UserCardProps> {
+    constructor(props: any) {
         super(props);
 
         this.state = {
             user : [],
             pictures: [],
             age: 1
-        }
-    }
-
-    componentWillMount () {
+        };
     }
 
     render() {
@@ -31,12 +28,11 @@ export default class UserCard extends React.Component<userCardProps> {
                     <Image
                         className={style.cardImage}
                         src={picture}
-                        alt='Profil picture'
-                        responsive
+                        alt="Profil picture"
                     />
                     <div className={style.cardInfo}>
                         <p className={style.cardUserName}>{user.username}</p>
-                        <p>{this.props.age} - {user.gender === 'male' ? 'M' : 'F' } - {user.city}</p>
+                        <p>{this.props.age} - {user.gender === 'male' ? 'M' : 'F'} - {user.city}</p>
                     </div>
                 </div>
                 <div className={style.bottomInfo}>
@@ -45,4 +41,4 @@ export default class UserCard extends React.Component<userCardProps> {
             </div>
         );
     }
-};
+}

@@ -42,6 +42,8 @@ api/node_modules/
 jspm_packages/
 app/public/
 app/data
+api/dist
+api/data
 .vscode
 
 # Typescript v1 declaration files

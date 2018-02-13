@@ -1,0 +1,115 @@
+.discovery {    
+    justify-content: center;
+    align-items: center;
+    margin: 70px;
+  }
+  
+  #discovery-interest {
+    background: #0D47A1;
+  }
+  
+  #interest {
+    font-size: 20px;
+    padding: 10px;
+  }
+  
+  #interested {
+    display: flex;
+    justify-content: space-around;
+    height: 200px;
+    width: 900px;
+  }
+  
+  #interested-profile {
+    background: white;
+    border: 2px solid black;
+    padding: 15px;
+  }
+
+  
+/*********** Snapshot ************/
+
+
+#discovery-snapshot {
+  grid-row: 2/3;
+  background: #0D47A1;
+}
+
+#snap-txt {
+font-size: 20px;
+padding: 10px;
+}
+
+#snapshot-profiles {
+display: flex;
+justify-content: space-around;
+height: 220px;
+width: 900px;
+}
+
+.snapshot-profile {
+float: left;
+margin-left: 0px; /* ~15px pour non first-child */
+position: relative;
+background: white;
+border-radius: 10px;
+width: 200px;
+height: 280px;
+box-shadow: 0 1px 2px rgba(0,0,0,.1);  
+}
+
+.snap-new-pic {
+display: block;
+position: relative;
+background-color: grey;
+width: 100%;
+height: 50%;
+border-top-left-radius: 10px;
+border-top-right-radius: 10px;
+background-image: url(http://via.placeholder.com/200/red);
+background-size: cover;
+background-repeat: no-repeat;
+background-position: 50%;
+}
+
+.snap-profile-pic {
+display: block;
+z-index: 99;
+position: absolute;
+overflow: hidden;
+border: 3px solid white;
+width: 56px;
+height: 56px;
+border-radius: 50%;
+top: 50%;
+left: 50%;
+transform-origin: 0 0;
+transform: translate(-50%, -50%);
+transition: transform 75ms linear;
+-webkit-transition: -webkit-transform 75ms linear;
+-webkit-transform: translate(-50%,-50%);
+}
+
+.snap-bottom {
+position: relative;
+width: 100%;
+height: 50%;
+padding-top: 8px;
+color: darkred;
+text-align: center;
+}
+
+.snap-name {
+margin-top: 25px;
+color: black;
+font-weight: 500;
+font-size: 16; 
+}
+
+.snap-quote {
+margin-top: 3px;
+font-size: 15px;
+line-height: 19px;
+width: 100%;
+word-wrap: break-word;
+}
