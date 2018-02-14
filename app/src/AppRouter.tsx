@@ -7,6 +7,7 @@ import App from './components/App';
 import NotFoundPage from './components/NotFoundPage';
 import ContentPage from './components/ContentPage';
 import UserPage from './components/userPage';
+import LoginPage from './components/LoginPage';
 
 export class AppRouter extends React.Component<{}> {
 
@@ -16,6 +17,7 @@ export class AppRouter extends React.Component<{}> {
                     <App>
                         <Switch>
                             <Route exact path="/" component={ContentPage} />
+                            <Route path="/login" component={LoginPage}/>
                             <Route path="/user/:idUser" component={UserPage}/>
                             <Route component={NotFoundPage} />
                         </Switch>

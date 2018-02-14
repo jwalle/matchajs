@@ -19,6 +19,7 @@
     "@types/react-dom": "^16.0.3",
     "@types/react-router": "^4.0.21",
     "@types/react-router-dom": "^4.2.3",
+    "@types/validator": "^6.3.0",
     "axios": "^0.17.1",
     "bootstrap": "3.3.6",
     "bower": "^1.8.2",
@@ -36,9 +37,12 @@
     "react-router": "3.0.0",
     "react-router-dom": "^4.2.2",
     "request": "^2.83.0",
+    "semantic-ui-css": "^2.2.14",
+    "semantic-ui-react": "^0.78.2",
     "ts-loader": "^3.4.0",
     "tslint": "^5.9.1",
-    "tslint-react": "^3.4.0"
+    "tslint-react": "^3.4.0",
+    "validator": "^9.4.0"
   },
   "devDependencies": {
     "awesome-typescript-loader": "^3.4.1",

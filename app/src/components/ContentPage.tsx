@@ -1,6 +1,7 @@
 import * as React from 'react';
 import axios from 'axios';
 import Discovery from './discoveryContent/discovery';
+import { Link } from 'react-router-dom';
 require('./ContentPage.css');
 
 // const localeIp = "http://192.168.99.100:3000";
@@ -30,6 +31,7 @@ export default class ContentPage extends React.Component<ContentPageProps, {}> {
       <div className="main-front">
         <Discovery />
         <h1>Welcome</h1>
+        <Link to="/login">Login</Link>
         <button className="btn btn-primary" style={{ float: 'left' }} onClick={() => this.makeUser()}>
           Make User
           </button>
