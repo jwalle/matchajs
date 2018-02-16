@@ -9,6 +9,8 @@ class userServices {
 
     // TODO: add bcrypt password
 
+    // TODO: create a user.tool file ?
+
     public isValidPassword(userPass : string, credentialsPass: string): boolean {
         return userPass === credentialsPass;
     }

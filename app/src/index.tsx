@@ -6,8 +6,17 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import rootReducer from './rootReducer';
+import { userLoggedIn } from './actions/auth';
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+const store = createStore(
+    rootReducer,
+    composeWithDevTools(applyMiddleware(thunk))
+);
+
+if (localStorage.matchaJWT) {
+    const user = { token: localStorage.matchaJWT};
+    store.dispatch(userLoggedIn(user));
+}
 
 render((
     <Provider store={store}>
