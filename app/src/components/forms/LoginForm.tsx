@@ -15,6 +15,7 @@ export interface AppState {
     errors: {
         email: string;
         password: string;
+        global: string;
     };
 }
 
@@ -25,12 +26,12 @@ export default class App extends React.Component < AppProps, AppState > {
         this.state = {
             data: {
                 email: '',
-                password: ''
-            },
+                password: ''            },
             loading: false,
             errors: {
                 email: '',
-                password: ''
+                password: '',
+                global: ''                
             }
         };
     }
@@ -39,20 +40,22 @@ export default class App extends React.Component < AppProps, AppState > {
         data: {
             ...this.state.data,
             [e.target.name]: e.target.value
-        }
+        }  
     })
 
     onSubmit = () => {
         const errors: any = this.validate(this.state.data);
         this.setState({ errors });
         if (Object.keys(errors).length === 0 ) {
-            this.props.submit(this.state.data);
+            this.setState({loading: true});
+            this.props.submit(this.state.data)
+            .catch((err: any) => this.setState({errors: err.response.data.errors, loading: false }));
         }
     }
 
     validate = (data: AppState['data']) => {
         const errors: any = {};
-        if (!Validator.isEmail(data.email)) { errors.email = 'invalid email'; }
+       // if (!Validator.isEmail(data.email)) { errors.email = 'invalid email'; }
         if (!data.password) { errors.password = 'can\'t be blank'; }
         return errors;
     }
@@ -72,6 +75,7 @@ export default class App extends React.Component < AppProps, AppState > {
 
         return (
             <Form onSubmit={this.onSubmit}>
+                {errors.global && alertBlock('Something went wrong', errors.global)}
                 <FormGroup validationState={errors.email ? 'error' : null} >
                     <ControlLabel htmlFor="email">email</ControlLabel>
                     <FormControl

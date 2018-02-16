@@ -14,10 +14,9 @@ class Api {
 
     constructor() {
         this.express = express();
-    
+
         //this.express.use(express.static(path.join( __dirname, '../public')));
         this.express.use(express.static(path.join( __dirname, '../data/photos')));
-
         this.middleware();
         this.routes();
     }

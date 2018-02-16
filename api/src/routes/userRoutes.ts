@@ -1,7 +1,13 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import userServices from '../services/service.user'
 import { createInterface } from 'readline';
+import serviceUser from '../services/service.user';
 let request = require('request');
+
+export interface userType{
+    email: string;
+    password: string;
+}
 
 export class UserRouter {
     router: Router
@@ -62,7 +68,6 @@ export class UserRouter {
         })
     }
 
-
     public fillDb(user) {        
         let url = user.picture.large;
 
@@ -88,10 +93,28 @@ export class UserRouter {
         .catch((error) => {throw error});
     }
 
+    public auth(req: Request, res: Response, next: NextFunction): void {
+        const { credentials } = req.body;
+
+        userServices.getUserByEmail(credentials.email)
+        .then((results: any) => {
+            const user: any  = results[0];
+            if (user && serviceUser.isValidPassword(user.password , credentials.password)) {
+                res.json({user: serviceUser.toAuthJSON(user.email)})
+            } else {
+                res.status(400).json({errors: { global: "Invalid credentials"}})                
+            }
+        })
+        .catch(err => {
+            console.log('auth ERROR : ', err);
+        })
+    }
+
     init() {
         this.router.get('/makeUser', this.makeOneUser.bind(this));
         this.router.get('/getProfilePhoto/:id', this.getUserProfilePhoto);
         this.router.get('/getUser/:id', this.getUser);
+        this.router.post('/auth', this.auth);
     }
 }
 

@@ -1,9 +1,31 @@
 import * as Download from 'download-file';
+import * as jwt from "jsonwebtoken";
 
 let db = require('../db');
 
 class userServices {
     constructor() {
+    }
+
+    // TODO: add bcrypt password
+
+    public isValidPassword(userPass : string, credentialsPass: string): boolean {
+        return userPass === credentialsPass;
+    }
+
+    public toAuthJSON(email) {
+        return {
+            email,
+            token: this.generateJWT(email)
+        }
+    }
+
+    public generateJWT(email) {
+        return jwt.sign({
+            email: email
+            },
+            process.env.JWT_SECRET
+        );
     }
 
     public selectRequest(sql : string, data : string[]|number[]) : Promise<object> {
@@ -14,6 +36,11 @@ class userServices {
             })
             // db.connection.end();
         })
+    }
+
+    public getUserByEmail(email) {
+        let sql = "SELECT * FROM users WHERE email=?";
+        return (this.selectRequest(sql, email))
     }
 
     public getUser(login) {

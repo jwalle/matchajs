@@ -1,5 +1,6 @@
 import * as http from 'http';
 import * as debug from "debug";
+import * as dotenv from 'dotenv';
 
 import Api from './Api';
 
@@ -8,6 +9,7 @@ debug('ts-express:server');
 const port = normalizePort(process.env.PORT || 3000);
 Api.set('port', port);
 
+dotenv.config();
 const server = http.createServer(Api);
 server.listen(port);
 server.on('error', onError);
