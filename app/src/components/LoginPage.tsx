@@ -10,27 +10,16 @@ export interface LoginPageProps {
     login: Function;
 }
 
-export interface LoginPageState {
-}
-
-class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
+class LoginPage extends React.Component<LoginPageProps, {}> {
     constructor(props: LoginPageProps) {
         super(props);
-
-        this.state = {
-        };
     }
 
-    submit = (data: any) => this.props.login(data).then(() => this.props.history.push('/'));
+    submit = (data: any) => this.props.login(data).then(() => this.props.history.push('/dashboard'));
 
     render() {
-
-        const loginStyle = {
-            gridColumn: '2/3'
-        };
-
         return (
-            <div className="container" style={loginStyle}>
+            <div>
                 <h1>Hi LginPage</h1>
                 <LoginForm submit={this.submit} />
             </div>

@@ -13,7 +13,9 @@ export default class App extends React.Component<Props, {}> {
       <div>
         <NavigationBar />
         <div id="main-container">
+        <div id="central-container">
           {this.props.children}
+          </div>
         </div>
         <footer className="footer">&copy; 2017 - jwalle</footer>
       </div>

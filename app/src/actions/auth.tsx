@@ -16,6 +16,12 @@ export const login = (credentials: any) => (dispatch: any) =>
         dispatch(userLoggedIn(user));
     });
 
+export const signup = (credentials: any) => (dispatch: any) => 
+    api.user.signup(credentials).then(user => {
+        localStorage.matchaJWT = user.token;
+        dispatch(userLoggedIn(user));
+    });
+
 export const logout = () => (dispatch: any) => {
         localStorage.removeItem('matchaJWT');
         dispatch(userLoggedOut());

@@ -3,11 +3,11 @@ import { Form, Button, FormGroup, FormControl, Alert, HelpBlock, ControlLabel } 
 import * as Validator from 'validator';
 import Message from '../messages/Message';
 
-export interface AppProps {
+export interface SignupFormProps {
     submit: Function;
 }
 
-export interface AppState {
+export interface SignupFormState {
     data: {
         email: string,
         password: string
@@ -20,8 +20,8 @@ export interface AppState {
     };
 }
 
-export default class App extends React.Component < AppProps, AppState > {
-    constructor(props: AppProps) {
+export default class SignupForm extends React.Component < SignupFormProps, SignupFormState > {
+    constructor(props: SignupFormProps) {
         super(props);
 
         this.state = {
@@ -44,7 +44,8 @@ export default class App extends React.Component < AppProps, AppState > {
         }  
     })
 
-    onSubmit = () => {
+    onSubmit = (e: any) => {
+        e.preventDefault();
         const errors: any = this.validate(this.state.data);
         this.setState({ errors });
         if (Object.keys(errors).length === 0 ) {
@@ -54,10 +55,11 @@ export default class App extends React.Component < AppProps, AppState > {
         }
     }
 
-    validate = (data: AppState['data']) => {
+    validate = (data: SignupFormState['data']) => {
         const errors: any = {};
         if (!Validator.isEmail(data.email)) { errors.email = 'invalid email'; }
         if (!data.password) { errors.password = 'can\'t be blank'; }
+
         return errors;
     }
 

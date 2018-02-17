@@ -110,11 +110,18 @@ export class UserRouter {
         })
     }
 
+    public signup(req: Request, res: Response, next: NextFunction): void {
+        console.log('====================================');
+        console.log(req.body);
+        console.log('====================================');
+    }
+    
     init() {
         this.router.get('/makeUser', this.makeOneUser.bind(this));
         this.router.get('/getProfilePhoto/:id', this.getUserProfilePhoto);
         this.router.get('/getUser/:id', this.getUser);
         this.router.post('/auth', this.auth);
+        this.router.post('/signup', this.signup);
     }
 }
 
