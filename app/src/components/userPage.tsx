@@ -1,6 +1,5 @@
 import * as React from 'react';
 import axios from 'axios';
-import { Button, Image, FormControl } from 'react-bootstrap';
 import * as moment from 'moment';
 import UserCard from './userCard';
 
@@ -83,11 +82,6 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
         return (
             picture ? (
                 <div>
-                    <h1>username : {user.login}</h1>
-                    <Image
-                        src={picture}
-                        alt="Profile picture"
-                    />
                     <p>{this.state.age} - {user.gender === 'male' ? 'M' : 'F'} - {user.city}</p>
                     <UserCard
                         user={user}

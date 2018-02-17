@@ -18,7 +18,6 @@ module.exports = {
   context: path.join(basePath, 'src'),
   entry: {
       main: './index.tsx',
-      main_css: path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.css'),
   },
     // appStyles: '',
   output: {
@@ -27,28 +26,35 @@ module.exports = {
   },
   module : {
     loaders : [
-      { test: /\.css$/, loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' }) },
+      { test: /\.css$/, exclude: [/node_modules/], loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' }) },
       { test : /\.tsx?$/, exclude : '/node_modules/', loader : 'ts-loader' },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
         include: PHOTOS_DIR,
         loader: "file-loader?name=./data/photos/[name].[ext]"
-      },{
-        test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url-loader?limit=10000&mimetype=application/font-woff'
       },
       {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url-loader?limit=10000&mimetype=application/octet-stream'
+        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+        include: [/node_modules/],        
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 100000,
+          },
+        },
       },
       {
-        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'file-loader'
-      },
-      {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
-      },
+        test: /\.css$/,
+        include: [/node_modules/],
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: [
+            {
+              loader: 'css-loader',
+            },
+          ],
+        })
+      }
     ]
   },
   devtool: 'inline-source-map',
@@ -59,7 +65,7 @@ module.exports = {
     historyApiFallback: true,
   },
   plugins: [
-    new ExtractTextPlugin('[name].[hash].css'),
+    new ExtractTextPlugin('styles.css'),
     new HtmlWebpackPlugin({title: 'Matcha', template: 'index.html' }),
     new webpack.ProvidePlugin({ $: 'jquery', jQuery: 'jquery' }),
   ],

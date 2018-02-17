@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Image, FormControl } from 'react-bootstrap';
+import { Button, Image } from 'semantic-ui-react';
 var style = require('./userCard.css');
 
 export interface UserCardProps {
@@ -36,7 +36,7 @@ export default class UserCard extends React.Component<UserCardProps> {
                     </div>
                 </div>
                 <div className={style.bottomInfo}>
-                    <Button>SAVE</Button>
+                    <Button primary>SAVE</Button>
                 </div>
             </div>
         );

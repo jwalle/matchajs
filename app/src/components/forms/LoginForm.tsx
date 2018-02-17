@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Form, Button, FormGroup, FormControl, Alert, HelpBlock, ControlLabel } from 'react-bootstrap';
+import { Form, Button, FormGroup } from 'semantic-ui-react';
 import * as Validator from 'validator';
-import Message from '../messages/Message';
+import { Danger, Info } from '../messages/Message';
 
 export interface AppProps {
     submit: Function;
@@ -63,23 +63,14 @@ export default class App extends React.Component < AppProps, AppState > {
 
     render() {
 
-        let alertBlock = (errorName: any, error: any) => {
-            return(
-            <Alert bsStyle="danger">
-                <h4>{errorName}</h4>
-                <p>{error}</p>
-            </Alert>
-        );
-    };
-
-        const {data, errors} = this.state;
+        const {data, errors, loading} = this.state;
 
         return (
-            <Form onSubmit={this.onSubmit}>
-                {errors.global && alertBlock('Something went wrong', errors.global)}
-                <FormGroup validationState={errors.email ? 'error' : null} >
-                    <ControlLabel htmlFor="email">email :</ControlLabel>
-                    <FormControl
+            <Form onSubmit={this.onSubmit} loading={loading}>
+                {errors.global && <Danger title="global" text={errors.global} />}
+                <Form.Field error={!!errors.email}>
+                    <label htmlFor="email">email :</label>
+                    <input
                         type="email"
                         id="email"
                         name="email"
@@ -87,9 +78,11 @@ export default class App extends React.Component < AppProps, AppState > {
                         value={data.email}
                         onChange={this.onChange}
                     />
-                    {errors.email && alertBlock('email', errors.email)}
-                    <ControlLabel htmlFor="password">password :</ControlLabel>                    
-                    <FormControl
+                    {errors.email && <Danger title="email" text={errors.email} />}
+                </Form.Field>
+                <Form.Field error={!!errors.password}>
+                    <label htmlFor="password">password :</label>                    
+                    <input
                         type="password"
                         id="password"
                         name="password"
@@ -97,9 +90,9 @@ export default class App extends React.Component < AppProps, AppState > {
                         value={data.password}
                         onChange={this.onChange}
                     />
-                    {errors.password && alertBlock('password', errors.password)}                    
-                <Button onClick={this.onSubmit}>Login</Button>
-                </FormGroup>
+                    {errors.password && <Danger title="Password" text={errors.password} />}  
+                </Form.Field>
+                <Button primary>Login</Button>
             </Form>
         );
     }

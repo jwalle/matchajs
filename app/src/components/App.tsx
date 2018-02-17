@@ -10,7 +10,7 @@ export default class App extends React.Component<Props, {}> {
 
   render() {
     return (
-      <div>
+      <div id="ui container">
         <NavigationBar />
         <div id="main-container">
         <div id="central-container">

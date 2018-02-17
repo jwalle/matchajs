@@ -1,19 +1,25 @@
 import * as React from 'react';
-import { Alert } from 'react-bootstrap';
+import { Message } from 'semantic-ui-react';
 
 interface MessageProps {
     title: string;
-    message: string;
-    style?: string;
+    text: string;
 }
 
-const Message: React.SFC<MessageProps> = (props) => {
+export const Danger: React.SFC<MessageProps> = (props) => {
         return(
-        <Alert bsStyle={props.style ? props.style : 'danger'}>
-            <h4>{props.title}</h4>
-            <p>{props.message}</p>
-        </Alert>
-    );
-};
+        <Message negative>
+            <Message.Header>{props.title}</Message.Header>
+            <p>{props.text}</p>
+        </Message>);
+        };
 
-export default Message;
+export const Info: React.SFC<MessageProps> = (props) => {
+            return(
+            <Message info>
+                <Message.Header>{props.title}</Message.Header>
+                <p>{props.text}</p>
+            </Message>);
+            };
+    
+export default Danger;

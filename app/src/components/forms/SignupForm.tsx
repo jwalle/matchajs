@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Form, Button, FormGroup, FormControl, Alert, HelpBlock, ControlLabel } from 'react-bootstrap';
+import { Form, FormGroup, Button } from 'semantic-ui-react';
 import * as Validator from 'validator';
-import Message from '../messages/Message';
+import Danger from '../messages/Message';
 
 export interface SignupFormProps {
     submit: Function;
@@ -9,11 +9,14 @@ export interface SignupFormProps {
 
 export interface SignupFormState {
     data: {
+        username: string,
         email: string,
-        password: string
+        password: string,
+        passwordVerif: string
     };
     loading: boolean;
     errors: {
+        username: string,
         email: string;
         password: string;
         global: string;
@@ -26,10 +29,14 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
 
         this.state = {
             data: {
+                username: '',
                 email: '',
-                password: ''            },
+                password: '',
+                passwordVerif: ''
+                },
             loading: false,
             errors: {
+                username: '',
                 email: '',
                 password: '',
                 global: ''                
@@ -57,31 +64,38 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
 
     validate = (data: SignupFormState['data']) => {
         const errors: any = {};
+        if (!data.username) { errors.username = 'You have to enter your username'; }
         if (!Validator.isEmail(data.email)) { errors.email = 'invalid email'; }
-        if (!data.password) { errors.password = 'can\'t be blank'; }
-
+        if (!data.password) { errors.password = 'You have to enter a password'; }
+        if (!data.passwordVerif) { errors.password = 'You have to re-enter your password'; }
+        if (data.password !== data.passwordVerif) {errors.password = 'the verification password is different'; }
+        // TODO : Add more validation (strlen, complex password,...)
         return errors;
     }
 
     render() {
 
-        let alertBlock = (errorName: any, error: any) => {
-            return(
-            <Alert bsStyle="danger">
-                <h4>{errorName}</h4>
-                <p>{error}</p>
-            </Alert>
-        );
-    };
-
-        const {data, errors} = this.state;
+        const {data, errors, loading} = this.state;
 
         return (
-            <Form onSubmit={this.onSubmit}>
-                {errors.global && alertBlock('Something went wrong', errors.global)}
-                <FormGroup validationState={errors.email ? 'error' : null} >
-                    <ControlLabel htmlFor="email">email :</ControlLabel>
-                    <FormControl
+            <Form onSubmit={this.onSubmit} loading={loading}>
+
+                {errors.global && <Danger title="Global error" text="Something went wrong" />}
+               
+                <Form.Field error={!!errors.username}>
+                    <label htmlFor="username">Username :</label>
+                    <input
+                        id="username"
+                        name="username"
+                        placeholder="toto420"
+                        value={data.username}
+                        onChange={this.onChange}
+                    />
+                    {errors.username && <Danger title="Username" text={errors.username} />}
+                    </Form.Field>
+                    <Form.Field error={!!errors.email}>
+                    <label htmlFor="email">Your email :</label>
+                    <input
                         type="email"
                         id="email"
                         name="email"
@@ -89,19 +103,32 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
                         value={data.email}
                         onChange={this.onChange}
                     />
-                    {errors.email && alertBlock('email', errors.email)}
-                    <ControlLabel htmlFor="password">password :</ControlLabel>                    
-                    <FormControl
+                    {errors.email && <Danger title="Email" text={errors.email} />}
+                    </Form.Field>       
+                    <Form.Field error={!!errors.password}>                              
+                    <label htmlFor="password">Your password :</label>
+                    <input
                         type="password"
                         id="password"
                         name="password"
-                        placeholder="Make it secure"
+                        placeholder="example@example.com"
                         value={data.password}
                         onChange={this.onChange}
                     />
-                    {errors.password && alertBlock('password', errors.password)}                    
-                <Button onClick={this.onSubmit}>Login</Button>
-                </FormGroup>
+                    </Form.Field>
+                    <Form.Field error={!!errors.password}>                              
+                    <label htmlFor="password">Your password :</label>
+                    <input
+                        type="password"
+                        id="passwordVerif"
+                        name="passwordVerif"
+                        placeholder="example@example.com"
+                        value={data.passwordVerif}
+                        onChange={this.onChange}
+                    />
+                    {errors.password && <Danger title="Password" text={errors.password} />}                        
+                    </Form.Field>
+                <Button primary>Login</Button>
             </Form>
         );
     }

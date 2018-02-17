@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import Message from './messages/Message';
+import Info from './messages/Message';
 
 interface DashboardProps {
     isConfirmed: boolean;
@@ -10,10 +10,9 @@ interface DashboardProps {
 const Dashboard = (props: DashboardProps) => (
     <div>
     {!props.isConfirmed && 
-        <Message 
+        <Info 
             title="Confirmation"
-            message="Please verify your inbox for verification email."
-            style="info"
+            text="Please verify your inbox for verification email."
         />
     }
     </div>
