@@ -31,7 +31,7 @@ class Api {
         
         router.get('/', (req, res, next) => {
             res.json({
-                message: 'Hello World  !!!!'
+                message: 'Hello World !'
             });
         });
         this.express.use('/', router);

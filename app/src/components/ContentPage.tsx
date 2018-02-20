@@ -36,7 +36,6 @@ class ContentPage extends React.Component<ContentPageProps, {}> {
         {this.props.isAuth ?
          <button onClick={() => this.props.logout()}>Logout</button> :
          <Link to="/login">Login</Link>}
-
         <button className="btn btn-primary" style={{ float: 'left' }} onClick={() => this.makeUser()}>
           Make User
           </button>

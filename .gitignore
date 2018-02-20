@@ -44,6 +44,7 @@ app/public/
 app/data
 api/dist
 api/data
+api/ts-node-*
 .vscode
 
 # Typescript v1 declaration files

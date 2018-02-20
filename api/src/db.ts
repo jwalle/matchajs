@@ -14,9 +14,33 @@ import {createConnection} from 'mysql';
       if (err) throw err;
     });
 
+
+    
+
+
     module.exports = {
     connection: connection
 }
+
+
+
+
+
+//findOne
+//findById
+//create
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // }

@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+
+### node.js Server Container ##################################
+
+  api:
+    image : node:boron
+    volumes:
+      - ./api:/usr/src/api
+    working_dir: /usr/src/api
+    environment:
+      FORCE_COLOR: "true"
+    command: sh -c 'npm install; npm run test'
+    ports:
+        - 3000:3000
+    links :
+        - mysql
+
+### MySQL Container #########################################
+
+  mysql:
+    build:
+        context: ./mysql
+    user: "1000:50"
+    environment:
+      MYSQL_DATABASE: matchadb
+      MYSQL_USER: jwalle
+      MYSQL_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+          - ./app/data/db:/var/lib/mysql
+          - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - 3306
