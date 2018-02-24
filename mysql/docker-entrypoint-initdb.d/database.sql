@@ -34,16 +34,42 @@ CREATE TABLE `users` (
   `password` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `gender` varchar(1) DEFAULT NULL,
+  `orientation` varchar(1) DEFAULT NULL,
   `firstname` varchar(255) DEFAULT NULL,
   `lastname` varchar(255) DEFAULT NULL,
   `dob` varchar(255) NOT NULL,
   `registered` varchar(255) NOT NULL,
-  `bio` text,
+  `lastseen` varchar(255) NOT NULL,
+  `confirmed` varchar(255) NULL,
+  `bio1` text,
+  `bio2` text,
+  `bio3` text,
   `city` varchar(255) NOT NULL,
+  `country` varchar(255) NOT NULL,
   `nat` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `user_interests`
+--
+
+CREATE TABLE interest (
+`interest_name` VARCHAR(20) NOT NULL PRIMARY KEY,
+`color` VARCHAR(20)
+);
+
+--
+-- Table structure for table `user_interests`
+--
+
+CREATE TABLE user_interests (
+`user_id` INT NOT NULL,
+`interest_name` VARCHAR(20) NOT NULL,
+PRIMARY KEY(`user_id`, `interest_name`)
+);
+
 
 --
 -- Table structure for table `photos`

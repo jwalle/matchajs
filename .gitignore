@@ -70,3 +70,5 @@ typings/
 
 #webstorm config
 .idea/
+.DS_Store
+app/.DS_Store

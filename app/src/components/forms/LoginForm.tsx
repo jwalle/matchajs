@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Form, Button, FormGroup } from 'semantic-ui-react';
 import * as Validator from 'validator';
 import { Danger, Info } from '../messages/Message';
+import * as Moment from 'moment';
 
 export interface AppProps {
     submit: Function;
@@ -27,12 +28,13 @@ export default class App extends React.Component < AppProps, AppState > {
         this.state = {
             data: {
                 email: '',
-                password: ''            },
+                password: '',
+            },
             loading: false,
             errors: {
                 email: '',
                 password: '',
-                global: ''                
+                global: '',
             }
         };
     }

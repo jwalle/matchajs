@@ -5,38 +5,33 @@ import Danger from '../messages/Message';
 
 export interface SignupFormProps {
     submit: Function;
+    data: any;
 }
 
-export interface SignupFormState {
+export interface SignupFormState3 {
     data: {
-        username: string,
         email: string,
         password: string,
         passwordVerif: string
     };
     loading: boolean;
     errors: {
-        username: string,
         email: string;
         password: string;
         global: string;
     };
 }
 
-export default class SignupForm extends React.Component < SignupFormProps, SignupFormState > {
+export default class SignupForm extends React.Component < SignupFormProps, SignupFormState3 > {
     constructor(props: SignupFormProps) {
         super(props);
-
+        console.log(this.props.data);
         this.state = {
-            data: {
-                username: '',
-                email: '',
-                password: '',
-                passwordVerif: ''
-                },
+            data : {
+                ...this.props.data
+            },
             loading: false,
             errors: {
-                username: '',
                 email: '',
                 password: '',
                 global: ''                
@@ -62,9 +57,8 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
         }
     }
 
-    validate = (data: SignupFormState['data']) => {
+    validate = (data: SignupFormState3['data']) => {
         const errors: any = {};
-        if (!data.username) { errors.username = 'You have to enter your username'; }
         if (!Validator.isEmail(data.email)) { errors.email = 'invalid email'; }
         if (!data.password) { errors.password = 'You have to enter a password'; }
         if (!data.passwordVerif) { errors.password = 'You have to re-enter your password'; }
@@ -79,20 +73,7 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
 
         return (
             <Form onSubmit={this.onSubmit} loading={loading}>
-
                 {errors.global && <Danger title="Global error" text="Something went wrong" />}
-               
-                <Form.Field error={!!errors.username}>
-                    <label htmlFor="username">Username :</label>
-                    <input
-                        id="username"
-                        name="username"
-                        placeholder="toto420"
-                        value={data.username}
-                        onChange={this.onChange}
-                    />
-                    {errors.username && <Danger title="Username" text={errors.username} />}
-                    </Form.Field>
                     <Form.Field error={!!errors.email}>
                     <label htmlFor="email">Your email :</label>
                     <input
