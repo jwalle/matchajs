@@ -1,7 +1,17 @@
 import * as React from 'react';
+import NavigationRightUser from './navigationRightUser';
+import NavigationRightGuest from './navigationRightGuest';
+import { connect } from 'react-redux';
 require('./navigation.css');
 
-export default class NavigationBar extends React.Component {
+export interface NavigationBarProps {
+    isAuth: boolean;
+}
+
+class NavigationBar extends React.Component<NavigationBarProps, {}> {
+    constructor(props: any) {
+        super(props);    
+      }
 
     render() {
         return (
@@ -13,20 +23,18 @@ export default class NavigationBar extends React.Component {
                         <li><a href="/matchs">Matchas</a></li>
                     </ul>
                 </div>
-                <div className="navRight">
-                    <ul className="navNotif navItem">
-                        <li id="likes"><a href="/likes">|like|</a></li>
-                        <li id="mailbox"><a href="/messages">|msg|</a></li>
-                    </ul>
-                    <div className="navUser">
-                        <a href="/profile" className="navUserImage">
-                            <span className="navUserThumb">
-                                <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
-                            </span>
-                        </a>
-                    </div>
-                </div>
+                { this.props.isAuth ?
+                  <NavigationRightUser /> :
+                  <NavigationRightGuest /> }
             </div>
         );
     }
 }
+
+function mapStateToProps(state: any) {
+    return {
+        isAuth: !!state.user.token
+    };
+}
+
+export default connect<any, any>(mapStateToProps, {})(NavigationBar);

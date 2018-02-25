@@ -2,6 +2,7 @@ import * as React from 'react';
 import SignupForm from './forms/SignupFormAll';
 import { connect } from 'react-redux';
 import { signup } from '../actions/auth';
+require('./SignupPage.css');
 
 export interface SignupPageProps {
     history: {
@@ -20,6 +21,10 @@ class SignupPage extends React.Component<SignupPageProps, {}> {
   render() {
     return (
       <div>
+        <div className="top_signup">
+          <h1>LOGO</h1>
+
+        </div>
         <SignupForm submit={this.submit} />
       </div>
     );

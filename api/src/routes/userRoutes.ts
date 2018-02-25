@@ -111,9 +111,11 @@ export class UserRouter {
     }
 
     public signup(req: Request, res: Response, next: NextFunction): void {
-        console.log('====================================');
-        console.log(req.body);
-        console.log('====================================');
+        userServices.createNewUser(req.body.user)
+        .then((results: any) => {
+            if (results)
+                res.status(200);
+        })
     }
     
     init() {

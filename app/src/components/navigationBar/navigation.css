@@ -44,6 +44,14 @@ a {
     padding-right: 15px;
 }
 
+.top_signup_right {
+    right: 0;
+    position: absolute;
+    display: flex;
+    padding: 12px;
+    width: 200px;
+}
+
 #navigation .navLeft {
     left: 0;
     padding-left: 15px;

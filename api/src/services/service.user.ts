@@ -32,6 +32,7 @@ class userServices {
 
     public selectRequest(sql : string, data : string[]|number[]) : Promise<object> {
         return new Promise(function (resolve, reject) {
+        console.log('COUCOUCOUCOU' , data);        
             db.connection.query(sql, data, function (err, result) {
                 if (err) reject(err);
                 resolve(result);
@@ -70,6 +71,23 @@ class userServices {
             });
         })
     }
+
+    createNewUser(user) : Promise<object>  {
+        let sql = "INSERT INTO users (login, password, email, gender, dob, registered, country, city, nat) VALUES (?,?,?,?,?,?,?,?,?)";
+        let values = [
+            user.username,
+            user.password,
+            user.email,
+            user.gender,
+//            user.dob,
+            "today",
+            "last year",
+            user.country,
+            user.city,
+            'FR' //TODO : countries API/Json
+        ];
+        return (this.selectRequest(sql, values)); //.insertId; 
+    };
 
     insertNewUser(user) : Promise<object>  {
         let sql = "INSERT INTO users (login, password, email, gender, firstname, lastname, dob, registered, city, nat) VALUES (?,?,?,?,?,?,?,?,?,?)";

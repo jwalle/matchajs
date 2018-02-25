@@ -4,13 +4,12 @@ body {
   .table .btn-link {
     padding: 0px 12px;
   }
-  .panel-footer .pagination {
+  .panel- .pagination {
     margin: 0;
   }
   .footer {
     grid-column: 100;
     padding: 15px 0;
-    margin-top: 50px;
     border-top: 1px solid #ddd;
   }
   

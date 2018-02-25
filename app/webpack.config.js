@@ -10,7 +10,8 @@ var basePath = __dirname;
 
 module.exports = {
   watchOptions : {
-    poll: 1000
+    poll: 1000,
+    aggregateTimeout: 300
   },
   resolve: {
     extensions: ['.ts', '.tsx', ".js", ".json"]

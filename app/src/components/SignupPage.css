@@ -1,0 +1,9 @@
+#main-container {
+    background-color: blue;
+    min-height: 700px;
+}
+
+#central-container {
+    min-width: 800px;
+}
+

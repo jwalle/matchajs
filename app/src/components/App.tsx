@@ -11,7 +11,7 @@ export default class App extends React.Component<Props, {}> {
   render() {
     return (
       <div id="ui container">
-        <NavigationBar />
+        <NavigationBar isAuth />
         <div id="main-container">
         <div id="central-container">
           {this.props.children}
