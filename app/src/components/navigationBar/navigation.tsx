@@ -18,10 +18,11 @@ class NavigationBar extends React.Component<NavigationBarProps, {}> {
             <div id={'navigation'} className="fixed">
                 <div className="navLeft">
                     <h1 id="logo" className="navLogo"><a href="/">MATCHA</a></h1>
+                { this.props.isAuth ?
                     <ul className="navLinks navItem">
                         <li><a href="/search">Search</a></li>
                         <li><a href="/matchs">Matchas</a></li>
-                    </ul>
+                    </ul> : ''}
                 </div>
                 { this.props.isAuth ?
                   <NavigationRightUser /> :

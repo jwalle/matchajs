@@ -21,10 +21,6 @@ class SignupPage extends React.Component<SignupPageProps, {}> {
   render() {
     return (
       <div>
-        <div className="top_signup">
-          <h1>LOGO</h1>
-
-        </div>
         <SignupForm submit={this.submit} />
       </div>
     );

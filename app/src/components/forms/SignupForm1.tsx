@@ -16,7 +16,7 @@ export interface SignupFormState {
     loading: boolean;
 }
 
-export default class SignupForm1 extends React.Component < SignupFormProps, SignupFormState > {
+export default class SignupForm1 extends React.Component<SignupFormProps, SignupFormState> {
     constructor(props: SignupFormProps) {
         super(props);
 
@@ -32,37 +32,48 @@ export default class SignupForm1 extends React.Component < SignupFormProps, Sign
         data: {
             ...this.state.data,
             gender: e
-        }  
+        }
     })
 
     onSubmit = () => {
-            this.setState({loading: true});
-            this.props.updateData(this.state.data);
-            this.props.setStep('detail');
+        this.setState({ loading: true });
+        this.props.updateData(this.state.data);
+        this.props.setStep('detail');
     }
 
     render() {
 
-        const {loading} = this.state;
+        const { loading } = this.state;
 
         return (
-            <div>
-            <Button.Group color="blue" size="big">
-                <Button
-                    value="F"
-                    active={this.state.data.gender === 'F'}
-                    onClick={() => this.onChange('F')}
-                >Female
-                </ Button>
-                <Button.Or />
-                <Button
-                    value="M"
-                    active={this.state.data.gender === 'M'}
-                    onClick={() => this.onChange('M')}
-                >Male
-                </ Button>
-            </Button.Group>
-            <Button onClick={() => this.onSubmit()}>Next</Button>
+            <div id="formOneButtons">
+                <div id="GenderButtons">
+                <Button.Group color="blue" size="big">
+                    <Button
+                        value="F"
+                        active={this.state.data.gender === 'F'}
+                        onClick={() => this.onChange('F')}
+                    >Female
+                    </ Button>
+                    <Button.Or />
+                    <Button
+                        value="M"
+                        active={this.state.data.gender === 'M'}
+                        onClick={() => this.onChange('M')}
+                    >Male
+                    </ Button>
+                </Button.Group>
+                </div>
+                <div id="orientationButtons">
+                <Button.Group>
+                    <Button>Straight</Button>
+                    <Button.Or />
+                    <Button>gay</Button>
+                    <Button.Or />
+                    <Button>Bisexual</Button>
+                </Button.Group>
+                </div>
+                <Button className="formOneNextButton" onClick={() => this.onSubmit()}>Next</Button>
             </div>
         );
     }
