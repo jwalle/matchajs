@@ -3,6 +3,7 @@ import SignupForm from './forms/SignupFormAll';
 import { connect } from 'react-redux';
 import { signup } from '../actions/auth';
 require('./SignupPage.css');
+let backGround = require('../../public/images/signupBackground.jpeg');
 
 export interface SignupPageProps {
     history: {
@@ -20,7 +21,7 @@ class SignupPage extends React.Component<SignupPageProps, {}> {
 
   render() {
     return (
-      <div>
+      <div style={{backgroundImage: `url(${backGround})`}}>
         <SignupForm submit={this.submit} />
       </div>
     );

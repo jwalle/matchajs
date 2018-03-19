@@ -5,6 +5,8 @@ const path = require('path');
 
 const BUILD_DIR = path.resolve(__dirname, 'public/js');
 const PHOTOS_DIR = path.resolve(__dirname, 'data/photos');
+const IMAGES_DIR = path.resolve(__dirname, 'public/images');
+
 
 var basePath = __dirname;
 
@@ -35,8 +37,8 @@ module.exports = {
         loader: "file-loader?name=./data/photos/[name].[ext]"
       },
       {
-        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
-        include: [/node_modules/],        
+        test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
+        include: [/node_modules/, IMAGES_DIR],        
         use: {
           loader: 'url-loader',
           options: {

@@ -67,7 +67,7 @@ export default class SignupFormAll extends React.Component < SignupFormProps, Si
             case 'detail':
             return <SignupForm2 data={this.state.data} setStep={this.setStep} updateData={this.updateData} />;
             case 'login':
-            return <SignupForm3 data={this.state.data} submit={this.props.submit} />;
+            return <SignupForm3 data={this.state.data} setStep={this.setStep} submit={this.props.submit} />;
             default:
                 return <h1>Error</h1>;
         }

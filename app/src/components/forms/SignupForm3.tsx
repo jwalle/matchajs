@@ -4,6 +4,7 @@ import * as Validator from 'validator';
 import Danger from '../messages/Message';
 
 export interface SignupFormProps {
+    setStep: Function;    
     submit: Function;
     data: any;
 }
@@ -57,6 +58,10 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
         }
     }
 
+    onPrevious = () => {
+        this.props.setStep('detail');
+    }
+
     validate = (data: SignupFormState3['data']) => {
         const errors: any = {};
         if (!Validator.isEmail(data.email)) { errors.email = 'invalid email'; }
@@ -75,40 +80,38 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
             <Form onSubmit={this.onSubmit} loading={loading}>
                 {errors.global && <Danger title="Global error" text="Something went wrong" />}
                     <Form.Field error={!!errors.email}>
-                    <label htmlFor="email">Your email :</label>
                     <input
                         type="email"
                         id="email"
                         name="email"
-                        placeholder="example@example.com"
+                        placeholder="Enter your email here"
                         value={data.email}
                         onChange={this.onChange}
                     />
                     {errors.email && <Danger title="Email" text={errors.email} />}
                     </Form.Field>       
                     <Form.Field error={!!errors.password}>                              
-                    <label htmlFor="password">Your password :</label>
                     <input
                         type="password"
                         id="password"
                         name="password"
-                        placeholder="example@example.com"
+                        placeholder="Enter your password here"
                         value={data.password}
                         onChange={this.onChange}
                     />
                     </Form.Field>
                     <Form.Field error={!!errors.password}>                              
-                    <label htmlFor="password">Your password :</label>
                     <input
                         type="password"
                         id="passwordVerif"
                         name="passwordVerif"
-                        placeholder="example@example.com"
+                        placeholder="Confirm your password"
                         value={data.passwordVerif}
                         onChange={this.onChange}
                     />
                     {errors.password && <Danger title="Password" text={errors.password} />}                        
                     </Form.Field>
+                <Button primary onClick={this.onPrevious}>Back</Button>                    
                 <Button primary>Login</Button>
             </Form>
         );

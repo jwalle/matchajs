@@ -60,6 +60,10 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
         }
     }
 
+    onPrevious = () => {
+        this.props.setStep('intro');
+    }
+
     validate = (data: SignupFormState['data']) => {
         const errors: any = {};
         if (!data.username) { errors.username = 'You have to enter your username !'; }
@@ -78,9 +82,7 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
             <h1>You are : {this.props.data.gender}</h1>
             
             <Form onSubmit={this.onSubmit} loading={loading}>
-
-                {errors.global && <Danger title="Global error" text="Something went wrong" />}
-               
+                {errors.global && <Danger title="Global error" text="Something went wrong" />}    
                 <Form.Field error={!!errors.username}>
                     <label htmlFor="username">Username :</label>
                     <input
@@ -102,6 +104,7 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
                         value={data.country}
                         onChange={this.onChange}
                     />
+                    {errors.country && <Danger title="Country" text={errors.country} />}                    
                     </Form.Field>
                     <Form.Field error={!!errors.city}>
                     <label htmlFor="city">Your city :</label>
@@ -115,6 +118,7 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
                     />
                     {errors.city && <Danger title="city" text={errors.city} />}
                     </Form.Field>
+                <Button primary onClick={this.onPrevious}>Back</Button>
                 <Button primary>Next</Button>
             </Form>
             </div>

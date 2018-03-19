@@ -20,6 +20,11 @@ export const Info: React.SFC<MessageProps> = (props) => {
                 <Message.Header>{props.title}</Message.Header>
                 <p>{props.text}</p>
             </Message>);
-            };
+            };         
     
-export default Danger;
+export const InlineError: React.SFC<MessageProps> = (props) => {
+            return(
+                <p>{props.text}</p>);
+            };
+
+export default InlineError;
