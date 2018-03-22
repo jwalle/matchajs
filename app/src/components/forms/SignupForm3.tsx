@@ -77,6 +77,11 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
         const {data, errors, loading} = this.state;
 
         return (
+            <div>
+            <h1 style={{color: 'white'}}>You are : {this.props.data.gender} and {this.props.data.orientation}</h1>
+            <h1 style={{color: 'white'}}>
+            You are {this.props.data.username} from : {this.props.data.country}, {this.props.data.city}
+            </h1>
             <Form onSubmit={this.onSubmit} loading={loading}>
                 {errors.global && <Danger title="Global error" text="Something went wrong" />}
                     <Form.Field error={!!errors.email}>
@@ -114,6 +119,7 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
                 <Button primary onClick={this.onPrevious}>Back</Button>                    
                 <Button primary>Login</Button>
             </Form>
+            </div>            
         );
     }
 }

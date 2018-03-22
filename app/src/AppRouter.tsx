@@ -18,7 +18,7 @@ export class AppRouter extends React.Component<{}> {
     render() {
         return(
             <HashRouter>
-                    <App>
+                    <App isAuth>
                         <Switch>
                             <Route exact path="/" component={ContentPage} />
                             <GuestRoute exact path="/login" component={LoginPage}/>

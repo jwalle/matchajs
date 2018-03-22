@@ -12,6 +12,7 @@ export interface SignupFormProps {
 export interface SignupFormState {
     data: {
         gender: string;
+        orientation: string;
     };
     loading: boolean;
 }
@@ -28,10 +29,17 @@ export default class SignupForm1 extends React.Component<SignupFormProps, Signup
         };
     }
 
-    onChange = (e: any) => this.setState({
+    onChangeGender = (e: any) => this.setState({
         data: {
             ...this.state.data,
             gender: e
+        }
+    })
+
+    onChangeOrientation = (e: any) => this.setState({
+        data: {
+            ...this.state.data,
+            orientation: e
         }
     })
 
@@ -51,26 +59,46 @@ export default class SignupForm1 extends React.Component<SignupFormProps, Signup
                 <Button.Group color="blue" size="big">
                     <Button
                         value="F"
+                        toggle
                         active={this.state.data.gender === 'F'}
-                        onClick={() => this.onChange('F')}
+                        onClick={() => this.onChangeGender('F')}
                     >Female
                     </ Button>
                     <Button.Or />
                     <Button
                         value="M"
+                        toggle
                         active={this.state.data.gender === 'M'}
-                        onClick={() => this.onChange('M')}
+                        onClick={() => this.onChangeGender('M')}
                     >Male
                     </ Button>
                 </Button.Group>
                 </div>
                 <div id="orientationButtons">
                 <Button.Group>
-                    <Button>Straight</Button>
+                    <Button
+                        value="S"
+                        toggle
+                        active={this.state.data.orientation === 'S'}
+                        onClick={() => this.onChangeOrientation('S')}
+                    >Straight
+                    </ Button>
                     <Button.Or />
-                    <Button>gay</Button>
+                    <Button
+                        value="G"
+                        toggle
+                        active={this.state.data.orientation === 'G'}
+                        onClick={() => this.onChangeOrientation('G')}
+                    >gay
+                    </ Button>
                     <Button.Or />
-                    <Button>Bisexual</Button>
+                    <Button
+                        value="B"
+                        toggle
+                        active={this.state.data.orientation === 'B'}
+                        onClick={() => this.onChangeOrientation('B')}
+                    >Bisexual
+                    </ Button>
                 </Button.Group>
                 </div>
                 <Button className="formOneNextButton" onClick={() => this.onSubmit()}>Next</Button>

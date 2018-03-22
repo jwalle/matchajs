@@ -6,6 +6,7 @@ import { signup } from '../../actions/auth';
 import SignupForm1 from './SignupForm1';
 import SignupForm2 from './SignupForm2';
 import SignupForm3 from './SignupForm3';
+require('./SignupForm.css');
 
 export interface SignupFormProps {
     submit: Function;
@@ -17,6 +18,7 @@ export interface SignupFormState {
         country: string,
         city: string,
         gender: string,
+        orientation: string,        
         username: string,
         email: string,
         password: string,
@@ -33,6 +35,7 @@ export default class SignupFormAll extends React.Component < SignupFormProps, Si
             currentStep: 'intro',
             data: {
                 gender: 'F',
+                orientation: 'S',
                 country: '',
                 city: '',
                 username: '',

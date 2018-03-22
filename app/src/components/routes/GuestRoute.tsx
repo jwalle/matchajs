@@ -14,7 +14,7 @@ const GuestRoute: React.SFC<GuestRouteProps> = ({isAuth, component, ...rest}) =>
       <Route
        {...rest}
        render={props =>
-            !isAuth ? React.createElement(component, props) : <Redirect to="/dashboard"/>} 
+            !isAuth ? React.createElement(component, props) : <Redirect to="/signup"/>} 
       />
   ) ;
 };

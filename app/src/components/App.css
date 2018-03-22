@@ -12,14 +12,24 @@ body {
     padding: 15px 0;
     border-top: 1px solid #ddd;
   }
-  
-  #main-container {
-    padding-top: 66px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    /* grid-auto-rows: 100px; */
-  }
 
   #central-container {
     grid-column: 2/3;
   }
+
+.main-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+    
+.guest-container {
+  background-image: url('../../public/images/signupBackground.jpeg');
+  background-size: cover;
+  background-position: center;
+  overflow: hidden; 
+  min-height: 900px;
+}
+
+.user-container {
+  padding-top: 66px;
+}

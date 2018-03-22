@@ -2,8 +2,8 @@ import * as React from 'react';
 import SignupForm from './forms/SignupFormAll';
 import { connect } from 'react-redux';
 import { signup } from '../actions/auth';
+import NavigationRightGuest from './navigationBar/navigationRightGuest';
 require('./SignupPage.css');
-let backGround = require('../../public/images/signupBackground.jpeg');
 
 export interface SignupPageProps {
     history: {
@@ -21,8 +21,10 @@ class SignupPage extends React.Component<SignupPageProps, {}> {
 
   render() {
     return (
-      <div style={{backgroundImage: `url(${backGround})`}}>
+      <div>
+        <h1 id="logo" className="navLogo"><a href="/">MATCHA</a></h1>        
         <SignupForm submit={this.submit} />
+        <NavigationRightGuest />
       </div>
     );
   }

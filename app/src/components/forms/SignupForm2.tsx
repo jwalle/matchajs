@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Form, FormGroup, Button } from 'semantic-ui-react';
+import { Form, FormGroup, Button, Dropdown } from 'semantic-ui-react';
 import * as Validator from 'validator';
 import Danger from '../messages/Message';
 
@@ -10,6 +10,8 @@ export interface SignupFormProps {
 }
 
 export interface SignupFormState {
+    countriesList: any;
+    citiesList: any;
     data: {
         username: string,
         country: string,
@@ -29,6 +31,8 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
         super(props);
 
         this.state = {
+            countriesList: [],
+            citiesList: [],
             data: {
                 ...this.props.data
                 },
@@ -42,12 +46,66 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
         };
     }
 
+    componentWillMount() {
+        this.getCountries();
+    }
+
+    onSelectCountry = (e: any, {value}: any) =>  {
+        this.setState({
+            data: {
+                ...this.state.data,
+                country: value
+            }
+        });
+        this.getCities(value);
+    }
+
+    onSelectCities = (e: any, {value}: any) =>  {
+        this.setState({
+            data: {
+                ...this.state.data,
+                city: value
+            }
+        });
+    }
+
     onChange = (e: any) => this.setState({
         data: {
             ...this.state.data,
             [e.target.name]: e.target.value
         }  
     })
+
+    getCountries = () => {
+        let countries = require('../../data/countries.json').countries;
+        let arr = [];
+        let key = 0;
+        for (let x in countries) {
+            if (countries.hasOwnProperty(x)) {
+                arr.push({key , value: x, text: x});
+                key++;
+            }
+        }
+        this.setState({
+            countriesList: arr
+        });
+    }
+
+    getCities = (country: string) => {
+        let countries = require('../../data/countries.json').countries;
+        let cities = countries[country];
+        let arr = [];
+        let key = 0;
+        for (let x in cities) {
+            if (cities.hasOwnProperty(x)) {
+                arr.push({key , value: cities[x], text: cities[x]});
+                key++;
+            }
+        }
+        this.setState({
+            citiesList: arr
+        });
+    }
 
     onSubmit = (e: any) => {
         e.preventDefault();
@@ -67,8 +125,8 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
     validate = (data: SignupFormState['data']) => {
         const errors: any = {};
         if (!data.username) { errors.username = 'You have to enter your username !'; }
-        if (!data.country) { errors.country = 'You have to enter a country !'; }
-        if (!data.city) { errors.city = 'You have to enter your city !'; }
+        if (!data.country) { errors.country = 'You have to select a country !'; }
+        if (!data.city) { errors.city = 'You have to select your city !'; }
         // TODO : Add more validation (strlen, complex password,...)
         return errors;
     }
@@ -76,10 +134,10 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
     render() {
 
         const {data, errors, loading} = this.state;
-
+        // console.log(this.state.countriesList);
         return (
             <div>
-            <h1>You are : {this.props.data.gender}</h1>
+            <h1 style={{color: 'white'}}>You are : {this.props.data.gender} and {this.props.data.orientation}</h1>
             
             <Form onSubmit={this.onSubmit} loading={loading}>
                 {errors.global && <Danger title="Global error" text="Something went wrong" />}    
@@ -96,25 +154,23 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
                     </Form.Field>
                     <Form.Field error={!!errors.country}>                              
                     <label htmlFor="country">Your country :</label>
-                    <input
-                        type="country"
-                        id="country"
-                        name="country"
-                        placeholder="example@example.com"
+                    <Form.Select
+                        placeholder="Your country"
+                        selection
                         value={data.country}
-                        onChange={this.onChange}
+                        options={this.state.countriesList}
+                        onChange={this.onSelectCountry}
                     />
                     {errors.country && <Danger title="Country" text={errors.country} />}                    
                     </Form.Field>
                     <Form.Field error={!!errors.city}>
                     <label htmlFor="city">Your city :</label>
-                    <input
-                        type="city"
-                        id="city"
-                        name="city"
-                        placeholder="New York"
-                        value={data.city}
-                        onChange={this.onChange}
+                    <Form.Select
+                        placeholder="Your cities"
+                        selection
+                        value={data.city}                        
+                        options={this.state.citiesList}
+                        onChange={this.onSelectCities}
                     />
                     {errors.city && <Danger title="city" text={errors.city} />}
                     </Form.Field>

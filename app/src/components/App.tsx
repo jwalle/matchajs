@@ -1,20 +1,30 @@
 import * as React from 'react';
 import NavigationBar from './navigationBar/navigation';
-require('./app.css');
+import { connect } from 'react-redux';
+import SignupPage from './SignupPage';
+// let backGround = require('../../public/images/signupBackground.jpeg');
+require('./App.css');
 
-interface Props {
+interface AppProps {
   children: any;
+  isAuth: boolean;  
 }
 
-export default class App extends React.Component<Props, {}> {
+class App extends React.Component<AppProps, {}> {
+  constructor(props: any) {
+    super(props);    
+  }
 
   render() {
+    let isAuth = this.props.isAuth;
+    let style = isAuth ? 'user-container' : 'guest-container';
+
     return (
       <div id="ui container">
-        <NavigationBar isAuth />
-        <div id="main-container">
-        <div id="central-container">
-          {this.props.children}
+      {isAuth ? <NavigationBar /> : ''}
+        <div className={style + ' main-container'}>
+          <div id="central-container">
+            {this.props.children}
           </div>
         </div>
         <footer className="footer">&copy; 2017 - jwalle</footer>
@@ -22,3 +32,11 @@ export default class App extends React.Component<Props, {}> {
     );
   }
 }
+
+function mapStateToProps(state: any) {
+  return {
+      isAuth: !!state.user.token
+  };
+}
+
+export default connect<any, any>(mapStateToProps, {})(App);

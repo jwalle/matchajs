@@ -1,9 +1,23 @@
-#main-container {
-    background-color: blue;
-    min-height: 700px;
-}
-
 #central-container {
     min-width: 800px;
 }
 
+.top_signup_right {
+    top: 0;
+}
+
+#logo {
+    left: 0;
+    position: absolute;
+    padding: 12px;
+}
+
+.navGuestLogin {
+    border: 1px solid;
+    padding: 12px;
+    border-radius: 4px;
+}
+
+.top_signup_right p {
+    color: wheat;
+}
