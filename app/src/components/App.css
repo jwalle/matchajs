@@ -19,9 +19,10 @@ body {
 
 .main-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 900px 1fr;
+  grid-template-rows: 200px auto 100px;
 }
-    
+
 .guest-container {
   background-image: url('../../public/images/signupBackground.jpeg');
   background-size: cover;

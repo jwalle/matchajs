@@ -12,7 +12,7 @@ var basePath = __dirname;
 
 module.exports = {
   watchOptions : {
-    poll: 1000,
+    poll: 300,
     aggregateTimeout: 300
   },
   resolve: {

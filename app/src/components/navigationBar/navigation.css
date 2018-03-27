@@ -24,6 +24,7 @@ a {
 }
 
 #navigation {
+    z-index: 9999;
     height: 66px;
     background: #104da1;
     top: 0;

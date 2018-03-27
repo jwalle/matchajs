@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { Form, FormGroup, Button, Dropdown } from 'semantic-ui-react';
+import { Form, FormGroup, Button, Dropdown, Container } from 'semantic-ui-react';
 import * as Validator from 'validator';
 import Danger from '../messages/Message';
+import FormDate from './SignupFormDate';
+import * as Moment from 'moment';
 
 export interface SignupFormProps {
     setStep: Function;
@@ -15,7 +17,8 @@ export interface SignupFormState {
     data: {
         username: string,
         country: string,
-        city: string
+        city: string,
+        birthday: Moment.Moment;
     };
     loading: boolean;
     errors: {
@@ -23,6 +26,7 @@ export interface SignupFormState {
         username: string,
         country: string;
         city: string;
+        birthday: string;
     };
 }
 
@@ -41,7 +45,8 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
                 username: '',
                 country : '',
                 city: '',
-                global: ''                
+                global: '',
+                birthday: ''             
             }
         };
     }
@@ -65,6 +70,15 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
             data: {
                 ...this.state.data,
                 city: value
+            }
+        });
+    }
+
+    onSelectBirthday = (birthday: any) =>  {
+        this.setState({
+            data: {
+                ...this.state.data,
+                birthday
             }
         });
     }
@@ -122,11 +136,23 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
         this.props.setStep('intro');
     }
 
+    isMajor = () => {
+        let age = parseInt(Moment(this.state.data.birthday, 'YYYY-MM-DD h:mm:ss').fromNow(), 10);        
+        console.log('age = ', age);
+        if (age >= 18) {
+            return 1;
+        }
+        return 0;
+    }
+
     validate = (data: SignupFormState['data']) => {
         const errors: any = {};
         if (!data.username) { errors.username = 'You have to enter your username !'; }
         if (!data.country) { errors.country = 'You have to select a country !'; }
         if (!data.city) { errors.city = 'You have to select your city !'; }
+        if (!data.birthday) { errors.birthday = 'You have to enter your birthday !'; }
+        if (!data.birthday.isValid) { errors.birthday = 'You have to enter a valid date !'; }
+        if (!this.isMajor()) { errors.birthday = 'You have to be major to signup !'; }
         // TODO : Add more validation (strlen, complex password,...)
         return errors;
     }
@@ -136,7 +162,7 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
         const {data, errors, loading} = this.state;
         // console.log(this.state.countriesList);
         return (
-            <div>
+            <Container>
             <h1 style={{color: 'white'}}>You are : {this.props.data.gender} and {this.props.data.orientation}</h1>
             
             <Form onSubmit={this.onSubmit} loading={loading}>
@@ -152,23 +178,30 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
                     />
                     {errors.username && <Danger title="Username" text={errors.username} />}
                     </Form.Field>
+                    <label htmlFor="country">Your country :</label>                    
+                    <Form.Field error={!!errors.country}>
+                    {errors.birthday && <Danger title="Birtday" text={errors.birthday} />}
+                    <FormDate submitDate={this.onSelectBirthday}/>
+                    {errors.username && <Danger title="Username" text={errors.username} />}
+                    </Form.Field>                    
                     <Form.Field error={!!errors.country}>                              
                     <label htmlFor="country">Your country :</label>
                     <Form.Select
-                        placeholder="Your country"
+                        placeholder="Select your country"
                         selection
                         value={data.country}
                         options={this.state.countriesList}
                         onChange={this.onSelectCountry}
                     />
-                    {errors.country && <Danger title="Country" text={errors.country} />}                    
+                    {errors.country && <Danger title="Country" text={errors.country} />}
                     </Form.Field>
                     <Form.Field error={!!errors.city}>
                     <label htmlFor="city">Your city :</label>
                     <Form.Select
-                        placeholder="Your cities"
+                        placeholder="Select your cities"
                         selection
-                        value={data.city}                        
+                        // {...!!this.state.citiesList ? 'disabled' : ''}
+                        value={data.city}
                         options={this.state.citiesList}
                         onChange={this.onSelectCities}
                     />
@@ -177,7 +210,7 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
                 <Button primary onClick={this.onPrevious}>Back</Button>
                 <Button primary>Next</Button>
             </Form>
-            </div>
+            </Container>
         );
     }
 }

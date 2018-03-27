@@ -32,7 +32,7 @@ class userServices {
 
     public selectRequest(sql : string, data : string[]|number[]) : Promise<object> {
         return new Promise(function (resolve, reject) {
-        console.log('COUCOUCOUCOU' , data);        
+            console.log('COUCOUCOUCOU' , data, sql);
             db.connection.query(sql, data, function (err, result) {
                 if (err) reject(err);
                 resolve(result);

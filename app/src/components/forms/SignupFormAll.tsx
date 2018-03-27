@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Form, FormGroup, Button } from 'semantic-ui-react';
+import * as moment from 'moment';
 import * as Validator from 'validator';
 import Danger from '../messages/Message';
 import { signup } from '../../actions/auth';
@@ -18,7 +19,8 @@ export interface SignupFormState {
         country: string,
         city: string,
         gender: string,
-        orientation: string,        
+        orientation: string,  
+        birthday: moment.Moment,      
         username: string,
         email: string,
         password: string,
@@ -36,6 +38,7 @@ export default class SignupFormAll extends React.Component < SignupFormProps, Si
             data: {
                 gender: 'F',
                 orientation: 'S',
+                birthday: moment('1987-01-19'), // TODO: should this be null ?
                 country: '',
                 city: '',
                 username: '',
@@ -50,14 +53,6 @@ export default class SignupFormAll extends React.Component < SignupFormProps, Si
     updateData = (data: any) => this.setState({
         data
     })
-
-    onChange = (e: any) => { this.setState({
-        data: {
-            ...this.state.data,
-            [e.target.name]: e.target.value
-        }  
-    });
-}
 
     setStep = (currentStep: string) => {
         this.setState({ currentStep });

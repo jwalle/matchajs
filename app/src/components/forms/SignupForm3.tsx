@@ -13,13 +13,15 @@ export interface SignupFormState3 {
     data: {
         email: string,
         password: string,
-        passwordVerif: string
+        passwordVerif: string,
     };
     loading: boolean;
+    term: boolean;
     errors: {
         email: string;
         password: string;
         global: string;
+        term: string;
     };
 }
 
@@ -32,9 +34,11 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
                 ...this.props.data
             },
             loading: false,
+            term: false,
             errors: {
                 email: '',
                 password: '',
+                term: '',
                 global: ''                
             }
         };
@@ -62,12 +66,19 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
         this.props.setStep('detail');
     }
 
+    onChangeTerm = () => {
+        this.setState({ term: !!this.state.term });
+        console.log('term = ', this.state.term);
+    }
+
     validate = (data: SignupFormState3['data']) => {
         const errors: any = {};
         if (!Validator.isEmail(data.email)) { errors.email = 'invalid email'; }
         if (!data.password) { errors.password = 'You have to enter a password'; }
         if (!data.passwordVerif) { errors.password = 'You have to re-enter your password'; }
         if (data.password !== data.passwordVerif) {errors.password = 'the verification password is different'; }
+        // if (!this.state.term) {errors.term = 'You must accept the Terms !!'; }
+
         // TODO : Add more validation (strlen, complex password,...)
         return errors;
     }
@@ -75,7 +86,6 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
     render() {
 
         const {data, errors, loading} = this.state;
-
         return (
             <div>
             <h1 style={{color: 'white'}}>You are : {this.props.data.gender} and {this.props.data.orientation}</h1>
@@ -95,7 +105,7 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
                     />
                     {errors.email && <Danger title="Email" text={errors.email} />}
                     </Form.Field>       
-                    <Form.Field error={!!errors.password}>                              
+                    <Form.Field error={!!errors.password}>
                     <input
                         type="password"
                         id="password"
@@ -105,7 +115,7 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
                         onChange={this.onChange}
                     />
                     </Form.Field>
-                    <Form.Field error={!!errors.password}>                              
+                    <Form.Field error={!!errors.password}>
                     <input
                         type="password"
                         id="passwordVerif"
@@ -114,9 +124,14 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
                         value={data.passwordVerif}
                         onChange={this.onChange}
                     />
-                    {errors.password && <Danger title="Password" text={errors.password} />}                        
+                    {errors.password && <Danger title="Password" text={errors.password} />} 
                     </Form.Field>
-                <Button primary onClick={this.onPrevious}>Back</Button>                    
+                    {errors.term && <Danger title="term" text={errors.term} />}                     
+                    <Form.Checkbox
+                        label="I agree to the Terms and Conditions" 
+                        onChange={this.onChangeTerm}
+                    />
+                <Button primary onClick={this.onPrevious}>Back</Button>
                 <Button primary>Login</Button>
             </Form>
             </div>            

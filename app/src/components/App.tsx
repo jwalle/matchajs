@@ -22,10 +22,8 @@ class App extends React.Component<AppProps, {}> {
     return (
       <div id="ui container">
       {isAuth ? <NavigationBar /> : ''}
-        <div className={style + ' main-container'}>
-          <div id="central-container">
-            {this.props.children}
-          </div>
+        <div className={style}>
+          {this.props.children}
         </div>
         <footer className="footer">&copy; 2017 - jwalle</footer>
       </div>

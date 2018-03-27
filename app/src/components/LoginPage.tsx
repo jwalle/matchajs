@@ -18,6 +18,7 @@ class LoginPage extends React.Component<LoginPageProps, {}> {
     submit = (data: any) => this.props.login(data).then(() => this.props.history.push('/dashboard'));
 
     render() {
+        console.log('YOU ARE HERE !');
         return (
             <div>
                 <h1>Hi LginPage</h1>
