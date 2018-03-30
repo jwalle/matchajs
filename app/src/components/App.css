@@ -20,7 +20,7 @@ body {
 .main-container {
   display: grid;
   grid-template-columns: 1fr 900px 1fr;
-  grid-template-rows: 200px auto 100px;
+  grid-template-rows: 160px auto 100px;
 }
 
 .guest-container {

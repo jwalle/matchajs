@@ -1,3 +1,7 @@
+.flex {
+    display: flex;
+}
+
 #topUserPage {
     grid-column: 1/4;
     grid-row: 1/2;
@@ -61,12 +65,13 @@
     float: right;
     padding-top: 20px;
     width: 350px;
+    height: 400px;
 }
 
 #textOne {
     grid-column: 1/2;
     padding-top: 40px;
-    width: 540px;
+    width: 500px;
 }
 
 #textOne p {
@@ -90,3 +95,25 @@
 #interestsIcon {
     float: left;
 }
+
+.mightLikeUser {
+    float: left;
+    position: relative;
+}
+
+.mightLikeUserImage {
+    height: 100px;
+    position: relative;
+    display: block;
+    padding: 13px 18px 0;
+}
+
+.mightLikeUserImage .mightLikeUserThumb {
+    display: block;
+    border-radius: 40px;
+    overflow: hidden;
+    width: 75px;
+    height: 75px;
+    position: relative;
+}
+

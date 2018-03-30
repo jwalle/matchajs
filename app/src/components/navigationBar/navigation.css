@@ -108,3 +108,24 @@ a {
     position: relative;
 }
 
+.navUser {
+    float: left;
+    position: relative;
+}
+
+.navUserImage {
+    height: 60px;
+    position: relative;
+    display: block;
+    padding: 13px 12px 0;
+}
+
+.navUserImage .navUserThumb {
+    display: block;
+    border-radius: 20px;
+    overflow: hidden;
+    width: 40px;
+    height: 40px;
+    position: relative;
+}
+

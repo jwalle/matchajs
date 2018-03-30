@@ -2,13 +2,19 @@ import * as React from 'react';
 import axios from 'axios';
 import * as moment from 'moment';
 import UserCard from './userCard';
-import { Divider, Icon, Button, Image, Container } from 'semantic-ui-react';
+import GoogleMap from './GoogleMap';
+import GoogleMapReact from 'google-map-react';
+import { Flag, Divider, Icon, Button, Image, Container, Dropdown } from 'semantic-ui-react';
+
 require('./userPage.css');
-let googleMap = require('../../public/images/googleMap.png');
+// let googleMap = require('../../public/images/googleMap.png');
+declare var Promise: any;
+
 // const localeIp = "http://localhost/api";
 // const localeIp = "http://192.168.99.100/api";
 // const localeIp = "http://192.168.99.100/api";
 const localeIp = '/api';
+const GOOGLE_API = 'https://maps.google.com/maps/api/geocode/json';
 
 export interface UserPageProps {
     params: any;
@@ -19,6 +25,11 @@ export interface UserPageState {
     user: any;
     picture: any;
     age: any;
+    center: {
+        lat: any,
+        lng: any,
+    };
+    zoom: any;
 }
 
 export default class UserPage extends React.Component<UserPageProps, UserPageState> {
@@ -28,17 +39,35 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
         this.getUser = this.getUser.bind(this);
         this.getAge = this.getAge.bind(this);
         this.getProfilePhoto = this.getProfilePhoto.bind(this);
+        this.fromAddress = this.fromAddress.bind(this);
 
         this.state = {
             user: [],
             picture: [],
-            age: 1
+            age: 1,
+            center: {
+                lat: 40.7446790,
+                lng: -73.9485420
+            },
+            zoom: 10
         };
     }
 
     componentWillMount() {
         this.getUser();
-        console.log('COUCOU');
+    }
+
+    fromAddress() {
+        let address = this.state.user.country + ', ' + this.state.user.city;
+        let url = `${GOOGLE_API}?address=${encodeURI(address)}`;
+        axios({
+            method: 'get',
+            url: url,
+            responseType: 'json'
+        }).then((res: any) => {
+            const { lat, lng } = res.data.results[0].geometry.location;
+            this.setState({center: {lat, lng}});
+        });
     }
 
     getAge() {
@@ -75,12 +104,38 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
             })
             .then(this.getProfilePhoto)
             .then(this.getAge)
+            .then(this.fromAddress)
             .catch(err => console.log('error axios user :', err));
     }
 
     render() {
         const user = this.state.user;
+        const flag = user.nat;
         const picture = this.state.picture;
+        const trigger = (
+            <Icon.Group size="big">
+                <Icon color="grey" name="user" />
+                <Icon size="large" color="blue" name="dont" />
+            </Icon.Group>
+          );
+
+        const blockOptions = [
+            { key: 'block', text: 'Block', icon: 'user' },
+            { key: 'blockAndReport', text: 'Block and Report', icon: 'settings' },
+        ];
+
+        const orientation = () => {
+            if (user.orientation === 's') {
+                return('Straight');
+            }
+            if (user.orientation === 'g') {
+                return('Gay');
+            }
+            if (user.orientation === 'b') {
+                return('Bi');
+            }
+        };
+
         return (
             <div className="main-container">
                 <div id="topUserPage" />
@@ -91,22 +146,30 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                          alt="Profil picture"
                         />
                     </div>
-                    <div id="topInfo">    
-                        <p>{this.state.age} - {user.gender === 'male' ? 'M' : 'F'} - {user.city}</p>
+                    <div id="topInfo">
+                        <Container id="login">
+                            <h2>{user.login}<Icon name="circle" color="green" /></h2>
+                            {/* <Icon name="circle notched" color="grey"/> */}{/* TODO: isConnected or not*/} 
+                        </ Container>
+                        <h3>
+                            <Flag name={user.nat} />
+                            {this.state.age} - {user.gender === 'male' ? 'M' : 'F'}
+                        </h3>
                         <p>{user.city}, {user.country}</p>
                     </div>
                     <div className="topIcons">
+                        <Icon
+                            name="comments"
+                            size="big"
+                            color="blue"
+                        />
                         <Icon 
                             name="like"
-                            toggle 
-                            size="huge"
+                            size="big"
                             className="likeButton"
                             color="grey"
                         />
-                        <Icon.Group size="huge">
-                            <Icon color="grey" name="user" />
-                            <Icon size="large" color="blue" name="dont" />
-                        </Icon.Group>
+                        <Dropdown trigger={trigger} options={blockOptions} pointing="top left" icon={null} />
                     </div>
                 </div>
                 <div id="middleUserPage" />
@@ -114,38 +177,95 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                    <Container id="texts">
                     <div id="textOne">
                             <h3>Who I am</h3>
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cupiditate modi quisquam eum corporis, voluptate neque? Aliquid eum voluptatem commodi temporibus. Repellat similique modi praesentium omnis ad temporibus, sed, illum voluptates animi iusto hic unde? Fugiat, suscipit ex! Iste doloremque laborum maxime perferendis deleniti architecto iure soluta assumenda. Fugit, sed quas modi unde facere eum minima deserunt earum suscipit blanditiis laborum soluta ad cumque similique repellat, vitae sequi aut quibusdam exercitationem? Vero tenetur nesciunt aspernatur saepe quo corporis cum fuga maiores eveniet accusantium dignissimos, quia deleniti inventore, consequatur repellendus voluptates ipsa porro quasi numquam dolores quaerat neque quisquam obcaecati! Saepe, quasi.</p>
+                            <p>{user.text1}</p>                            
                         </div>
                         <div id="textOne">
-                            <h3>What I like doing</h3>                
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cupiditate modi quisquam eum corporis, voluptate neque? Aliquid eum voluptatem commodi temporibus. Repellat similique modi praesentium omnis ad temporibus, sed, illum voluptates animi iusto hic unde? Fugiat, suscipit ex! Iste doloremque laborum maxime perferendis deleniti architecto iure soluta assumenda. Fugit, sed quas modi unde facere eum minima deserunt earum suscipit blanditiis laborum soluta ad cumque similique repellat, vitae sequi aut quibusdam exercitationem? Vero tenetur nesciunt aspernatur saepe quo corporis cum fuga maiores eveniet accusantium dignissimos, quia deleniti inventore, consequatur repellendus voluptates ipsa porro quasi numquam dolores quaerat neque quisquam obcaecati! Saepe, quasi.</p>
+                            <h3>What I like doing</h3>
+                            <p>{user.text2}</p>
                         </div>
                         <div id="textOne">
                             <h3>What I am looking for</h3>
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cupiditate modi quisquam eum corporis, voluptate neque? Aliquid eum voluptatem commodi temporibus. Repellat similique modi praesentium omnis ad temporibus, sed, illum voluptates animi iusto hic unde? Fugiat, suscipit ex! Iste doloremque laborum maxime perferendis deleniti architecto iure soluta assumenda. Fugit, sed quas modi unde facere eum minima deserunt earum suscipit blanditiis laborum soluta ad cumque similique repellat, vitae sequi aut quibusdam exercitationem? Vero tenetur nesciunt aspernatur saepe quo corporis cum fuga maiores eveniet accusantium dignissimos, quia deleniti inventore, consequatur repellendus voluptates ipsa porro quasi numquam dolores quaerat neque quisquam obcaecati! Saepe, quasi.</p>
+                            <p>{user.text3}</p>                            
                         </div>
                     </Container>
                     <Container id="rightMiddleContainer">
-                        <div id="googleMapContainer">
-                            <Image  
-                                src={googleMap}
-                                alt="googleMap picture"
-                            />
-                        </div>
-                        <Divider />                        
+                        <GoogleMap center={this.state.center} zoom={this.state.zoom}/>
                         <Container id="interests">
-                            <Icon size="big" id="interestsIcon" color="grey" name="reddit alien"/>
-                            <p>Foot, Computer, Science, Video Games, Music, ...</p> 
+                            <div className="flex">
+                                <p>Size : {user.size} cm</p> 
+                                <p>Has kids : {user.kids ? 'Yes' : 'No'}</p> 
+                                <p>Orientation : {orientation()}</p> 
+                            </ div>
                         </ Container>
                         <Divider />
                         <Container id="interests">
                             <Icon size="big" id="interestsIcon" color="grey" name="reddit alien"/>
                             <p>Foot, Computer, Science, Video Games, Music, ...</p> 
                         </ Container>
+                        <Divider />
+                        <Container id="interests">
+                            <Icon size="big" id="interestsIcon" color="grey" name="world"/>
+                            <Container>
+                                <p>Ethnicity : {user.ethnicity}</p> 
+                                <p>Religion : {user.religion}</p> 
+                                <p>Status : {user.status}</p>
+                            </ Container>
+                        </ Container>
                         <Divider />                        
                         <Container id="interests">
-                            <Icon size="big" id="interestsIcon" color="grey" name="reddit alien"/>
-                            <p>Foot, Computer, Science, Video Games, Music, ...</p> 
+                            <Icon size="big" id="interestsIcon" color="grey" name="bar"/>
+                            <Container>
+                                <p>Smoke : {user.smoke}</p>
+                                <p>Drink : {user.drink}</p>
+                                <p>Drugs : {user.drugs}</p>
+                                <p>Diet : {user.diet}</p>
+                            </ Container>
+                        </ Container>
+                        <Divider />
+                        <h2>You might like :</h2>
+                        <Container id="mightLike">
+                            <div className="mightLikeUser">
+                                <a href="/profile   " className="mightLikeUserImage">
+                                    <span className="mightLikeUserThumb">
+                                        <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
+                                    </span>
+                                </a>
+                            </div>
+                            <div className="mightLikeUser">
+                                <a href="/profile" className="mightLikeUserImage">
+                                    <span className="mightLikeUserThumb">
+                                        <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
+                                    </span>
+                                </a>
+                            </div>
+                            <div className="mightLikeUser">
+                                <a href="/profile" className="mightLikeUserImage">
+                                    <span className="mightLikeUserThumb">
+                                        <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
+                                    </span>
+                                </a>
+                            </div>
+                            <div className="mightLikeUser">
+                                <a href="/profile" className="mightLikeUserImage">
+                                    <span className="mightLikeUserThumb">
+                                        <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
+                                    </span>
+                                </a>
+                            </div>
+                            <div className="mightLikeUser">
+                                <a href="/profile" className="mightLikeUserImage">
+                                    <span className="mightLikeUserThumb">
+                                        <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
+                                    </span>
+                                </a>
+                            </div>
+                            <div className="mightLikeUser">
+                                <a href="/profile" className="mightLikeUserImage">
+                                    <span className="mightLikeUserThumb">
+                                        <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
+                                    </span>
+                                </a>
+                            </div>
                         </ Container>
                     </ Container>
                 </div>

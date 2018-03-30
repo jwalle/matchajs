@@ -1,5 +1,8 @@
 import * as Download from 'download-file';
 import * as jwt from "jsonwebtoken";
+import * as randomstring from "randomstring";
+import * as loremIpsum from "lorem-ipsum";
+const countriesJSON = require('../../data/countries.json');
 
 let db = require('../db');
 
@@ -88,20 +91,63 @@ class userServices {
         ];
         return (this.selectRequest(sql, values)); //.insertId; 
     };
-
+    
     insertNewUser(user) : Promise<object>  {
-        let sql = "INSERT INTO users (login, password, email, gender, firstname, lastname, dob, registered, city, nat) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        let sql = "INSERT INTO users (\
+            login,\
+            password,\
+            email,\
+            gender,\
+            orientation,\
+            dob,\
+            registered,\
+            city,\
+            country,\
+            nat,\
+            isconnected,\
+            confirmed,\
+            lastseen,\
+            text1,\
+            text2,\
+            text3,\
+            size,\
+            ethnicity,\
+            religion,\
+            status,\
+            smoke,\
+            drink,\
+            drugs,\
+            sign,\
+            diet,\
+            kids\
+        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         let values = [
             user.login.username,
             user.login.password,
             user.email,
             user.gender[0],
-            user.name.first,
-            user.name.last,
+            randomstring.generate({length: 1, charset:'sbg'}), // orientation
             user.dob,
             user.registered,
-            user.location.city,
-            user.nat
+            city,
+            country, // ???
+            user.nat.toLowerCase(),
+            Math.random() >= 0.5, // Boolean random
+            1,
+            randomDate(user.registered),
+            loremIpsum({count: getRandomInt(1, 10)}),
+            loremIpsum({count: getRandomInt(1, 10)}),
+            loremIpsum({count: getRandomInt(1, 10)}),
+            getRandomInt(150, 200),
+            ethnicity.randomElement(),
+            religion.randomElement(),
+            status.randomElement(),
+            smoke.randomElement(),
+            drink.randomElement(),
+            drugs.randomElement(),
+            sign.randomElement(),
+            diet.randomElement(),
+            Math.random() >= 0.5 // Boolean random
         ];
         return (this.selectRequest(sql, values)); //.insertId; 
     };
@@ -119,3 +165,73 @@ class userServices {
 
 }
 export default new userServices();
+
+// const city = getCities(country[0]).randomElement;
+
+const ethnicity = ['Asian', 'Indian', 'White', 'Black', 'Hispanic', 'Other'];
+const religion = ['Atheism', 'Christianity', 'Judaism', 'Islam', 'Other'];
+const status = ['Single', 'Seeing Someone', 'Married', 'Open Relationship'];
+const smoke = ['Yes', 'No', 'Sometimes'];
+const drink = ['Yes', 'No', 'Sometimes'];
+const drugs = ['Yes', 'No', 'Sometimes'];
+const sign = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'gemini', 'Cancer', 'leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
+const diet = ['Omnivore', 'Vegetarian', 'Vegan'];
+
+declare global {
+    interface Array<T> {
+        randomElement(): T;
+    }
+
+    interface Object  {
+        RandomElement(): string;
+    }
+}
+
+Array.prototype.randomElement = function () {
+    return this[Math.floor(Math.random() * this.length)]
+};
+
+Object.prototype.RandomElement = function () {
+    return this[Math.floor(Math.random() * this.length)]
+};
+
+function getCountries(): string[] {
+    let countries = countriesJSON.countries;
+    let arr: string[] = new Array;
+    for (let x in countries) {
+        if (countries.hasOwnProperty(x)) {
+            arr.push(x);
+        }
+    }
+    return arr;
+}
+
+function getCities(country: string): Array<string> {
+    let countries = countriesJSON.countries;
+    let cities = countries[country];
+    let arr = [];
+    for (let x in cities) {
+        if (cities.hasOwnProperty(x)) {
+            arr.push(cities[x]);
+        }
+    }
+    return arr;
+}
+
+const countries = getCountries();
+const country = countries.randomElement();
+const cities = getCities(country);
+const city = cities.randomElement();
+
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
+function randomDate(startString) {
+    let end = new Date();
+    let start = new Date(startString);
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
