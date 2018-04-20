@@ -47,8 +47,26 @@ export class UserRouter {
                     message: 'no photo found whit this id.',
                     status: res.status
                 });
+            }
+        })
+    }
+
+    public mightLike(req: Request, res: Response, next: NextFunction) {
+        let query = parseInt(req.params.id, 10);
+        userServices.getUserMightLikeUsers(query).then((users) =>{
+        if (users) {
+            console.log(users)
+            res.status(200)
+                .send(users);
         }
-    })
+        else {
+            res.status(404)
+                .send({
+                    message: 'no users corresponding found.', // TODO: better msg
+                    status: res.status
+                });
+            }
+        })
     }
 
     public getUser(req: Request, res: Response, next: NextFunction) {
@@ -122,6 +140,7 @@ export class UserRouter {
         this.router.get('/makeUser', this.makeOneUser.bind(this));
         this.router.get('/getProfilePhoto/:id', this.getUserProfilePhoto);
         this.router.get('/getUser/:id', this.getUser);
+        this.router.post('/getMightLike/:id', this.mightLike);
         this.router.post('/auth', this.auth);
         this.router.post('/signup', this.signup);
     }

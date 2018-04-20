@@ -15,6 +15,7 @@ declare var Promise: any;
 // const localeIp = "http://192.168.99.100/api";
 const localeIp = '/api';
 const GOOGLE_API = 'https://maps.google.com/maps/api/geocode/json';
+const GEOCODE_API_KEY = 'AIzaSyCNJVMNhLakYTPWaGuCmRjs9nX83f41d9k';
 
 export interface UserPageProps {
     params: any;
@@ -25,6 +26,7 @@ export interface UserPageState {
     user: any;
     picture: any;
     age: any;
+    mightLike: any;
     center: {
         lat: any,
         lng: any,
@@ -37,6 +39,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
         super(props);
 
         this.getUser = this.getUser.bind(this);
+        this.getMightLikeUsers = this.getMightLikeUsers.bind(this);
         this.getAge = this.getAge.bind(this);
         this.getProfilePhoto = this.getProfilePhoto.bind(this);
         this.fromAddress = this.fromAddress.bind(this);
@@ -45,6 +48,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
             user: [],
             picture: [],
             age: 1,
+            mightLike: [],
             center: {
                 lat: 40.7446790,
                 lng: -73.9485420
@@ -59,12 +63,13 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
 
     fromAddress() {
         let address = this.state.user.country + ', ' + this.state.user.city;
-        let url = `${GOOGLE_API}?address=${encodeURI(address)}`;
+        let url = `${GOOGLE_API}?address=${encodeURI(address)}&key=${GEOCODE_API_KEY}`;
         axios({
             method: 'get',
             url: url,
             responseType: 'json'
         }).then((res: any) => {
+            console.log(res);
             const { lat, lng } = res.data.results[0].geometry.location;
             this.setState({center: {lat, lng}});
         });
@@ -74,6 +79,22 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
         let age = parseInt(moment(this.state.user.dob, 'YYYY-MM-DD h:mm:ss').fromNow(), 10);
         this.setState({ age });
     }   
+
+    getMightLikeUsers() {
+        let self = this;
+        axios({
+            method: 'post',
+            url: localeIp + '/getMightLike/' + self.state.user.id,
+            responseType: 'json'
+        })
+            .then(res => {
+                console.log(res);
+                self.setState({
+                    mightLike: res.data, // plop
+                });
+            })
+            .catch(err => console.log('error axios mightLikeUSERS :', err));
+    }
 
     getProfilePhoto() {
         let self = this;
@@ -104,6 +125,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
             })
             .then(this.getProfilePhoto)
             .then(this.getAge)
+            .then(this.getMightLikeUsers)
             .then(this.fromAddress)
             .catch(err => console.log('error axios user :', err));
     }

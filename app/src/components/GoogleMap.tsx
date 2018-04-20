@@ -12,14 +12,14 @@ export interface GoogleMapProps {
 }
 
 export default class GoogleMap extends React.Component<GoogleMapProps, {}> {
+
   render() {
-    console.log(this.props.center);
     return (
         <div id="googleMapContainer">
             <GoogleMapReact
                 center={this.props.center}
                 defaultZoom={this.props.zoom}
-                bootstrapURLKeys={{ key: 'here' }}
+                bootstrapURLKeys={{ key: 'AIzaSyCkdJC3FA49muGZoDrrMhaFtx26yAlkYIg' }}
             >
                 <AnyReactComponent
                     lat={40.7473310}

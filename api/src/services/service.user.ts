@@ -54,6 +54,11 @@ class userServices {
         return (this.selectRequest(sql, login))
     }
 
+    public getUserMightLikeUsers(userId) {
+        let sql = "SELECT * FROM users WHERE id!=? ORDER BY RAND() LIMIT 6";
+        return (this.selectRequest(sql, [userId]))
+    }
+
     public getUserProfilePhoto(userId) {
         let sql = "SELECT link FROM photos WHERE idUser=? AND isProfil=?"; //isProfile
         return (this.selectRequest(sql, [userId, 1]))
