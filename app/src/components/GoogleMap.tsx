@@ -3,6 +3,8 @@ import GoogleMapReact from 'google-map-react';
 
 const AnyReactComponent = ({ text }: any) => <div>{text}</div>;
 
+export const GOOGLE_MAP_API = 'AIzaSyBah4ewvWs7mNaM9QaEuc_JwnvrnCCsZ5M';
+
 export interface GoogleMapProps {
     center: {
         lat: number,
@@ -14,16 +16,18 @@ export interface GoogleMapProps {
 export default class GoogleMap extends React.Component<GoogleMapProps, {}> {
 
   render() {
+    const center = this.props.center;
+    console.log('KEY: ', process.env.GOOGLE_MAP_API);
     return (
         <div id="googleMapContainer">
             <GoogleMapReact
-                center={this.props.center}
+                center={center}
                 defaultZoom={this.props.zoom}
-                bootstrapURLKeys={{ key: 'AIzaSyCkdJC3FA49muGZoDrrMhaFtx26yAlkYIg' }}
+                bootstrapURLKeys={{ key: GOOGLE_MAP_API }}
             >
                 <AnyReactComponent
-                    lat={40.7473310}
-                    lng={-73.8517440}
+                    lat={center.lat}
+                    lng={center.lng}
                     text={`Where's Waldo?`}
                 />
             </ GoogleMapReact>

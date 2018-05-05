@@ -7,21 +7,20 @@ import FormLocation from './FormLocation';
 import * as Moment from 'moment';
 import * as formTypes from './formTypes'; 
 
-export interface SignupFormProps {
-    setStep?: Function;
-    updateData: Function;
+export interface UpdateUserInfoFormProps {
+    submit: Function;
     data: formTypes.UserData;
 }
 
-export interface SignupFormState {
+export interface UpdateUserInfoState {
     data: formTypes.UserData;
     birthdayMoment: Moment.Moment;  
     loading: boolean;
     errors: formTypes.ErrorsForm;
 }
 
-export default class SignupForm2 extends React.Component < SignupFormProps, SignupFormState > {
-    constructor(props: SignupFormProps) {
+export default class UpdateUserInfoForm extends React.Component < UpdateUserInfoFormProps, UpdateUserInfoState > {
+    constructor(props: UpdateUserInfoFormProps) {
         super(props);
 
         this.state = {
@@ -73,16 +72,7 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
         this.setState({ errors });
         if (Object.keys(errors).length === 0 ) {
             this.setState({loading: true});
-            this.props.updateData(this.state.data);
-            if (this.props.setStep) {
-                this.props.setStep('login');
-            }
-        }
-    }
-
-    onPrevious = () => {
-        if (this.props.setStep) {
-            this.props.setStep('intro');
+            this.props.submit(this.state.data);
         }
     }
 
@@ -109,10 +99,10 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
         return 0;
     }
 
-    validate = (data: SignupFormState['data']) => {
+    validate = (data: UpdateUserInfoState['data']) => {
         const errors: any = {};
-        if (!data.username) { errors.username = 'You have to enter your username !'; }
-        // TODO: Check il username taken        
+        if (!data.username) { errors.username = 'You username !'; }
+        // TODO: Check il username taken
         if (!data.country || !data.city) { errors.location = 'You have to select a place !'; }
         if (!data.birthday) { errors.birthday = 'You have to enter your birthday !'; }
         if (!this.state.birthdayMoment.isValid) { errors.birthday = 'You have to enter a valid date !'; }
@@ -126,26 +116,27 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
         const {data, errors, loading} = this.state;
         return (
             <Container>
-            <h1 style={{color: 'white'}}>You are : {this.props.data.gender} and {this.props.data.orientation}</h1>
-             <Form onSubmit={this.onSubmit} loading={loading}>
-                {errors.global && <Danger title="Global error" text="Something went wrong" />}    
-                <Form.Field error={!!errors.username}>
-                    <label htmlFor="username">Username :</label>
-                    <input
-                        id="username"
-                        name="username"
-                        placeholder="toto420"
-                        value={data.username}
-                        onChange={this.onChange}
-                    />
-                    {errors.username && <Danger title="Username" text={errors.username} />}
-                    </Form.Field>
-                    <FormDate data={data} errors={errors} submitDate={this.onSelectBirthday}/>
-                    <FormLocation data={data} errors={errors} updateLocation={this.onSelectLocation} />
-                <Button type="button" primary onClick={this.onPrevious}>Back</Button>
-                <Button primary>Next</Button>
-            </Form>
-            </Container>    
+                <h1 style={{color: 'white'}}>You are : {data.gender} and {data.orientation}</h1>
+                <h1>Change your information : </h1>
+                    <Form onSubmit={this.onSubmit} loading={loading}>
+                    {errors.global && <Danger title="Global error" text="Something went wrong" />}    
+                    <Form.Field error={!!errors.username}>
+                        <label htmlFor="username">Username :</label>
+                        <input
+                            id="username"
+                            name="username"
+                            placeholder="toto420"
+                            value={data.username}
+                            onChange={this.onChange}
+                        />
+                        {errors.username && <Danger title="Username" text={errors.username} />}
+                        </Form.Field>
+                        <FormDate data={data} errors={errors} submitDate={this.onSelectBirthday}/>
+                        <FormLocation data={data} errors={errors} updateLocation={this.onSelectLocation} />
+                    {/* <Button primary onClick={this.onPrevious}>Cancel</Button> */}
+                    <Button primary>Update</Button>
+                </Form>
+            </Container>
         );
     }
 }

@@ -9,6 +9,7 @@ import App from './components/App';
 import NotFoundPage from './components/NotFoundPage';
 import ContentPage from './components/ContentPage';
 import UserPage from './components/userPage';
+import ProfilePage from './components/ProfilePage';
 import LoginPage from './components/LoginPage';
 import SignupPage from './components/SignupPage';
 import DashboardPage from './components/dashboard';
@@ -22,9 +23,11 @@ export class AppRouter extends React.Component<{}> {
                         <Switch>
                             <Route exact path="/" component={ContentPage} />
                             <GuestRoute exact path="/login" component={LoginPage}/>
-                            <GuestRoute exact path="/signup" component={SignupPage}/>
+                            <Route exact path="/signup" component={SignupPage}/>
+                            {/* Signup should be guestRoute */}
                             <Route path="/user/:idUser" component={UserPage}/>
                             <UserRoute exact path="/dashboard" component={DashboardPage}/>
+                            <UserRoute exact path="/profile" component={ProfilePage}/>
                             <Route component={NotFoundPage} />
                         </Switch>
                     </App>

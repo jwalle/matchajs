@@ -2,18 +2,16 @@ import * as React from 'react';
 import { Form, FormGroup, Button } from 'semantic-ui-react';
 import * as Validator from 'validator';
 import Danger from '../messages/Message';
+import * as formTypes from './formTypes'; 
 
 export interface SignupFormProps {
     setStep: Function;
     updateData: Function;
-    data: any;
+    data: formTypes.UserData;
 }
 
 export interface SignupFormState {
-    data: {
-        gender: string;
-        orientation: string;
-    };
+    data: formTypes.UserData;
     loading: boolean;
 }
 
@@ -29,14 +27,14 @@ export default class SignupForm1 extends React.Component<SignupFormProps, Signup
         };
     }
 
-    onChangeGender = (e: any) => this.setState({
+    onChangeGender = (e: string) => this.setState({
         data: {
             ...this.state.data,
             gender: e
         }
     })
 
-    onChangeOrientation = (e: any) => this.setState({
+    onChangeOrientation = (e: string) => this.setState({
         data: {
             ...this.state.data,
             orientation: e
@@ -56,7 +54,7 @@ export default class SignupForm1 extends React.Component<SignupFormProps, Signup
         return (
             <div id="formOneButtons">
                 <div id="GenderButtons">
-                <Button.Group color="blue" size="big">
+                <Button.Group size="big">
                     <Button
                         value="F"
                         toggle

@@ -15,7 +15,7 @@ declare var Promise: any;
 // const localeIp = "http://192.168.99.100/api";
 const localeIp = '/api';
 const GOOGLE_API = 'https://maps.google.com/maps/api/geocode/json';
-const GEOCODE_API_KEY = 'AIzaSyCNJVMNhLakYTPWaGuCmRjs9nX83f41d9k';
+const GEOCODE_API_KEY = 'AIzaSyBah4ewvWs7mNaM9QaEuc_JwnvrnCCsZ5M';
 
 export interface UserPageProps {
     params: any;

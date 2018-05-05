@@ -2,27 +2,19 @@ import * as React from 'react';
 import { Form, FormGroup, Button } from 'semantic-ui-react';
 import * as Validator from 'validator';
 import Danger from '../messages/Message';
+import * as formTypes from './formTypes'; 
 
 export interface SignupFormProps {
     setStep: Function;    
     submit: Function;
-    data: any;
+    data: formTypes.UserData;
 }
 
 export interface SignupFormState3 {
-    data: {
-        email: string,
-        password: string,
-        passwordVerif: string,
-    };
+    data: formTypes.UserData;
     loading: boolean;
     term: boolean;
-    errors: {
-        email: string;
-        password: string;
-        global: string;
-        term: string;
-    };
+    errors: formTypes.ErrorsForm;
 }
 
 export default class SignupForm extends React.Component < SignupFormProps, SignupFormState3 > {

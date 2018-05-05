@@ -7,6 +7,7 @@ import { signup } from '../../actions/auth';
 import SignupForm1 from './SignupForm1';
 import SignupForm2 from './SignupForm2';
 import SignupForm3 from './SignupForm3';
+import * as formTypes from './formTypes'; 
 require('./SignupForm.css');
 
 export interface SignupFormProps {
@@ -15,17 +16,7 @@ export interface SignupFormProps {
 
 export interface SignupFormState {
     currentStep: string;
-    data: {
-        country: string,
-        city: string,
-        gender: string,
-        orientation: string,  
-        birthday: moment.Moment,      
-        username: string,
-        email: string,
-        password: string,
-        passwordVerif: string
-    };
+    data: formTypes.UserData;
     loading: boolean;
 }
 
@@ -38,7 +29,12 @@ export default class SignupFormAll extends React.Component < SignupFormProps, Si
             data: {
                 gender: 'F',
                 orientation: 'S',
-                birthday: moment('1987-01-19'), // TODO: should this be null ?
+                // birthday: moment('1987-01-19'), // TODO: should this be null ?
+                birthday: {
+                    month: '',
+                    day: '',
+                    year: 1987,
+                },
                 country: '',
                 city: '',
                 username: '',
@@ -50,7 +46,7 @@ export default class SignupFormAll extends React.Component < SignupFormProps, Si
         };
     }
 
-    updateData = (data: any) => this.setState({
+    updateData = (data: formTypes.UserData) => this.setState({
         data
     })
 
