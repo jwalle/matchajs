@@ -135,6 +135,15 @@ export class UserRouter {
                 res.status(200);
         })
     }
+
+    public updateUserInfo(req: Request, res: Response, next: NextFunction): void {
+        // console.log("PLLLLLOOOOP ", req);
+        userServices.updateUserInfo(req.body)
+        .then((results: any) => {
+            if (results)
+                res.status(200);
+        })
+    }
     
     init() {
         this.router.get('/makeUser', this.makeOneUser.bind(this));
@@ -143,6 +152,7 @@ export class UserRouter {
         this.router.post('/getMightLike/:id', this.mightLike);
         this.router.post('/auth', this.auth);
         this.router.post('/signup', this.signup);
+        this.router.post('/updateUserInfo', this.updateUserInfo);
     }
 }
 

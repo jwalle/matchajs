@@ -8,7 +8,7 @@ import { Flag, Divider, Icon, Button, Image, Container, Dropdown } from 'semanti
 
 require('./userPage.css');
 // let googleMap = require('../../public/images/googleMap.png');
-declare var Promise: any;
+// declare var Promise: any;
 
 // const localeIp = "http://localhost/api";
 // const localeIp = "http://192.168.99.100/api";

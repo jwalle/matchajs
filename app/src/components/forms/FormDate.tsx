@@ -112,7 +112,6 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
     render() {
         const { errors } = this.props;
         const { data } = this.state;
-        console.log(data);
         return (
             <Form.Field error={!!errors.birthday}>
             <label htmlFor="birthday">Your birthday :</label>

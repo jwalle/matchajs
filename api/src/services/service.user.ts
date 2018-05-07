@@ -35,13 +35,26 @@ class userServices {
 
     public selectRequest(sql : string, data : string[]|number[]) : Promise<object> {
         return new Promise(function (resolve, reject) {
-            console.log('COUCOUCOUCOU' , data, sql);
+            // console.log('COUCOUCOUCOU' , data, sql);
             db.connection.query(sql, data, function (err, result) {
                 if (err) reject(err);
                 resolve(result);
             })
             // db.connection.end();
         })
+    }
+
+    public updateUserInfo(data) {
+        console.log("------>", data);
+        let sql = "UPDATE users SET login=?, dob=?, country=?, city=? WHERE id=?"
+        let values = [
+            data.username,
+            new Date(data.birthday.year, data.birthday.month ,data.birthday.day),
+            data.country,
+            data.city,
+            data.id
+        ];
+        return (this.selectRequest(sql, values))
     }
 
     public getUserByEmail(email) {

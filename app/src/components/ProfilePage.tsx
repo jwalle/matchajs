@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import axios from 'axios';
 import UpdateUserInfoForm from './forms/UpdateUserInfoForm';
 import { Form, Flag, Divider, Icon, Button, Image, Container, Dropdown, Modal, Input } from 'semantic-ui-react';
-require('./userPage.css');
+require('./styles/profilePage.css');
 
 // declare var Promise: any;
 
@@ -97,14 +97,12 @@ export default class UserPage extends React.Component<ProfilePageProps, ProfileP
     }
 
     submitUserInfo = (data: any) =>  {
-        console.log('onChangeLocation: ', data); // TODO: all of that
-        // this.setState({
-        //     data: {
-        //         ...this.state.data,
-        //         country,
-        //         city,
-        //     }
-        // });
+        let self = this;
+        axios({
+            method: 'post',
+            url: localeIp + '/updateUserInfo',
+            data: data
+        }).catch(err => console.log('error axios updateUserInfo :', err));
     }
 
     render() {

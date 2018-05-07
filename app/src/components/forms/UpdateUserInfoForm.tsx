@@ -5,7 +5,7 @@ import Danger from '../messages/Message';
 import FormDate from './FormDate';
 import FormLocation from './FormLocation';
 import * as Moment from 'moment';
-import * as formTypes from './formTypes'; 
+import * as formTypes from './formTypes';
 
 export interface UpdateUserInfoFormProps {
     submit: Function;
@@ -37,6 +37,22 @@ export default class UpdateUserInfoForm extends React.Component < UpdateUserInfo
             }
         };
         this.onSelectBirthday = this.onSelectBirthday.bind(this);        
+    }
+
+    componentWillMount() {
+        // Ugly, change that
+        let newData: formTypes.UserData =  this.renameProp('login', 'username', this.state.data);
+        this.setState({
+            data: newData
+        });
+    }
+
+    // Rename a property inside an object. BAD.
+    renameProp = (oldProp: any, newProp: any, {[oldProp]: old, ...others }): any => {
+        return {
+            [newProp]: old,
+            ...others
+        };
     }
 
     async onSelectBirthday(birthday: formTypes.UserData['birthday']) {
@@ -102,7 +118,7 @@ export default class UpdateUserInfoForm extends React.Component < UpdateUserInfo
     validate = (data: UpdateUserInfoState['data']) => {
         const errors: any = {};
         if (!data.username) { errors.username = 'You username !'; }
-        // TODO: Check il username taken
+        // TODO: Check il new username taken
         if (!data.country || !data.city) { errors.location = 'You have to select a place !'; }
         if (!data.birthday) { errors.birthday = 'You have to enter your birthday !'; }
         if (!this.state.birthdayMoment.isValid) { errors.birthday = 'You have to enter a valid date !'; }
@@ -115,9 +131,7 @@ export default class UpdateUserInfoForm extends React.Component < UpdateUserInfo
 
         const {data, errors, loading} = this.state;
         return (
-            <Container>
-                <h1 style={{color: 'white'}}>You are : {data.gender} and {data.orientation}</h1>
-                <h1>Change your information : </h1>
+            <Container id="UpdateUserInfoModal">
                     <Form onSubmit={this.onSubmit} loading={loading}>
                     {errors.global && <Danger title="Global error" text="Something went wrong" />}    
                     <Form.Field error={!!errors.username}>
