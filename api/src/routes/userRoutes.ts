@@ -101,6 +101,7 @@ export class UserRouter {
     }
 
     public makeOneUser(req: Request, res: Response, next: NextFunction): void {
+        console.log('----------> PLOP');
         this.makeUser()
         .then((user : any) => {
              return ((JSON.parse(user).results[0]));
@@ -140,8 +141,9 @@ export class UserRouter {
         // console.log("PLLLLLOOOOP ", req);
         userServices.updateUserInfo(req.body)
         .then((results: any) => {
-            if (results)
-                res.status(200);
+            if (results) {
+                res.status(200).send();
+            }
         })
     }
     

@@ -8,6 +8,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import rootReducer from './rootReducer';
 import { userLoggedIn } from './actions/auth';
 import 'semantic-ui-css/semantic.min.css';
+import { BrowserRouter } from 'react-router-dom';
 
 const store = createStore(
     rootReducer,
@@ -20,7 +21,9 @@ if (localStorage.matchaJWT) {
 }
 
 render((
-    <Provider store={store}>
-        <AppRouter/>
-    </Provider>
+    <BrowserRouter>
+        <Provider store={store}>
+            <AppRouter/>
+        </Provider>
+    </BrowserRouter>
     ), document.getElementById('root')as HTMLElement);

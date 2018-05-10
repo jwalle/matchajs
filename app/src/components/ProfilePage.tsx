@@ -8,7 +8,7 @@ require('./styles/profilePage.css');
 // declare var Promise: any;
 
 const localeIp = '/api';
-const username = 'browntiger669';
+const username = 'browncat765';
 
 export interface ProfilePageProps {
     params: any;
@@ -19,6 +19,7 @@ export interface ProfilePageState {
     user: any;
     picture: any;
     age: any;
+    modalOpen: boolean;
 }
 
 export default class UserPage extends React.Component<ProfilePageProps, ProfilePageState> {
@@ -32,17 +33,22 @@ export default class UserPage extends React.Component<ProfilePageProps, ProfileP
             user: {},
             picture: [],
             age: 1,
+            modalOpen: false,
         };
     }
 
     componentWillMount() {
-        this.getUser();
+        this.getUser(); 
     }
+
+    handleOpen = () => this.setState({ modalOpen: true });
+    
+    handleClose = () => this.setState({ modalOpen: false });
 
     getAge = () => {
         let age = parseInt(moment(this.state.user.dob, 'YYYY-MM-DD h:mm:ss').fromNow(), 10);
         this.setState({ age });
-    }   
+    }
 
     getProfilePhoto() {
         let self = this;
@@ -59,7 +65,7 @@ export default class UserPage extends React.Component<ProfilePageProps, ProfileP
             .catch(err => console.log('error axios profilePhoto :', err));
     }
 
-    // Add a "0" to month number if < 10
+    // Add a "0" to month numb  er if < 10
     padDateNumber = (dateNumber: string) => {
         if (parseInt(dateNumber, 10) < 10) {
             dateNumber = '0' + dateNumber;
@@ -98,16 +104,22 @@ export default class UserPage extends React.Component<ProfilePageProps, ProfileP
 
     submitUserInfo = (data: any) =>  {
         let self = this;
+        console.log('PLLLLPOPOPO');
         axios({
             method: 'post',
             url: localeIp + '/updateUserInfo',
             data: data
+        }).then(res => {
+            console.log(res);
+            if (res.status === 200) {
+                self.handleClose();
+                self.getUser();
+            }
         }).catch(err => console.log('error axios updateUserInfo :', err));
     }
 
     render() {
         const user = this.state.user;
-        console.log(user);
         const flag = user.nat;
         const picture = this.state.picture;
         const trigger = (
@@ -130,18 +142,17 @@ export default class UserPage extends React.Component<ProfilePageProps, ProfileP
         };
 
         const topInfo = (   
-            <div id="topInfo">
+            <div id="topInfo" onClick={this.handleOpen}>
                     <Container id="login">
-                        <h2>{user.login}<Icon name="circle" color="green" /></h2>
-                        {/* <Icon name="circle notched" color="grey"/> */}{/* TODO: isConnected or not*/} 
+                        <h2>{user.login}</h2>
                     </ Container>
                     <h3>
                         <Flag name={user.nat} />
                         {this.state.age} - {user.gender === 'male' ? 'M' : 'F'}
                     </h3>
                     <p>{user.city}, {user.country}</p>
-                </div>
-            );
+            </div>
+        );
 
         return (
             <div className="main-container">
@@ -156,6 +167,7 @@ export default class UserPage extends React.Component<ProfilePageProps, ProfileP
                 <Modal
                     size="small" 
                     trigger={topInfo} 
+                    open={this.state.modalOpen}
                     header="Change your info :" 
                     content={<UpdateUserInfoForm data={this.state.user} submit={this.submitUserInfo}/>} 
                 />

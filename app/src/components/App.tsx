@@ -1,7 +1,6 @@
 import * as React from 'react';
 import NavigationBar from './navigationBar/navigation';
 import { connect } from 'react-redux';
-import SignupPage from './SignupPage';
 // let backGround = require('../../public/images/signupBackground.jpeg');
 require('./App.css');
 

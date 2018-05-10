@@ -17,7 +17,6 @@ export default class GoogleMap extends React.Component<GoogleMapProps, {}> {
 
   render() {
     const center = this.props.center;
-    console.log('KEY: ', process.env.GOOGLE_MAP_API);
     return (
         <div id="googleMapContainer">
             <GoogleMapReact

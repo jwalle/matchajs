@@ -1,7 +1,8 @@
 import * as React from 'react';
 import axios from 'axios';
 import Discovery from './discoveryContent/discovery';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { logout } from '../actions/auth';
 require('./ContentPage.css');
@@ -32,7 +33,6 @@ class ContentPage extends React.Component<ContentPageProps, {}> {
       <div className="main-front">
         <Discovery />
         <h1>Welcome</h1>
-
         {this.props.isAuth ?
          <button onClick={() => this.props.logout()}>Logout</button> :
          <Link to="/login">Login</Link>}
