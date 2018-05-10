@@ -34,7 +34,6 @@
     "download-file": "^0.1.5",
     "file-loader": "^1.1.6",
     "google-map-react": "^0.34.0",
-    "jquery": "2.2.3",
     "lodash": "^4.17.5",
     "moment": "^2.19.3",
     "multer": "^1.3.0",

@@ -24,7 +24,6 @@
     "download-file": "^0.1.5",
     "express": "4.13.4",
     "ip": "^1.1.5",
-    "jquery": "2.2.3",
     "jsonwebtoken": "^8.1.1",
     "lorem-ipsum": "^1.0.4",
     "moment": "^2.19.3",
