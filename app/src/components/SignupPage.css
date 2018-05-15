@@ -1,5 +1,10 @@
-#central-container {
-    min-width: 800px;
+#centralContainer {
+    width: 500px;
+    background-color: #a4adb326;
+    position: relative;
+    top: 80px;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 .top_signup_right {

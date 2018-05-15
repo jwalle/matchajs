@@ -2,11 +2,12 @@
 #formOneButtons {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     flex-direction: column;
+    height: 200px;
 }
 
-#GenderButtons {
+/* #GenderButtons {
     position: absolute;
     top: 180px; 
 }
@@ -19,5 +20,5 @@
 .formOneNextButton {
     position: absolute;    
     top: 350px;     
-}
+} */
 

@@ -11,6 +11,8 @@ export interface UserData {
             year: number,
         };
         username: string;
+        firstname: string;
+        lastname: string;
         email: string;
         password: string;
         passwordVerif: string;
@@ -19,6 +21,9 @@ export interface UserData {
 export interface ErrorsForm {
     global?: string;
     username?: string;
+    name?: string;
+    firstname?: string;
+    lastname?: string;
     location?: string;
     birthday?: string;
     email?: string;

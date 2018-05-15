@@ -116,10 +116,11 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
             <Form.Field error={!!errors.birthday}>
             <label htmlFor="birthday">Your birthday :</label>
                 <Form.Group>                    
-                    <Divider hidden/>
+                    {/* <Divider hidden/> */}
                     <Form.Select
                         selection
                         placeholder="Month"
+                        width={2}
                         name="month"
                         value={data.birthday.month}
                         options={months}
@@ -128,14 +129,16 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
                     <Form.Select
                         selection
                         placeholder="Day"
-                        value={data.birthday.day}                        
+                        width={1}
+                        value={data.birthday.day}
                         options={this.state.days}
                         onChange={this.onSelectDay}
                     />
                     <Form.Select
                         selection
                         placeholder="Year"
-                        value={data.birthday.year}                        
+                        width={2}
+                        value={data.birthday.year}
                         options={this.state.years}
                         onChange={this.onSelectYear}
                     />

@@ -35,7 +35,6 @@ class userServices {
 
     public selectRequest(sql : string, data : string[]|number[]) : Promise<object> {
         return new Promise(function (resolve, reject) {
-            // console.log('COUCOUCOUCOU' , data, sql);
             db.pool.getConnection(function(err, connection) {
                 connection.query(sql, data, function (err, result) {
                     if (err) reject(err);
@@ -49,9 +48,12 @@ class userServices {
 
     public updateUserInfo(data) {
         console.log("------>", data);
-        let sql = "UPDATE users SET login=?, dob=?, country=?, city=? WHERE id=?"
+        let sql = "UPDATE users SET login=?, firstname=?, lastname=?, email=?, dob=?, country=?, city=? WHERE id=?"
         let values = [
             data.username,
+            data.firstname,
+            data.lastname,
+            data.email,
             new Date(data.birthday.year, data.birthday.month ,data.birthday.day),
             data.country,
             data.city,
@@ -65,9 +67,9 @@ class userServices {
         return (this.selectRequest(sql, email))
     }
 
-    public getUser(login) {
-        let sql = "SELECT * FROM users WHERE login=?";
-        return (this.selectRequest(sql, login))
+    public getUser(id) {
+        let sql = "SELECT * FROM users WHERE id=?";
+        return (this.selectRequest(sql, id))
     }
 
     public getUserMightLikeUsers(userId) {
@@ -116,6 +118,8 @@ class userServices {
     insertNewUser(user) : Promise<object>  {
         let sql = "INSERT INTO users (\
             login,\
+            firstname,\
+            lastname,\
             password,\
             email,\
             gender,\
@@ -141,9 +145,11 @@ class userServices {
             sign,\
             diet,\
             kids\
-        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         let values = [
             user.login.username,
+            user.name.first,
+            user.name.last,
             user.login.password,
             user.email,
             user.gender[0],

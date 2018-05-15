@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Form, FormGroup, Button } from 'semantic-ui-react';
+import { Form, FormGroup, Button, Container } from 'semantic-ui-react';
 import * as Validator from 'validator';
+import FormName from './FormName';
 import Danger from '../messages/Message';
 import * as formTypes from './formTypes'; 
 
@@ -63,6 +64,16 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
         console.log('term = ', this.state.term);
     }
 
+    onSelectName = (data: formTypes.UserData) =>  {
+        this.setState({
+            data: {
+                ...this.state.data,
+                firstname: data.firstname,
+                lastname: data.lastname,
+            }
+        });
+    }
+
     validate = (data: SignupFormState3['data']) => {
         const errors: any = {};
         if (!Validator.isEmail(data.email)) { errors.email = 'invalid email'; }
@@ -76,57 +87,62 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
     }
 
     render() {
-
         const {data, errors, loading} = this.state;
         return (
-            <div>
-            <h1 style={{color: 'white'}}>You are : {this.props.data.gender} and {this.props.data.orientation}</h1>
-            <h1 style={{color: 'white'}}>
-            You are {this.props.data.username} from : {this.props.data.country}, {this.props.data.city}
-            </h1>
-            <Form onSubmit={this.onSubmit} loading={loading}>
-                {errors.global && <Danger title="Global error" text="Something went wrong" />}
-                    <Form.Field error={!!errors.email}>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Enter your email here"
-                        value={data.email}
-                        onChange={this.onChange}
-                    />
-                    {errors.email && <Danger title="Email" text={errors.email} />}
-                    </Form.Field>       
-                    <Form.Field error={!!errors.password}>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Enter your password here"
-                        value={data.password}
-                        onChange={this.onChange}
-                    />
-                    </Form.Field>
-                    <Form.Field error={!!errors.password}>
-                    <input
-                        type="password"
-                        id="passwordVerif"
-                        name="passwordVerif"
-                        placeholder="Confirm your password"
-                        value={data.passwordVerif}
-                        onChange={this.onChange}
-                    />
-                    {errors.password && <Danger title="Password" text={errors.password} />} 
-                    </Form.Field>
-                    {errors.term && <Danger title="term" text={errors.term} />}                     
-                    <Form.Checkbox
-                        label="I agree to the Terms and Conditions" 
-                        onChange={this.onChangeTerm}
-                    />
-                <Button primary onClick={this.onPrevious}>Back</Button>
-                <Button primary>Login</Button>
-            </Form>
-            </div>            
+            <Container>
+                <h1 style={{color: 'red'}}>You are : {this.props.data.gender} and {this.props.data.orientation}</h1>
+                <h1 style={{color: 'red'}}>
+                You are {this.props.data.username} from : {this.props.data.country}, {this.props.data.city}
+                </h1>
+                <Form onSubmit={this.onSubmit} loading={loading}>
+                    {errors.global && <Danger title="Global error" text="Something went wrong" />}
+                        <FormName data={data} errors={errors} updateName={this.onSelectName} /> 
+                        <Form.Field error={!!errors.email}>
+                            <Form.Input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Enter your email here"
+                                value={data.email}
+                                style={{ width: '415px' }}                                
+                                onChange={this.onChange}
+                            />
+                        {errors.email && <Danger title="Email" text={errors.email} />}
+                        </Form.Field>       
+                        <Form.Group>
+                            <Form.Field error={!!errors.password}>
+                                <Form.Input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Enter your password here"
+                                    value={data.password}
+                                    style={{ width: '200px' }}
+                                    onChange={this.onChange}
+                                />
+                            </Form.Field>
+                            <Form.Field error={!!errors.password}>
+                                <Form.Input
+                                    type="password"
+                                    id="passwordVerif"
+                                    name="passwordVerif"
+                                    placeholder="Confirm your password"
+                                    value={data.passwordVerif}
+                                    style={{ width: '200px' }}
+                                    onChange={this.onChange}
+                                />
+                            {errors.password && <Danger title="Password" text={errors.password} />} 
+                            </Form.Field>
+                        </Form.Group>
+                        {errors.term && <Danger title="term" text={errors.term} />}                     
+                        <Form.Checkbox
+                            label="I agree to the Terms and Conditions" 
+                            onChange={this.onChangeTerm}
+                        />
+                    <Button primary onClick={this.onPrevious}>Back</Button>
+                    <Button primary>Login</Button>
+                </Form>
+            </Container>            
         );
     }
 }

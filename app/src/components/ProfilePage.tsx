@@ -8,7 +8,8 @@ require('./styles/profilePage.css');
 // declare var Promise: any;
 
 const localeIp = '/api';
-const username = 'browncat765';
+const username = 'silvermeercat438';
+const id = 1;
 
 export interface ProfilePageProps {
     params: any;
@@ -88,7 +89,7 @@ export default class UserPage extends React.Component<ProfilePageProps, ProfileP
         let self = this;
         axios({
             method: 'get',
-            url: localeIp + '/getUser/' + username,
+            url: localeIp + '/getUser/' + id,
             responseType: 'json'
         })
             .then(res => {
@@ -142,15 +143,13 @@ export default class UserPage extends React.Component<ProfilePageProps, ProfileP
         };
 
         const topInfo = (   
-            <div id="topInfo" onClick={this.handleOpen}>
-                    <Container id="login">
-                        <h2>{user.login}</h2>
-                    </ Container>
-                    <h3>
-                        <Flag name={user.nat} />
-                        {this.state.age} - {user.gender === 'male' ? 'M' : 'F'}
-                    </h3>
-                    <p>{user.city}, {user.country}</p>
+            <div id="topInfoProfile" onClick={this.handleOpen}>
+                    <div id="login"><h2>{user.login}</h2></div>
+                    <div id="name"><h3>{user.firstname}, {user.lastname}</h3></ div>
+                    <div id="natAgeGender">
+                        <h3><Flag name={user.nat} /> - {this.state.age} - {user.gender === 'male' ? 'M' : 'F'}</h3>
+                    </div>
+                    <div id="location"><p>{user.city}, {user.country}</p></div>
             </div>
         );
 
@@ -169,7 +168,12 @@ export default class UserPage extends React.Component<ProfilePageProps, ProfileP
                     trigger={topInfo} 
                     open={this.state.modalOpen}
                     header="Change your info :" 
-                    content={<UpdateUserInfoForm data={this.state.user} submit={this.submitUserInfo}/>} 
+                    content={
+                    <UpdateUserInfoForm 
+                        handleClose={this.handleClose} 
+                        data={this.state.user}
+                        submit={this.submitUserInfo}
+                    />} 
                 />
                 </div>
                 <div id="middleUserPage" />

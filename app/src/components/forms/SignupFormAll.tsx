@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Form, FormGroup, Button } from 'semantic-ui-react';
+import { Form, FormGroup, Button, Container } from 'semantic-ui-react';
 import * as moment from 'moment';
 import * as Validator from 'validator';
 import Danger from '../messages/Message';
@@ -38,6 +38,8 @@ export default class SignupFormAll extends React.Component < SignupFormProps, Si
                 country: '',
                 city: '',
                 username: '',
+                firstname: '',
+                lastname: '',
                 email: '',
                 password: '',
                 passwordVerif: ''

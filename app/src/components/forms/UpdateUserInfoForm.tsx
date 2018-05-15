@@ -1,14 +1,16 @@
 import * as React from 'react';
-import { Form, FormGroup, Button, Dropdown, Container } from 'semantic-ui-react';
+import { Form, FormGroup, Button, Dropdown, Container, Modal, Icon } from 'semantic-ui-react';
 import * as Validator from 'validator';
 import Danger from '../messages/Message';
 import FormDate from './FormDate';
 import FormLocation from './FormLocation';
+import FormName from './FormName';
 import * as Moment from 'moment';
 import * as formTypes from './formTypes';
 
 export interface UpdateUserInfoFormProps {
     submit: Function;
+    handleClose: any;
     data: formTypes.UserData;
 }
 
@@ -30,6 +32,7 @@ export default class UpdateUserInfoForm extends React.Component < UpdateUserInfo
             birthdayMoment: Moment('1987-01-19'), // TODO: should this be null ?            
             loading: false,
             errors: {
+                email: '',
                 username: '',
                 location : '',
                 global: '',
@@ -71,6 +74,16 @@ export default class UpdateUserInfoForm extends React.Component < UpdateUserInfo
                 ...this.state.data,
                 country: data.country,
                 city: data.city,
+            }
+        });
+    }
+
+    onSelectName = (data: formTypes.UserData) =>  {
+        this.setState({
+            data: {
+                ...this.state.data,
+                firstname: data.firstname,
+                lastname: data.lastname,
             }
         });
     }
@@ -117,12 +130,14 @@ export default class UpdateUserInfoForm extends React.Component < UpdateUserInfo
 
     validate = (data: UpdateUserInfoState['data']) => {
         const errors: any = {};
-        if (!data.username) { errors.username = 'You username !'; }
+        if (!data.username) { errors.username = 'You need to enter an username.'; }
+        if (!data.firstname || !data.lastname) { errors.name = 'You need a firstname and a lastname!'; }
+        if (!Validator.isEmail(data.email)) { errors.email = 'invalid email'; }
         // TODO: Check il new username taken
-        if (!data.country || !data.city) { errors.location = 'You have to select a place !'; }
-        if (!data.birthday) { errors.birthday = 'You have to enter your birthday !'; }
-        if (!this.state.birthdayMoment.isValid) { errors.birthday = 'You have to enter a valid date !'; }
-        if (!this.isMajor()) { errors.birthday = 'You have to be major to signup !'; }
+        if (!data.country || !data.city) { errors.location = 'You have to select a place.'; }
+        if (!data.birthday) { errors.birthday = 'You have to enter your birthday.'; }
+        if (!this.state.birthdayMoment.isValid) { errors.birthday = 'You have to enter a valid date.'; }
+        if (!this.isMajor()) { errors.birthday = 'You have to be major to signup.'; }
         // TODO : Add more validation (strlen, complex password,...)
         return errors;
     }
@@ -132,24 +147,40 @@ export default class UpdateUserInfoForm extends React.Component < UpdateUserInfo
         const {data, errors, loading} = this.state;
         return (
             <Container id="UpdateUserInfoModal">
-                    <Form onSubmit={this.onSubmit} loading={loading}>
+                    <Form loading={loading}>
                     {errors.global && <Danger title="Global error" text="Something went wrong" />}    
                     <Form.Field error={!!errors.username}>
                         <label htmlFor="username">Username :</label>
-                        <input
+                        <Form.Input
                             id="username"
                             name="username"
-                            placeholder="toto420"
                             value={data.username}
                             onChange={this.onChange}
                         />
                         {errors.username && <Danger title="Username" text={errors.username} />}
-                        </Form.Field>
-                        <FormDate data={data} errors={errors} submitDate={this.onSelectBirthday}/>
-                        <FormLocation data={data} errors={errors} updateLocation={this.onSelectLocation} />
+                    </Form.Field>
+                    <Form.Field error={!!errors.email}>
+                        <label htmlFor="email">Email :</label>
+                        <Form.Input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={data.email}
+                            onChange={this.onChange}
+                        />
+                        {errors.email && <Danger title="email" text={errors.email} />}
+                    </Form.Field>
+                    <FormName data={data} errors={errors} updateName={this.onSelectName}/>
+                    <FormDate data={data} errors={errors} submitDate={this.onSelectBirthday}/>
+                    <FormLocation data={data} errors={errors} updateLocation={this.onSelectLocation} />
                     {/* <Button primary onClick={this.onPrevious}>Cancel</Button> */}
-                    <Button primary>Update</Button>
                 </Form>
+                <Modal.Actions>
+                    <Button color="green" onClick={this.onSubmit}>
+                        <Icon name="checkmark" /> Update
+                    </Button>
+                    <Button color="grey" onClick={this.props.handleClose}> Cancel</ Button>
+                </Modal.Actions>
             </Container>
         );
     }
