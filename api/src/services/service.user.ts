@@ -33,7 +33,7 @@ class userServices {
         );
     }
 
-    public selectRequest(sql : string, data : string[]|number[]) : Promise<object> {
+    public selectRequest(sql : string, data : any) : Promise<object> {
         return new Promise(function (resolve, reject) {
             db.pool.getConnection(function(err, connection) {
                 connection.query(sql, data, function (err, result) {
@@ -46,9 +46,9 @@ class userServices {
         })
     }
 
-    public updateUserInfo(data) {
+    public updateUserInfo(data) { 
         console.log("------>", data);
-        let sql = "UPDATE users SET login=?, firstname=?, lastname=?, email=?, dob=?, country=?, city=? WHERE id=?"
+        let sql = "UPDATE users SET login=?, firstname=?, lastname=?, email=?, dob=?, country=?, city=?, text1=?, text2=?, text3=? WHERE id=?"
         let values = [
             data.username,
             data.firstname,
@@ -57,6 +57,9 @@ class userServices {
             new Date(data.birthday.year, data.birthday.month ,data.birthday.day),
             data.country,
             data.city,
+            data.text1,
+            data.text2,
+            data.text3,
             data.id
         ];
         return (this.selectRequest(sql, values))

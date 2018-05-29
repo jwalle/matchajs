@@ -76,6 +76,7 @@ export default class App extends React.Component < AppProps, AppState > {
                         type="email"
                         id="email"
                         name="email"
+                        autoComplete="email"                        
                         placeholder="example@example.com"
                         value={data.email}
                         onChange={this.onChange}
@@ -88,6 +89,7 @@ export default class App extends React.Component < AppProps, AppState > {
                         type="password"
                         id="password"
                         name="password"
+                        autoComplete="password"
                         placeholder="Make it secure"
                         value={data.password}
                         onChange={this.onChange}

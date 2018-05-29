@@ -7,6 +7,10 @@
     border-radius: 10px;
 }
 
+#centralContainer label, h1{
+    color: #1cb4ff;
+}
+
 .top_signup_right {
     top: 0;
 }

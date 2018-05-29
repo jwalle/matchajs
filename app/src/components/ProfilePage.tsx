@@ -2,14 +2,16 @@ import * as React from 'react';
 import * as moment from 'moment';
 import axios from 'axios';
 import UpdateUserInfoForm from './forms/UpdateUserInfoForm';
+import FormBio from './forms/FormBio';
+import * as formTypes from './forms/formTypes';
 import { Form, Flag, Divider, Icon, Button, Image, Container, Dropdown, Modal, Input } from 'semantic-ui-react';
 require('./styles/profilePage.css');
 
 // declare var Promise: any;
 
 const localeIp = '/api';
-const username = 'silvermeercat438';
-const id = 1;
+// const username = 'silvermeercat438';
+const id = 2;
 
 export interface ProfilePageProps {
     params: any;
@@ -103,15 +105,13 @@ export default class UserPage extends React.Component<ProfilePageProps, ProfileP
             .catch(err => console.log('error axios user :', err));
     }
 
-    submitUserInfo = (data: any) =>  {
+    submitUserInfo = (data: formTypes.ErrorsForm) =>  {
         let self = this;
-        console.log('PLLLLPOPOPO');
         axios({
             method: 'post',
             url: localeIp + '/updateUserInfo',
             data: data
         }).then(res => {
-            console.log(res);
             if (res.status === 200) {
                 self.handleClose();
                 self.getUser();
@@ -152,7 +152,6 @@ export default class UserPage extends React.Component<ProfilePageProps, ProfileP
                     <div id="location"><p>{user.city}, {user.country}</p></div>
             </div>
         );
-
         return (
             <div className="main-container">
                 <div id="topUserPage" />
@@ -179,18 +178,24 @@ export default class UserPage extends React.Component<ProfilePageProps, ProfileP
                 <div id="middleUserPage" />
                 <div id="middleCentralContainer">
                    <Container id="texts">
-                    <div id="textOne">
-                            <h3>Who I am</h3>
-                            <p>{user.text1}</p>                            
-                        </div>
-                        <div id="textOne">
-                            <h3>What I like doing</h3>
-                            <p>{user.text2}</p>
-                        </div>
-                        <div id="textOne">
-                            <h3>What I am looking for</h3>
-                            <p>{user.text3}</p>                            
-                        </div>
+                    <FormBio
+                        updateBio={this.submitUserInfo} 
+                        bioTitle="Who I am"
+                        bioID="text1"
+                        data={this.state.user}
+                    />
+                    <FormBio
+                        updateBio={this.submitUserInfo} 
+                        bioTitle="What I like doing"
+                        bioID="text2"
+                        data={this.state.user}
+                    />
+                    <FormBio
+                        updateBio={this.submitUserInfo} 
+                        bioTitle="What I am looking for"
+                        bioID="text3"
+                        data={this.state.user}
+                    />
                     </Container>
                     <Container id="rightMiddleContainer">
                         <Container id="interests">

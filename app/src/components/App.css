@@ -24,10 +24,10 @@ body {
 }
 
 .guest-container {
-  /* background-image: url('../../  public/images/signupBackground.jpeg'); */
+  background-image: url('../../public/images/signupBackground.jpeg');
   background-size: cover;
   background-position: center;
-  overflow: hidden; 
+  overflow: hidden;
   min-height: 900px;
 }
 

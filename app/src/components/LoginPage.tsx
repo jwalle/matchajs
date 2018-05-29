@@ -2,6 +2,7 @@ import * as React from 'react';
 import LoginForm from './forms/LoginForm';
 import { connect } from 'react-redux';
 import { login } from '../actions/auth'; 
+import { Container } from 'semantic-ui-react';
 
 export interface LoginPageProps {
     history: {
@@ -20,10 +21,10 @@ class LoginPage extends React.Component<LoginPageProps, {}> {
     render() {
         console.log('YOU ARE HERE !');
         return (
-            <div>
-                <h1>Hi LginPage</h1>
+            <Container id="centralContainer">             
+                <h1>Welcome back !</h1>
                 <LoginForm submit={this.submit} />
-            </div>
+            </Container>
         );
     }
 }

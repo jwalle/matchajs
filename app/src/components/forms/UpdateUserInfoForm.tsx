@@ -178,8 +178,10 @@ export default class UpdateUserInfoForm extends React.Component < UpdateUserInfo
                 <Modal.Actions>
                     <Button color="green" onClick={this.onSubmit}>
                         <Icon name="checkmark" /> Update
-                    </Button>
-                    <Button color="grey" onClick={this.props.handleClose}> Cancel</ Button>
+                    </ Button>
+                    <Button color="grey" onClick={this.props.handleClose}>
+                        Cancel
+                    </ Button>
                 </Modal.Actions>
             </Container>
         );

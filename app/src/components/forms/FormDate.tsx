@@ -120,7 +120,7 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
                     <Form.Select
                         selection
                         placeholder="Month"
-                        width={2}
+                        fluid
                         name="month"
                         value={data.birthday.month}
                         options={months}
@@ -129,7 +129,7 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
                     <Form.Select
                         selection
                         placeholder="Day"
-                        width={1}
+                        fluid
                         value={data.birthday.day}
                         options={this.state.days}
                         onChange={this.onSelectDay}
@@ -137,7 +137,7 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
                     <Form.Select
                         selection
                         placeholder="Year"
-                        width={2}
+                        fluid
                         value={data.birthday.year}
                         options={this.state.years}
                         onChange={this.onSelectYear}

@@ -16,6 +16,7 @@ export interface UserData {
         email: string;
         password: string;
         passwordVerif: string;
+        [key: string ]: any;
 }
 
 export interface ErrorsForm {
@@ -29,4 +30,5 @@ export interface ErrorsForm {
     email?: string;
     password?: string;
     term?: string;
+    bio?: string;
 }

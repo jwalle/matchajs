@@ -142,7 +142,8 @@ export class UserRouter {
         userServices.updateUserInfo(req.body)
         .then((results: any) => {
             if (results) {
-                res.status(200).send();
+                console.log('WATTTTT', results);
+                res.status(200).end();
             }
         })
     }

@@ -63,6 +63,15 @@
     align-items: center
 }
 
+#textAreaEdit {
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#textAreaEdit:hover {
+    background: #204a65;
+}
+
 #textOne {
     grid-column: 1/2;
     padding-top: 40px;

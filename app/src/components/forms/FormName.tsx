@@ -44,6 +44,7 @@ export default class FormName extends React.Component < FormNameProps, FormNameS
                 <Form.Group>
                     <Form.Input
                         value={data.firstname}
+                        autoComplete="given-name"
                         placeholder="Firstname"
                         name="firstname"
                         onChange={this.onSelect}
@@ -51,6 +52,7 @@ export default class FormName extends React.Component < FormNameProps, FormNameS
                     <Form.Input
                         value={data.lastname}
                         placeholder="Lastname"
+                        autoComplete="family-name"
                         name="lastname"
                         onChange={this.onSelect}
                     />

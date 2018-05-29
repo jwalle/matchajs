@@ -102,6 +102,7 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
                                 type="email"
                                 id="email"
                                 name="email"
+                                autoComplete="email"                                
                                 placeholder="Enter your email here"
                                 value={data.email}
                                 style={{ width: '415px' }}                                
@@ -110,9 +111,10 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
                         {errors.email && <Danger title="Email" text={errors.email} />}
                         </Form.Field>       
                         <Form.Group>
-                            <Form.Field error={!!errors.password}>
+                            <Form.Field error={!!errors.password} autoComplete="off">
                                 <Form.Input
                                     type="password"
+                                    autoComplete="new-password"
                                     id="password"
                                     name="password"
                                     placeholder="Enter your password here"
@@ -124,6 +126,7 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
                             <Form.Field error={!!errors.password}>
                                 <Form.Input
                                     type="password"
+                                    autoComplete="off"                                    
                                     id="passwordVerif"
                                     name="passwordVerif"
                                     placeholder="Confirm your password"
