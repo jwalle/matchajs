@@ -79,9 +79,48 @@
 }
 
 #textOne p {
-    line-height: 1.8;
+    line-height: 1.7;
     font-size: 1.1em;
 }
+
+#textOne textarea {
+    height: 250px;
+    background-color: #183b52;
+    color: white;
+    line-height: 1.7;    
+    font-size: 1.1em;
+}
+
+#textOne textarea:focus {
+    background-color: #082b42;
+    color: white;
+}
+
+#basics {
+    margin-top: 20px;
+}
+
+.basicRow {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.basicRow span {
+    font-size: 1.2em;
+}
+
+.basicName {
+    margin-left: 10px;
+    font-style: italic;
+    color: #86888a;
+}
+
+.basicValue {
+    position: absolute;
+    left: 220px;
+}
+
 
 #interests {
     grid-column: 2/3;    

@@ -3,8 +3,9 @@ import * as moment from 'moment';
 import axios from 'axios';
 import UpdateUserInfoForm from './forms/UpdateUserInfoForm';
 import FormBio from './forms/FormBio';
+import ProfilBasics from './Profile/ProfileBasics';
 import * as formTypes from './forms/formTypes';
-import { Form, Flag, Divider, Icon, Button, Image, Container, Dropdown, Modal, Input } from 'semantic-ui-react';
+import { Form, Flag, Divider, Icon, Button, Image, Container, Modal, Input } from 'semantic-ui-react';
 require('./styles/profilePage.css');
 
 // declare var Promise: any;
@@ -130,18 +131,6 @@ export default class UserPage extends React.Component<ProfilePageProps, ProfileP
             </Icon.Group>
           );
 
-        const orientation = () => {
-            if (user.orientation === 's') {
-                return('Straight');
-            }
-            if (user.orientation === 'g') {
-                return('Gay');
-            }
-            if (user.orientation === 'b') {
-                return('Bi');
-            }
-        };
-
         const topInfo = (   
             <div id="topInfoProfile" onClick={this.handleOpen}>
                     <div id="login"><h2>{user.login}</h2></div>
@@ -152,6 +141,7 @@ export default class UserPage extends React.Component<ProfilePageProps, ProfileP
                     <div id="location"><p>{user.city}, {user.country}</p></div>
             </div>
         );
+
         return (
             <div className="main-container">
                 <div id="topUserPage" />
@@ -198,36 +188,10 @@ export default class UserPage extends React.Component<ProfilePageProps, ProfileP
                     />
                     </Container>
                     <Container id="rightMiddleContainer">
-                        <Container id="interests">
-                            <div className="flex">
-                                <p>Size : {user.size} cm</p> 
-                                <p>Has kids : {user.kids ? 'Yes' : 'No'}</p> 
-                                <p>Orientation : {orientation()}</p> 
-                            </ div>
-                        </ Container>
-                        <Divider />
+                        <ProfilBasics user={user} />
                         <Container id="interests">
                             <Icon size="big" id="interestsIcon" color="grey" name="reddit alien"/>
                             <p>Foot, Computer, Science, Video Games, Music, ...</p> 
-                        </ Container>
-                        <Divider />
-                        <Container id="interests">
-                            <Icon size="big" id="interestsIcon" color="grey" name="world"/>
-                            <Container>
-                                <p>Ethnicity : {user.ethnicity}</p> 
-                                <p>Religion : {user.religion}</p> 
-                                <p>Status : {user.status}</p>
-                            </ Container>
-                        </ Container>
-                        <Divider />                        
-                        <Container id="interests">
-                            <Icon size="big" id="interestsIcon" color="grey" name="bar"/>
-                            <Container>
-                                <p>Smoke : {user.smoke}</p>
-                                <p>Drink : {user.drink}</p>
-                                <p>Drugs : {user.drugs}</p>
-                                <p>Diet : {user.diet}</p>
-                            </ Container>
                         </ Container>
                         <Divider />
                     </ Container>
