@@ -5,7 +5,7 @@ import { NavLink, Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { logout } from '../actions/auth';
-require('./ContentPage.css');
+require('./styles/ContentPage.css');
 const localeIp = '/api';
 
 export interface ContentPageProps {

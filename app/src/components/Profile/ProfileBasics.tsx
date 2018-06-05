@@ -38,7 +38,8 @@ export default class ProfileBasics extends React.Component<ProfileBasicsProps, {
             {id: 7, icon: 'leaf', name: 'Smoke', value: user.smoke},
             {id: 8, icon: 'bar', name: 'Drink', value: user.drink},
             {id: 9, icon: 'tree', name: 'Drugs', value: user.drugs},
-            {id: 10, icon: 'food', name: 'Diet', value: user.diet}
+            {id: 10, icon: 'food', name: 'Diet', value: user.diet},
+            {id: 11, icon: 'star', name: 'Sign', value: user.sign}
         ];
 
         return (

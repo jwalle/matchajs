@@ -43,7 +43,7 @@
 }
 
 #topInfoProfile:hover {
-    background-color: #213448;
+    background-color: #07314c;
     border-radius: 5px; 
 }
 
@@ -69,7 +69,7 @@
 }
 
 #textAreaEdit:hover {
-    background: #204a65;
+    background: #07314c;
 }
 
 #textOne {
@@ -98,6 +98,13 @@
 
 #basics {
     margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px; 
+}
+
+#basics:hover {
+    margin-top: 20px;
+    background-color: #07314c;
 }
 
 .basicRow {
@@ -118,7 +125,7 @@
 
 .basicValue {
     position: absolute;
-    left: 220px;
+    left: 180px;
 }
 
 

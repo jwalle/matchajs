@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button, Image } from 'semantic-ui-react';
-var style = require('./userCard.css');
+var style = require('./styles/userCard.css');
 
 export interface UserCardProps {
     user: any;

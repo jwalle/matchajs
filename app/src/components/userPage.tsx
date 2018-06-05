@@ -1,9 +1,9 @@
 import * as React from 'react';
 import axios from 'axios';
 import * as moment from 'moment';
-import UserCard from './userCard';
-import GoogleMap from './GoogleMap';
-import GoogleMapReact from 'google-map-react';
+// import UserCard from './userCard';
+// import GoogleMap from './GoogleMap';
+// import GoogleMapReact from 'google-map-react';
 import { Flag, Divider, Icon, Button, Image, Container, Dropdown } from 'semantic-ui-react';
 
 require('./userPage.css');
@@ -14,8 +14,8 @@ require('./userPage.css');
 // const localeIp = "http://192.168.99.100/api";
 // const localeIp = "http://192.168.99.100/api";
 const localeIp = '/api';
-const GOOGLE_API = 'https://maps.google.com/maps/api/geocode/json';
-const GEOCODE_API_KEY = 'AIzaSyBah4ewvWs7mNaM9QaEuc_JwnvrnCCsZ5M';
+// const GOOGLE_API = 'https://maps.google.com/maps/api/geocode/json';
+// const GEOCODE_API_KEY = 'AIzaSyBah4ewvWs7mNaM9QaEuc_JwnvrnCCsZ5M';
 
 export interface UserPageProps {
     params: any;
@@ -42,7 +42,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
         this.getMightLikeUsers = this.getMightLikeUsers.bind(this);
         this.getAge = this.getAge.bind(this);
         this.getProfilePhoto = this.getProfilePhoto.bind(this);
-        this.fromAddress = this.fromAddress.bind(this);
+        // this.fromAddress = this.fromAddress.bind(this);
 
         this.state = {
             user: [],
@@ -61,19 +61,19 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
         this.getUser();
     }
 
-    fromAddress() {
-        let address = this.state.user.country + ', ' + this.state.user.city;
-        let url = `${GOOGLE_API}?address=${encodeURI(address)}&key=${GEOCODE_API_KEY}`;
-        axios({
-            method: 'get',
-            url: url,
-            responseType: 'json'
-        }).then((res: any) => {
-            console.log(res);
-            const { lat, lng } = res.data.results[0].geometry.location;
-            this.setState({center: {lat, lng}});
-        });
-    }
+    // fromAddress() {
+    //     let address = this.state.user.country + ', ' + this.state.user.city;
+    //     let url = `${GOOGLE_API}?address=${encodeURI(address)}&key=${GEOCODE_API_KEY}`;
+    //     axios({
+    //         method: 'get',
+    //         url: url,
+    //         responseType: 'json'
+    //     }).then((res: any) => {
+    //         console.log(res);
+    //         const { lat, lng } = res.data.results[0].geometry.location;
+    //         this.setState({center: {lat, lng}});
+    //     });
+    // }
 
     getAge() {
         let age = parseInt(moment(this.state.user.dob, 'YYYY-MM-DD h:mm:ss').fromNow(), 10);
@@ -126,7 +126,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
             .then(this.getProfilePhoto)
             .then(this.getAge)
             .then(this.getMightLikeUsers)
-            .then(this.fromAddress)
+            // .then(this.fromAddress)
             .catch(err => console.log('error axios user :', err));
     }
 
@@ -145,18 +145,6 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
             { key: 'block', text: 'Block', icon: 'user' },
             { key: 'blockAndReport', text: 'Block and Report', icon: 'settings' },
         ];
-
-        const orientation = () => {
-            if (user.orientation === 's') {
-                return('Straight');
-            }
-            if (user.orientation === 'g') {
-                return('Gay');
-            }
-            if (user.orientation === 'b') {
-                return('Bi');
-            }
-        };
 
         return (
             <div className="main-container">
@@ -211,37 +199,10 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                         </div>
                     </Container>
                     <Container id="rightMiddleContainer">
-                        <GoogleMap center={this.state.center} zoom={this.state.zoom}/>
-                        <Container id="interests">
-                            <div className="flex">
-                                <p>Size : {user.size} cm</p> 
-                                <p>Has kids : {user.kids ? 'Yes' : 'No'}</p> 
-                                <p>Orientation : {orientation()}</p> 
-                            </ div>
-                        </ Container>
-                        <Divider />
+                        {/* <GoogleMap center={this.state.center} zoom={this.state.zoom}/> */}
                         <Container id="interests">
                             <Icon size="big" id="interestsIcon" color="grey" name="reddit alien"/>
                             <p>Foot, Computer, Science, Video Games, Music, ...</p> 
-                        </ Container>
-                        <Divider />
-                        <Container id="interests">
-                            <Icon size="big" id="interestsIcon" color="grey" name="world"/>
-                            <Container>
-                                <p>Ethnicity : {user.ethnicity}</p> 
-                                <p>Religion : {user.religion}</p> 
-                                <p>Status : {user.status}</p>
-                            </ Container>
-                        </ Container>
-                        <Divider />                        
-                        <Container id="interests">
-                            <Icon size="big" id="interestsIcon" color="grey" name="bar"/>
-                            <Container>
-                                <p>Smoke : {user.smoke}</p>
-                                <p>Drink : {user.drink}</p>
-                                <p>Drugs : {user.drugs}</p>
-                                <p>Diet : {user.diet}</p>
-                            </ Container>
                         </ Container>
                         <Divider />
                         <h2>You might like :</h2>

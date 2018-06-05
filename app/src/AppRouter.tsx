@@ -20,7 +20,7 @@ export class AppRouter extends React.Component<{}> {
         return(
             <App isAuth>
                 <Switch>
-                    <Route path="/user/:idUser" component={UserPage}/>
+                    <Route exact path="/user/:idUser" component={UserPage}/>
                     <GuestRoute exact path="/login" component={LoginPage}/>
                     <GuestRoute exact path="/signup" component={SignupPage}/>
                     <UserRoute path="/dashboard" component={DashboardPage}/>

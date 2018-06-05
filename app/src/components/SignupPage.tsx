@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { signup } from '../actions/auth';
 import NavigationRightGuest from './navigationBar/navigationRightGuest';
 import { Container } from 'semantic-ui-react';
-require('./SignupPage.css');
+require('./styles/SignupPage.css');
 
 export interface SignupPageProps {
     history: {
