@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Icon, Button, Image, Container, Dropdown } from 'semantic-ui-react';
 import NavigationRightUser from './navigationRightUser';
 require('./navigation.css');
 
@@ -12,10 +13,20 @@ export default class NavigationBar extends React.Component<{}> {
             <div id={'navigation'} className="fixed">
                 <div className="navLeft">
                     <h1 id="logo" className="navLogo"><a href="/">MATCHA</a></h1>
-                    <ul className="navLinks navItem">
-                        <li><a href="/search">Search</a></li>
-                        <li><a href="/matchs">Matchas</a></li>
-                    </ul>
+                    <div className="navLinks navItem">
+                        <span><Icon 
+                            className="navIconLeft"
+                            color="blue"
+                            name="search"
+                            size="big"
+                        /><h2 className="navTitleLeft">Search</h2></span>
+                        <span><Icon 
+                            className="navIconLeft"
+                            color="blue"
+                            name="clone"
+                            size="big"
+                        /><h2 className="navTitleLeft">Matchas</h2></span>
+                    </div>
                 </div>
                 <NavigationRightUser />
             </div>

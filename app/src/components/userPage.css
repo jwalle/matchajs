@@ -1,53 +1,215 @@
+*{
+  font-family: 'Open Sans', sans-serif;
+}
+
+/* Layout styles -----------------------------------*/
+@media (min-width: 620px) {
+  main {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  
+  section {
+    break-inside: avoid;
+  }
+}
+
+@media (min-width: 960px) {
+  main {
+     column-count: 3;
+  }
+}
+
+/* styles */
+
+body {
+  /* background-color: var(--blue); */
+  /* background-image: url('../../../public/images/signupBackground.jpeg'); */
+  font-family: 'Ubuntu', sans-serif;
+  color: #34495e;
+}
+
+main {    
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-top: 240px;
+}
+
+header {
+  position: fixed;
+  max-width: 1200px;
+  z-index: 100;
+  margin: 0 auto;
+  padding: 0;
+  left:0;
+  right: 0;
+}
+
+#plop1 {
+    overflow: hidden;
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    background: #242b31;
+    height: 210px;
+}
+
+#whole-bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-image: url('../../public/images/signupBackground.jpeg');
+    /* background-image: var(--bg); */
+}
+
+#header-bg {
+  object-fit: cover;
+  width: 100%;
+  opacity: 0.4;
+  z-index: -1;
+  height: 310px;
+  -webkit-filter: blur(25px);
+  -moz-filter: blur(25px);
+  -o-filter: blur(25px);
+  -ms-filter: blur(25px);
+  filter: blur(25px);
+}
+
+#main-bg {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  /* background: linear-gradient(1turn, #1d2731, #0b3c5d); */
+  background-color: var(--ivory);
+  height: 100%;
+  margin-top: -45px;
+}
+
+header img {
+	max-width: 120px;
+}
+	
+.title {
+  font-size: 2.0em;
+  text-align: center;
+  color: white;
+  margin: 0px;
+  margin-bottom: 5px
+}
+
+.location {
+  text-align: center;
+  margin: 0;
+  font-size: 1.1em;
+  color: gray;
+  margin-bottom: 10px  
+}
+
+.figure-img {
+  display: block;
+  width: 100%;
+  object: fit;
+}
+
+h2 {
+  font-size: 1.4em;
+  padding: 10px;
+}
+
+p {
+  margin-bottom: 1em;
+  padding: 0 10px;
+}
+
+.info-link {
+  text-decoration: none;
+  color: var(--gold);
+  padding: 10px;
+  display: block;
+}
+
+.options {
+  display: flex;
+  /* align-items: center; */
+  /* justify-content: space-around; */
+  background-color: var(--prussian);
+  height: 40px;
+}
+.options a {
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--sky);
+}
+
+.options a:hover {
+  box-shadow: inset 0 0 10px var(--ivory);
+  color: var(--gold);
+}
+
+.options-link {
+  text-decoration: none;
+  font-size: 0.9em;
+  color: var(--gold);
+}
+
+.options-msg{
+	/* background: green; */
+}
+
+section {
+  border: 2px solid #cccccc1f;
+  background-color: var(--prussian);
+  color: aliceblue;
+  margin-bottom: 20px;
+  padding: 10px;
+  overflow: hidden;
+}
+
+section h2 {
+  color: var(--gold);
+}
+
+.section-img {
+  display: block;
+  padding: 10px;
+  margin: 0 auto;
+}
+
+.bigtitle {
+  padding: 0;
+}
+
+.bigtitle-title {
+  color: white;
+  background-color: var(--red);
+  margin-bottom: 10px;
+}
+
+.bigbottom-link {
+  background-color: var(--green);
+  color: white;
+}
+
+.profile {
+  width: 80%;
+  border-radius: 50%;
+}
+
+@media (min-width: 620px) {
+  .options-link {
+    font-size: 1.4em;
+  }
+}
+
+/* OLD STUFF : */
+
 .flex {
     display: flex;
-}
-
-#topUserPage {
-    grid-column: 1/4;
-    grid-row: 1/2;
-    background-color: #101c29;
-}
-
-#middleUserPage {
-    grid-column: 1/4;
-    grid-row: 2/3;
-    background-color: #061f2f;
-}
-
-#middleCentralContainer {
-    position: relative;
-    grid-column: 2/3;
-    grid-row: 2/3;
-    color: white;
-    display: grid;
-    grid-template-columns: 540px 360px;
-  }
-
-#rightMiddleContainer {
-    grid-column: 2/3;
-}
-
-#topCentralContainer {
-    position: relative;
-    grid-column: 2/3;
-    grid-row: 1/2;
-    color: white;
-  }
-
-#topInfo {
-    position: absolute;
-    bottom: 20;
-    left: 200px;
-}
-
-.userImage {
-    bottom: -30px;
-    left: 20px;
-    position: absolute;
-}
-
-.likeButton {
-
 }
 
 .topIcons {
@@ -66,17 +228,6 @@
     padding-top: 20px;
     width: 350px;
     height: 400px;
-}
-
-#textOne {
-    grid-column: 1/2;
-    padding-top: 40px;
-    width: 500px;
-}
-
-#textOne p {
-    line-height: 1.8;
-    font-size: 1.1em;
 }
 
 #interests {

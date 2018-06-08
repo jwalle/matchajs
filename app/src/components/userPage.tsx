@@ -1,6 +1,7 @@
 import * as React from 'react';
 import axios from 'axios';
 import * as moment from 'moment';
+import ProfilBasics from './Profile/ProfileBasics';
 // import UserCard from './userCard';
 // import GoogleMap from './GoogleMap';
 // import GoogleMapReact from 'google-map-react';
@@ -134,86 +135,79 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
         const user = this.state.user;
         const flag = user.nat;
         const picture = this.state.picture;
-        const trigger = (
-            <Icon.Group size="big">
-                <Icon color="grey" name="user" />
-                <Icon size="large" color="blue" name="dont" />
-            </Icon.Group>
-          );
+        const gender = user.gender === 'male' ?
+            <Icon color="yellow" name="man" /> : <Icon color="yellow" name="woman" />;
 
         const blockOptions = [
             { key: 'block', text: 'Block', icon: 'user' },
             { key: 'blockAndReport', text: 'Block and Report', icon: 'settings' },
         ];
-
+        
         return (
-            <div className="main-container">
-                <div id="topUserPage" />
-                <div id="topCentralContainer">
-                    <div  className="userImage">
-                        <Image
+            <div>
+                <div id="whole-bg" />
+                <div id="plop1">
+                <img
+                    src={typeof(picture) === 'string' ? picture : 'http://via.placeholder.com/160'}
+                    alt="background"
+                    id="header-bg" // more specific
+                /></div>
+                
+                <header>
+                        <img
                          src={typeof(picture) === 'string' ? picture : 'http://via.placeholder.com/160'}
                          alt="Profil picture"
+                         className="section-img profile" // more specific
                         />
-                    </div>
-                    <div id="topInfo">
-                        <Container id="login">
-                            <h2>{user.login}<Icon name="circle" color="green" /></h2>
-                            {/* <Icon name="circle notched" color="grey"/> */}{/* TODO: isConnected or not*/} 
-                        </ Container>
-                        <h3>
-                            <Flag name={user.nat} />
-                            {this.state.age} - {user.gender === 'male' ? 'M' : 'F'}
-                        </h3>
-                        <p>{user.city}, {user.country}</p>
-                    </div>
-                    <div className="topIcons">
-                        <Icon
-                            name="comments"
-                            size="big"
-                            color="blue"
-                        />
-                        <Icon 
-                            name="like"
-                            size="big"
-                            className="likeButton"
-                            color="grey"
-                        />
-                        <Dropdown trigger={trigger} options={blockOptions} pointing="top left" icon={null} />
-                    </div>
-                </div>
-                <div id="middleUserPage" />
-                <div id="middleCentralContainer">
-                   <Container id="texts">
-                    <div id="textOne">
-                            <h3>Who I am</h3>
-                            <p>{user.text1}</p>                            
-                        </div>
-                        <div id="textOne">
-                            <h3>What I like doing</h3>
-                            <p>{user.text2}</p>
-                        </div>
-                        <div id="textOne">
-                            <h3>What I am looking for</h3>
-                            <p>{user.text3}</p>                            
-                        </div>
-                    </Container>
-                    <Container id="rightMiddleContainer">
+                        <h1 className="title">{user.firstname} {user.lastname} <Flag name={user.nat} /></h1>
+                        <p className="location">{this.state.age} • {gender}• {user.city}, {user.country}</p>
+                        {/* <h2>{user.login}<Icon name="circle" color="green" /></h2> */}
+                        <div className="options">
+                            <a href="#" className="options-link">Something ?</a>
+                            <a href="#" className="options-link">Something ?</a>
+                            <a href="#" className="options-link options-msg">Message</a>
+                            <a href="#" className="options-link">
+                                <Icon 
+                                    name="star"
+                                    // size="big"
+                                    className="likeButton"
+                                    color="grey"
+                                />
+                            </a>
+                            <a href="#" className="options-link">
+                                ...
+                            </a>
+                        </ div>
+                </header>
+                <main>
+                    <div id="main-bg" />
+                    <section>
+                        <h2>Who I am</h2>
+                        <p>{user.text1}</p>                            
+                    </ section>
+                    <section>
+                        <h2>What I like doing</h2>
+                        <p>{user.text2}</p>
+                    </section>
+                    <section>
+                        <h2>What I am looking for</h2>
+                        <p>{user.text3}</p>                            
+                    </section>
+                    <section>
+                        <h2>About me</h2>
+                        <ProfilBasics user={user} />
+                    </section>
+                    <section>
+                        <img className="section-img" src="../../public/images/googleMap.png" alt="google PAM" />
+                    </section>
                         {/* <GoogleMap center={this.state.center} zoom={this.state.zoom}/> */}
-                        <Container id="interests">
+                        <section>
+                            <h2>My interest</h2>                        
                             <Icon size="big" id="interestsIcon" color="grey" name="reddit alien"/>
                             <p>Foot, Computer, Science, Video Games, Music, ...</p> 
-                        </ Container>
-                        <Divider />
-                        <h2>You might like :</h2>
-                        <Container id="mightLike">
-                            <div className="mightLikeUser">
-                                <a href="/profile   " className="mightLikeUserImage">
-                                    <span className="mightLikeUserThumb">
-                                        <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
-                                    </span>
-                                </a>
-                            </div>
+                        </ section>
+                        <section>
+                        <h2>You might also like</h2>                        
                             <div className="mightLikeUser">
                                 <a href="/profile" className="mightLikeUserImage">
                                     <span className="mightLikeUserThumb">
@@ -249,9 +243,15 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                                     </span>
                                 </a>
                             </div>
-                        </ Container>
-                    </ Container>
-                </div>
+                            <div className="mightLikeUser">
+                                <a href="/profile" className="mightLikeUserImage">
+                                    <span className="mightLikeUserThumb">
+                                        <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
+                                    </span>
+                                </a>
+                            </div>
+                    </ section>
+                </main>
             </div>
         );
     }

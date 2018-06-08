@@ -96,16 +96,14 @@
     color: white;
 }
 
-#basics {
-    margin-top: 20px;
-    padding: 20px;
-    border-radius: 10px; 
+#basics .divider{
+    margin: 5px;
 }
 
-#basics:hover {
+/* #basics:hover {
     margin-top: 20px;
     background-color: #07314c;
-}
+} */
 
 .basicRow {
     position: relative;

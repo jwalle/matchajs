@@ -1,4 +1,24 @@
+:root {
+  --main-line-color: #0000003d;
+  --main-bg-color: coral;
+  --main-txt-color: blue; 
+  --main-padding: 15px;
+  --blue: #34495e;
+  --green: #e74c3c;
+  --yellow: #C9C243;
+  --orange: #FFA644;
+  --red: #3498db;
+
+  --prussian: #0b3c5d;
+  --sky: #328cc1;
+  --gold: #d9b310;
+  --ivory: #1d2731;
+  --bg:  url('../../../public/images/signupBackground.jpeg');
+}
+
+
 body {
+    background-image: var(--bg);    
     padding-top: 70px;
   }
   .table .btn-link {
