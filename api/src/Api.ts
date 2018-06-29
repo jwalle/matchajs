@@ -7,7 +7,8 @@ import * as multer from 'multer';
 import * as download from 'download-file';
 import * as bodyParser from 'body-parser';
 
-import  UserRouter from './routes/userRoutes';
+import UserRouter from './routes/userRoutes';
+import TagsRouter from './routes/tagsRoutes';
 
 class Api {
     public express: express.Application;
@@ -21,9 +22,17 @@ class Api {
         this.routes();
     }
 
+    
+
     private middleware() : void {
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({extended : false}));
+        this.express.use(function(req, res, next) {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            next();
+          });
+          
     }
 
     private routes() : void {
@@ -36,6 +45,7 @@ class Api {
         });
         this.express.use('/', router);
         this.express.use('/api', UserRouter.router);
+        this.express.use('/api/tags', TagsRouter.router);
     }
 }
 

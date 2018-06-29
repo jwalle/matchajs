@@ -6,7 +6,7 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { logout } from '../actions/auth';
 require('./styles/ContentPage.css');
-const localeIp = '/api';
+// const localeIp = '/api';
 
 export interface ContentPageProps {
   isAuth: boolean;
@@ -23,7 +23,7 @@ class ContentPage extends React.Component<ContentPageProps, {}> {
   makeUser() {
     axios({
       method: 'get',
-      url: localeIp + '/makeUser/',
+      url: '/api/makeUser/',
       responseType: 'json'
     }).catch(err => console.log('getLogin error : ' + err));
   }

@@ -30,7 +30,7 @@ export default class ProfileBasics extends React.Component<ProfileBasicsProps, {
         // TODO : find how to add IconProps
         let basics: { id: number, icon: any, name: string, value: string}[] = [
             {id: 1, icon: 'intergender', name: 'Orientation', value: orientation()},
-            {id: 2, icon: 'child', name: 'Kids', value: user.kids ? user.kids + 'child(s)' : 'None'},
+            {id: 2, icon: 'child', name: 'Kid(s)', value: user.kids ? 'Yes' : 'None'},
             {id: 3, icon: 'users', name: 'Status', value: user.status},
             {id: 4, icon: 'smile', name: 'Ethnicity', value: user.ethnicity},
             {id: 5, icon: 'resize vertical', name: 'Size', value: user.size + ' cm'},

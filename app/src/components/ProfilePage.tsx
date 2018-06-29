@@ -10,7 +10,6 @@ require('./styles/profilePage.css');
 
 // declare var Promise: any;
 
-const localeIp = '/api';
 // const username = 'silvermeercat438';
 const id = 2;
 
@@ -58,7 +57,7 @@ export default class ProfilePage extends React.Component<ProfilePageProps, Profi
         let self = this;
         axios({
             method: 'get',
-            url: localeIp + '/getProfilePhoto/' + self.state.user.id,
+            url: '/api/getProfilePhoto/' + self.state.user.id,
             responseType: 'json'
         })
             .then(res => {
@@ -92,7 +91,7 @@ export default class ProfilePage extends React.Component<ProfilePageProps, Profi
         let self = this;
         axios({
             method: 'get',
-            url: localeIp + '/getUser/' + id,
+            url: '/api/getUser/' + id,
             responseType: 'json'
         })
             .then(res => {
@@ -110,7 +109,7 @@ export default class ProfilePage extends React.Component<ProfilePageProps, Profi
         let self = this;
         axios({
             method: 'post',
-            url: localeIp + '/updateUserInfo',
+            url: '/api/updateUserInfo',
             data: data
         }).then(res => {
             if (res.status === 200) {

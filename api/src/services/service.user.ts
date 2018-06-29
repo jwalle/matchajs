@@ -2,7 +2,7 @@ import * as Download from 'download-file';
 import * as jwt from "jsonwebtoken";
 import * as randomstring from "randomstring";
 import * as loremIpsum from "lorem-ipsum";
-const countriesJSON = require('../../data/countries.json');
+const countriesJSON = require('../../data/countries');
 
 let db = require('../db');
 
@@ -34,6 +34,7 @@ class userServices {
     }
 
     public selectRequest(sql : string, data : any) : Promise<object> {
+        console.log(sql, data);
         return new Promise(function (resolve, reject) {
             db.pool.getConnection(function(err, connection) {
                 connection.query(sql, data, function (err, result) {
@@ -46,7 +47,7 @@ class userServices {
         })
     }
 
-    public updateUserInfo(data) { 
+    public updateUserInfo(data) {
         console.log("------>", data);
         let sql = "UPDATE users SET login=?, firstname=?, lastname=?, email=?, dob=?, country=?, city=?, text1=?, text2=?, text3=? WHERE id=?"
         let values = [
@@ -87,12 +88,13 @@ class userServices {
 
     public downloadPhoto(url, login) {
         return new Promise((resolve, reject) => {
-            let directory = "./data/photos/";
+            let directory = "../app/data/photos/";                      // Docker: Check if it work
             let filename = login + '-' + Date.now() + '.jpg';
             let dlOptions = {
                 directory: directory,
                 filename: filename
             };
+            console.log('CCCCC');
             Download(url, dlOptions, function (err) {
                 if (err)
                     reject(err);
@@ -115,9 +117,9 @@ class userServices {
             user.city,
             'FR' //TODO : countries API/Json
         ];
-        return (this.selectRequest(sql, values)); //.insertId; 
+        return (this.selectRequest(sql, values)); //.insertId;
     };
-    
+
     insertNewUser(user) : Promise<object>  {
         let sql = "INSERT INTO users (\
             login,\
@@ -157,8 +159,8 @@ class userServices {
             user.email,
             user.gender[0],
             randomstring.generate({length: 1, charset:'sbg'}), // orientation
-            user.dob,
-            user.registered,
+            new Date(user.dob.date),
+            new Date(user.registered.date),
             city,
             country, // ???
             user.nat.toLowerCase(),
@@ -179,7 +181,7 @@ class userServices {
             diet.randomElement(),
             Math.random() >= 0.5 // Boolean random
         ];
-        return (this.selectRequest(sql, values)); //.insertId; 
+        return (this.selectRequest(sql, values)); //.insertId;
     };
 
     public insertNewPhoto(link, idUser) {
@@ -206,7 +208,12 @@ const drink = ['Yes', 'No', 'Sometimes'];
 const drugs = ['Yes', 'No', 'Sometimes'];
 const sign = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'gemini', 'Cancer', 'leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
 const diet = ['Omnivore', 'Vegetarian', 'Vegan'];
-
+const indoorTags = ['Music', 'Foot', 'Computer', 'Science', 'Gaming', 'Movies', 'Acting', 'Cooking', 'Crocheting', 'Crossword puzzles',
+                'Dance', 'DIY', 'Fashion', 'Homebrewing', 'CTG', 'Sculpting', 'Reading', 'WoodWorking', 'Painting', 'Playing musical instruments',
+                'Singing', 'Watching TV', 'drawing', 'Yoga'];
+const outdoorTags = ['Archery', 'Astronomy', 'Basketball', 'Camping', 'Canyoning', 'Driving', 'Fishing', 'Geocaching', 'Hiking',
+                'Horseback Riding', 'Hunting', 'Jogging', 'Martial Art', 'Motor sports', 'Paintball', 'Parkour', 'Photography', 'Rock climbing',
+                'Roller skating', 'Skateboarding', 'Rugby', 'Skiing', 'Snowboarding', 'Walking'];              
 declare global {
     interface Array<T> {
         randomElement(): T;

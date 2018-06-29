@@ -66,21 +66,29 @@ CREATE TABLE `users` (
 -- Table structure for table `user_interests`
 --
 
-CREATE TABLE interest (
-`interest_name` VARCHAR(20) NOT NULL PRIMARY KEY,
-`color` VARCHAR(20)
+CREATE TABLE tags (
+`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`tag` VARCHAR(20) NOT NULL,
+`in_or_out` VARCHAR(3) NOT NULL
 );
 
+INSERT INTO tags (tag, in_or_out) VALUES ('Music', 'in'), ('Foot', 'in'), ('Computer', 'in'), ('Science', 'in'), ('Gaming', 'in'), ('Movies', 'in'), ('Acting', 'in'), ('Cooking', 'in'), ('Crocheting', 'in'), ('Crossword puzzles', 'in'),
+                ('Dance', 'in'), ('DIY', 'in'), ('Fashion', 'in'), ('Homebrewing', 'in'), ('CTG', 'in'), ('Sculpting', 'in'), ('Reading', 'in'), ('WoodWorking', 'in'), ('Painting', 'in'), ('Playing music', 'in'),
+                ('Singing', 'in'), ('Watching TV', 'in'), ('drawing', 'in'), ('Yoga', 'in');
+
+INSERT INTO tags (tag, in_or_out) VALUES ('Archery', 'out'), ('Astronomy', 'out'), ('Basketball', 'out'), ('Camping', 'out'), ('Canyoning', 'out'), ('Driving', 'out'), ('Fishing', 'out'), ('Geocaching', 'out'), ('Hiking', 'out'),
+                ('Horseback Riding', 'out'), ('Hunting', 'out'), ('Jogging', 'out'), ('Martial Art', 'out'), ('Motor sports', 'out'), ('Paintball', 'out'), ('Parkour', 'out'), ('Photography', 'out'), ('Rock climbing', 'out'),
+                ('Roller skating', 'out'), ('Skateboarding', 'out'), ('Rugby', 'out'), ('Skiing', 'out'), ('Snowboarding', 'out'), ('Walking', 'out');
 --
 -- Table structure for table `user_interests`
 --
 
-CREATE TABLE user_interests (
+CREATE TABLE users_tags (
 `user_id` INT NOT NULL,
-`interest_name` VARCHAR(20) NOT NULL,
-PRIMARY KEY(`user_id`, `interest_name`)
+`tag_id` INT NOT NULL,
+PRIMARY KEY(`user_id`, `tag_id`),
+CONSTRAINT `tagUpdate` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
 
 --
 -- Table structure for table `photos`

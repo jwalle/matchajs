@@ -1,7 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import userServices from '../services/service.user'
-import { createInterface } from 'readline';
-import serviceUser from '../services/service.user';
 let request = require('request');
 
 export interface userType{
@@ -118,8 +116,8 @@ export class UserRouter {
         userServices.getUserByEmail(credentials.email)
         .then((results: any) => {
             const user: any  = results[0];
-            if (user && serviceUser.isValidPassword(user.password , credentials.password)) {
-                res.json({user: serviceUser.toAuthJSON(user.email)})
+            if (user && userServices.isValidPassword(user.password , credentials.password)) {
+                res.json({user: userServices.toAuthJSON(user.email)})
             } else {
                 res.status(400).json({errors: { global: "Invalid credentials"}})                
             }
@@ -142,12 +140,11 @@ export class UserRouter {
         userServices.updateUserInfo(req.body)
         .then((results: any) => {
             if (results) {
-                console.log('WATTTTT', results);
                 res.status(200).end();
             }
         })
     }
-    
+
     init() {
         this.router.get('/makeUser', this.makeOneUser.bind(this));
         this.router.get('/getProfilePhoto/:id', this.getUserProfilePhoto);

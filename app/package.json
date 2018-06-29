@@ -12,6 +12,11 @@
     "start": "./node_modules/.bin/webpack -d --watch",
     "build": "./node_modules/.bin/webpack"
   },
+  "proxy": {
+    "/api":{
+      "target": "http://localhost:3000"
+    }
+  },
   "license": "MIT",
   "dependencies": {
     "@types/dotenv": "^4.0.3",
@@ -51,7 +56,7 @@
     "redux-thunk": "^2.2.0",
     "request": "^2.83.0",
     "semantic-ui-css": "^2.2.14",
-    "semantic-ui-react": "^0.78.2",
+    "semantic-ui-react": "^0.81.1",
     "ts-loader": "^3.4.0",
     "tslint": "^5.9.1",
     "tslint-react": "^3.4.0",

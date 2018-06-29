@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import rootReducer from './rootReducer';
 import { userLoggedIn } from './actions/auth';
-import 'semantic-ui-css/semantic.min.css';
+// import 'semantic-ui-css/semantic.min.css';
 import { HashRouter } from 'react-router-dom';
 
 const store = createStore(

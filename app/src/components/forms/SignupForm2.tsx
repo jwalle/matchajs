@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Form, FormGroup, Button, Dropdown, Container } from 'semantic-ui-react';
-import * as Validator from 'validator';
+import { Form, Button, Container } from 'semantic-ui-react';
 import Danger from '../messages/Message';
 import FormDate from './FormDate';
 import FormLocation from './FormLocation';

@@ -51,7 +51,7 @@ export default class UpdateUserInfoForm extends React.Component < UpdateUserInfo
     }
 
     // Rename a property inside an object. BAD.
-    renameProp = (oldProp: any, newProp: any, {[oldProp]: old, ...others }): any => {
+    renameProp = (oldProp: string, newProp: string, {[oldProp]: old, ...others }): any => {
         return {
             [newProp]: old,
             ...others

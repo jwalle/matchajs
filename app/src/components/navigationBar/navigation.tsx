@@ -12,7 +12,12 @@ export default class NavigationBar extends React.Component<{}> {
         return (
             <div id={'navigation'} className="fixed">
                 <div className="navLeft">
-                    <h1 id="logo" className="navLogo"><a href="/">MATCHA</a></h1>
+                    <div>
+                        <a href="/" id="logoLink">
+                            <img src="../../data/images/matcha3.png" id="logoImg" alt="logo"/>
+                            <h1>atcha</h1>
+                        </a>
+                    </div>
                     <div className="navLinks navItem">
                         <span><Icon 
                             className="navIconLeft"

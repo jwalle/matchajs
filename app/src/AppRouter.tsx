@@ -13,6 +13,7 @@ import ProfilePage from './components/ProfilePage';
 import LoginPage from './components/LoginPage';
 import SignupPage from './components/SignupPage';
 import DashboardPage from './components/dashboard';
+import FirstLoginPage from './components/FirstLoginPage';
 
 export class AppRouter extends React.Component<{}> {
 
@@ -25,6 +26,7 @@ export class AppRouter extends React.Component<{}> {
                     <GuestRoute exact path="/signup" component={SignupPage}/>
                     <UserRoute path="/dashboard" component={DashboardPage}/>
                     <UserRoute path="/profile" component={ProfilePage}/>
+                    <UserRoute path="/first" component={FirstLoginPage}/>
                     <Route exact path="/" component={ContentPage} />
                     <Route component={NotFoundPage} />
                 </Switch>

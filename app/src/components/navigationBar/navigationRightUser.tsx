@@ -24,7 +24,7 @@ export default class NavigationBar extends React.Component {
                         <a href="/profile" className="navUserImage">
                             <span className="navUserThumb">
                                 {/* <img src="http://via.placeholder.com/120x120" alt="pseudo here" /> */}
-                            <img src="../../../data/photos/goldenladybug336-1527606457098.jpg" alt="pseudo here" />
+                            <img src="../../../data/photos/angrylion369-1529310693724.jpg" alt="pseudo here" />
                             </span>
                         </a>
                     </div>

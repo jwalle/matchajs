@@ -11,12 +11,30 @@
     right: 0;
 }
 
+#logoLink {
+    position: absolute;
+}
+
+#logoImg {
+    height: 66px;
+}
+
+#logoLink h1 {
+    display: none;
+    font-size: 40px;
+    font-family: 'champagne & limousines';
+    color: var(--gold);
+    position: absolute;
+    left: 60px;
+    top: 19px;
+}
+
 .navLinks {
     display: flex;
     align-items: center;
     height: 100%;
     position: absolute;
-    margin-left: 140px;
+    margin-left: 70px;
 }
 
 .navLinks h2 {
@@ -35,7 +53,7 @@
     display: flex;
     align-items: center;
     height: 100%;
-    font-size: 0.8em;
+    font-size: 0.7em;
 }
 
 .top_signup_right {
@@ -113,7 +131,11 @@
 }
 
 @media (min-width: 620px) {
-    .navLinks h2 {
+    .navLinks {
+        margin-left: 160px;
+    }
+
+    .navLinks h2, #logoLink h1 {
         display: block;
     }
 

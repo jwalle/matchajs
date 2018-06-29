@@ -10,11 +10,6 @@ import { Flag, Divider, Icon, Button, Image, Container, Dropdown } from 'semanti
 require('./userPage.css');
 // let googleMap = require('../../public/images/googleMap.png');
 // declare var Promise: any;
-
-// const localeIp = "http://localhost/api";
-// const localeIp = "http://192.168.99.100/api";
-// const localeIp = "http://192.168.99.100/api";
-const localeIp = '/api';
 // const GOOGLE_API = 'https://maps.google.com/maps/api/geocode/json';
 // const GEOCODE_API_KEY = 'AIzaSyBah4ewvWs7mNaM9QaEuc_JwnvrnCCsZ5M';
 
@@ -85,7 +80,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
         let self = this;
         axios({
             method: 'post',
-            url: localeIp + '/getMightLike/' + self.state.user.id,
+            url: '/api/getMightLike/' + self.state.user.id,
             responseType: 'json'
         })
             .then(res => {
@@ -101,7 +96,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
         let self = this;
         axios({
             method: 'get',
-            url: localeIp + '/getProfilePhoto/' + self.state.user.id,
+            url: '/api/getProfilePhoto/' + self.state.user.id,
             responseType: 'json'
         })
             .then(res => {
@@ -116,7 +111,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
         let self = this;
         axios({
             method: 'get',
-            url: localeIp + '/getUser/' + this.props.match.params.idUser,
+            url: '/api/getUser/' + this.props.match.params.idUser,
             responseType: 'json'
         })
             .then(res => {
@@ -151,8 +146,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                     src={typeof(picture) === 'string' ? picture : 'http://via.placeholder.com/160'}
                     alt="background"
                     id="header-bg" // more specific
-                /></div>
-                
+                /></div>  
                 <header>
                         <img
                          src={typeof(picture) === 'string' ? picture : 'http://via.placeholder.com/160'}
@@ -179,10 +173,10 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                             </a>
                         </ div>
                 </header>
-                <main>
+                <main id="userPageMain">
                     <div id="main-bg" />
                     <section>
-                        <h2>Who I am</h2>
+                        <h2>Who I am plop</h2>
                         <p>{user.text1}</p>                            
                     </ section>
                     <section>
@@ -198,7 +192,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                         <ProfilBasics user={user} />
                     </section>
                     <section>
-                        <img className="section-img" src="../../public/images/googleMap.png" alt="google PAM" />
+                        <img className="section-img" src="../../data/images/googleMap.png" alt="google PAM" />
                     </section>
                         {/* <GoogleMap center={this.state.center} zoom={this.state.zoom}/> */}
                         <section>

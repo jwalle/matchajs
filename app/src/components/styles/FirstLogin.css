@@ -1,0 +1,64 @@
+body {
+    /* background-color: var(--blue); */
+    /* background-image: url('../../../public/images/signupBackground.jpeg'); */
+    font-family: 'Ubuntu', sans-serif;
+    color: #34495e;
+  }
+  
+  main {    
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 1.4em;
+    padding: 10px;
+  }
+  
+section {
+    border: 2px solid #cccccc1f;
+    background-color: var(--prussian);
+    color: aliceblue;
+    margin-bottom: 20px;
+    padding: 10px;
+    overflow: hidden;
+  }
+
+  section h2 {
+    color: var(--gold);
+  }
+
+  #mainFirstLogin {
+    padding: 20px;
+  }
+
+  .tagBox {
+    padding: 5px;
+  }
+
+  .tagBox label {
+    color: white;
+  }
+
+  #mainFirstLogin section{
+
+  }
+
+  .tags {
+    border: 2px solid #cccccc1f;
+    background-color: var(--prussian);
+    color: aliceblue;
+    margin-bottom: 20px;
+    padding: 10px;
+    overflow: hidden;
+  }
+
+  #tagBoxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  input[type=checkbox] {
+    margin-right: 10;
+  }
