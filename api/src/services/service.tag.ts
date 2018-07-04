@@ -18,7 +18,7 @@ class tagServices {
         })
     }
 
-    public insertNewTag(in_or_out: string, tag: string) {
+    public addTag(tag: string, in_or_out: string) {
         let sql = "INSERT INTO tags (tag, in_or_out) VALUE (?, ?)";
         let values = [
             tag,

@@ -1,11 +1,13 @@
 import * as React from 'react';
 import axios from 'axios';
+const path = require('path');
 import * as moment from 'moment';
 import ProfilBasics from './Profile/ProfileBasics';
 // import UserCard from './userCard';
 // import GoogleMap from './GoogleMap';
 // import GoogleMapReact from 'google-map-react';
 import { Flag, Divider, Icon, Button, Image, Container, Dropdown } from 'semantic-ui-react';
+const PHOTOS_DIR = path.resolve(__dirname, 'data/photos/');
 
 require('./userPage.css');
 // let googleMap = require('../../public/images/googleMap.png');
@@ -20,7 +22,7 @@ export interface UserPageProps {
 
 export interface UserPageState {
     user: any;
-    picture: any;
+    picture: string;
     age: any;
     mightLike: any;
     center: {
@@ -42,7 +44,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
 
         this.state = {
             user: [],
-            picture: [],
+            picture: '',
             age: 1,
             mightLike: [],
             center: {
@@ -101,7 +103,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
         })
             .then(res => {
                 self.setState({
-                    picture: require(`../../data/photos/${res.data[0].link}`), // plop
+                    picture: PHOTOS_DIR + '/' + res.data[0].link, // plop
                 });
             })
             .catch(err => console.log('error axios profilePhoto :', err));
@@ -137,7 +139,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
             { key: 'block', text: 'Block', icon: 'user' },
             { key: 'blockAndReport', text: 'Block and Report', icon: 'settings' },
         ];
-        
+        console.log(picture);
         return (
             <div>
                 <div id="whole-bg" />

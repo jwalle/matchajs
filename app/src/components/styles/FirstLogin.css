@@ -9,6 +9,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    background: var(--ivory);
   }
 
   h2 {
@@ -62,3 +63,23 @@ section {
   input[type=checkbox] {
     margin-right: 10;
   }
+
+input[type=text] {
+  font-size: 16px;
+  color: black;
+  border-color: #cccccc;
+  border-style: solid;
+  text-align: left;
+  padding: 5px;
+  border-width: 1px;
+  border-radius: 0px;
+}
+
+.tagTextInput {
+  margin: 10px;
+  margin-bottom: 5px;
+}
+
+.addTagButton {
+  color: black;
+}

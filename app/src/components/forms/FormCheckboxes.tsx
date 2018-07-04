@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as _ from 'lodash';
 import { Header } from 'semantic-ui-react';
 import Checkbox from './FormCheckbox';
 import { Danger, Info } from '../messages/Message';
@@ -48,10 +49,18 @@ export default class FormCheckboxes extends React.Component<FormCheckboxesProps,
       }
   }
 
+  tagExist = (tag: string): boolean => {
+    if (_.find(this.props.tags, {tag: tag})) {
+        return true;
+    }
+    return false;
+  }
+
   validate = (tag: string) => {
     const errors: any = {};
     if (tag.length > 10) { errors.tag = 'tag is too long'; }
     if (!tag) { errors.tag = 'please enter a tag'; }
+    if (this.tagExist(tag)) { errors.tag = 'this tag already exist !'}
     return errors;
 }
 
@@ -70,10 +79,8 @@ export default class FormCheckboxes extends React.Component<FormCheckboxesProps,
             <div>
                 <form onSubmit={this.handleSubmit}>
                 {errors.tag && <Danger title="tag" text={errors.tag} />}
-                    <label>Add your own tag :
-                        <input type="text" value={addTagValue} onChange={this.handleChangeAddTag}/>
-                    </label>    
-                    <input type="submit" value="Add" />
+                        <input type="text" placeholder="Add your own !" className="tagTextInput" value={addTagValue} onChange={this.handleChangeAddTag}/>
+                        <input type="submit" value="+" className="addTagButton" />
                 </form>
             </div> 
         </div>

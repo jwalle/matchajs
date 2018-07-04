@@ -10,6 +10,21 @@ export class tagsRouter {
         this.init();
     }
 
+    // @route   POST api/tags
+    // @desc    add a tag
+    // @access  Public
+    public addTag(req: Request, res: Response, next: NextFunction): void {
+        const { newTag, inOrOut } = req.body;
+        tagsService.addTag(newTag, inOrOut)
+        .then((results: any) => {
+            if (results)
+                res.status(200).end;
+        })
+        .catch((err) => {
+            console.log("addTag error :" + err);
+        });
+    }
+
     // @route   GET api/tags
     // @desc    Get all Item
     // @access  Public
@@ -32,6 +47,7 @@ export class tagsRouter {
 
     init() {
         this.router.get('/getAll', this.getAll)
+        this.router.post('/addTag', this.addTag)
         console.log('route READY.');
     }
 }

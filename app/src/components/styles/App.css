@@ -13,7 +13,7 @@
   --sky: #328cc1;
   --gold: #d9b310;
   --ivory: #1d2731;
-  --bg:  url('../../../data/images/signupBackground.jpeg');
+  /* --bg:  url('../../../data/images/signupBackground.jpeg'); */
 }
 
 @font-face {
@@ -50,7 +50,7 @@ body {
 }
 
 .guest-container {
-  background-image: url('../../../data/images/signupBackground.jpeg');
+  /* background-image: url('../../../data/images/signupBackground.jpeg'); */
   background-size: cover;
   background-position: center;
   overflow: hidden;

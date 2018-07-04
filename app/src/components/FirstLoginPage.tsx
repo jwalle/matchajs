@@ -64,6 +64,20 @@ class FirstLogin extends React.Component <FirstLoginProps, FirstLoginState> {
             .catch(err => console.log('error axios getTags :', err));
     }
 
+    addTag = (newTag : string, inOrOut: string) => {
+        let self = this;
+        axios({
+            method: 'post',
+            url: '/api/tags/addTag',
+            responseType: 'json',
+            data: {
+                newTag: newTag,
+                inOrOut: inOrOut
+            }
+        })
+        .catch(err => console.log('error axios getTags :', err));
+    }
+
     toggleCheckbox(tag: string) {
         let newState = Object.assign({}, this.state.data);
         let index = this.state.data.tags.findIndex(x => x.tag === tag);
@@ -76,7 +90,7 @@ class FirstLogin extends React.Component <FirstLoginProps, FirstLoginState> {
     }
 
     submitNewTag = (value: string, inOut: string) => {
-        console.log(inOut, value);
+        this.addTag(value, inOut);
     }
 
     handleClose = () => {

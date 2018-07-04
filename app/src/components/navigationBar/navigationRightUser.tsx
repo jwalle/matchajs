@@ -1,7 +1,11 @@
 import * as React from 'react';
-import { Icon, Button, Image, Container, Dropdown } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 
-export default class NavigationBar extends React.Component {
+export interface NavigationBarProps {
+    picture: string;
+}
+
+export default class NavigationBar extends React.Component<NavigationBarProps, {}> {
     render() {
         return (
                 <div className="navRight">
@@ -24,7 +28,7 @@ export default class NavigationBar extends React.Component {
                         <a href="/profile" className="navUserImage">
                             <span className="navUserThumb">
                                 {/* <img src="http://via.placeholder.com/120x120" alt="pseudo here" /> */}
-                            <img src="../../../data/photos/angrylion369-1529310693724.jpg" alt="pseudo here" />
+                            <img src={this.props.picture} alt="pseudo here" />
                             </span>
                         </a>
                     </div>

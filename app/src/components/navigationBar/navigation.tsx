@@ -1,12 +1,42 @@
 import * as React from 'react';
 import { Icon, Button, Image, Container, Dropdown } from 'semantic-ui-react';
 import NavigationRightUser from './navigationRightUser';
+import axios from 'axios';
+const path = require('path');
+const PHOTOS_DIR = path.resolve(__dirname, 'data/photos/');
 require('./navigation.css');
 
-export default class NavigationBar extends React.Component<{}> {
+export interface NavigationBarState {
+    picture: string;
+}
+
+export default class NavigationBar extends React.Component<{}, NavigationBarState> {
     constructor(props: any) {
-        super(props);    
+        super(props);
+
+        this.state = {
+            picture: '',
+        }
       }
+
+      componentWillMount() {
+          this.getProfilePhoto();
+      }
+
+      getProfilePhoto = () => {
+        let self = this;
+        axios({
+            method: 'get',
+            url: '/api/getProfilePhoto/1',
+            responseType: 'json'
+        })
+            .then(res => {
+                self.setState({
+                    picture: PHOTOS_DIR + '/' + res.data[0].link, // plop
+                });
+            })
+            .catch(err => console.log('error axios profilePhoto :', err));
+    }
 
     render() {
         return (
@@ -33,7 +63,7 @@ export default class NavigationBar extends React.Component<{}> {
                         /><h2 className="navTitleLeft">Matchas</h2></span>
                     </div>
                 </div>
-                <NavigationRightUser />
+                <NavigationRightUser picture={this.state.picture} />
             </div>
         );
     }
