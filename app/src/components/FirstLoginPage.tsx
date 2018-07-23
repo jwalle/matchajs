@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import Danger from './messages/Message';
-import Checkbox from './forms/FormCheckbox';
 import Checkboxes from './forms/FormCheckboxes';
+import PhotoUploadForm from './forms/photoUploadForm';
 import { Container, Header, Button, Form, Icon } from 'semantic-ui-react';
 require('./styles/FirstLogin.css');
 import axios from 'axios';
@@ -64,21 +64,41 @@ class FirstLogin extends React.Component <FirstLoginProps, FirstLoginState> {
             .catch(err => console.log('error axios getTags :', err));
     }
 
-    addTag = (newTag : string, inOrOut: string) => {
+    insertNewTag = (tag: string, inOrOut: string, id: number) => {
+        let newTags = this.state.data.tags;
+        newTags.push({
+            id: id,
+            tag: tag,
+            in_or_out: inOrOut,
+            value: true
+        });
+        this.setState({
+            data: {
+                tags: newTags
+            }
+        });
+    }
+
+    addTag = (newTag: string, inOrOut: string) => {
         let self = this;
         axios({
             method: 'post',
             url: '/api/tags/addTag',
-            responseType: 'json',
             data: {
                 newTag: newTag,
                 inOrOut: inOrOut
             }
         })
+        .then(res => {
+            if (res.status === 200) {
+                let id = res.data.insertID;
+                self.insertNewTag(newTag, inOrOut, id);
+            }
+        })
         .catch(err => console.log('error axios getTags :', err));
     }
 
-    toggleCheckbox(tag: string) {
+    toggleCheckbox = (tag: string) => {
         let newState = Object.assign({}, this.state.data);
         let index = this.state.data.tags.findIndex(x => x.tag === tag);
         if (index === -1) {
@@ -97,8 +117,20 @@ class FirstLogin extends React.Component <FirstLoginProps, FirstLoginState> {
         console.log('close this'); // TODO
     }
 
+    setTagApi = (tagId: number, userId: number) => {
+        axios.post('/api/tags/setTag', {tagId, userId}).then(res => res.data.user);
+    }
+
     onSubmit = (e: any) => {
         e.preventDefault();
+        let userId = 1;
+        let tags = this.state.data.tags;
+        tags.forEach((tag) => {
+            if (tag.value === true) {
+                console.log(tag.tag);
+                this.setTagApi(tag.id, userId);
+            }
+        });
         // this.setState({loading: true});
         console.log('DATA SUBMITTED: ', this.state.data);
         // this.submit(this.state.data);
@@ -110,6 +142,9 @@ class FirstLogin extends React.Component <FirstLoginProps, FirstLoginState> {
 
         return(
           <main id="mainFirstLogin">
+            <div id="PhotoUpload">
+                <PhotoUploadForm />
+            </div>
             <form>
             {errors.global && <Danger title="Global error" text="Something went wrong" />}
             <Checkboxes inOut="in" tags={tags} toggleCheckbox={this.toggleCheckbox} submitNewTag={this.submitNewTag} />

@@ -17,8 +17,27 @@ export class tagsRouter {
         const { newTag, inOrOut } = req.body;
         tagsService.addTag(newTag, inOrOut)
         .then((results: any) => {
-            if (results)
-                res.status(200).end;
+            if (results){
+                // console.log('RESULTS ---> ',results);
+                res.status(200).send(results);
+            }
+        })
+        .catch((err) => {
+            console.log("addTag error :" + err);
+        });
+    }
+
+    // @route   POST api/tags
+    // @desc    set a tag to a user
+    // @access  Public
+    public setTag(req: Request, res: Response, next: NextFunction): void {
+        const { tagId, userId } = req.body;
+        tagsService.setTag(tagId, userId)
+        .then((results: any) => {
+            if (results){
+                // console.log('RESULTS ---> ',results);
+                res.status(200).send(results);
+            }
         })
         .catch((err) => {
             console.log("addTag error :" + err);
@@ -48,6 +67,7 @@ export class tagsRouter {
     init() {
         this.router.get('/getAll', this.getAll)
         this.router.post('/addTag', this.addTag)
+        this.router.post('/setTag', this.setTag)
         console.log('route READY.');
     }
 }

@@ -18,6 +18,15 @@ class tagServices {
         })
     }
 
+    public setTag(tagId: number, userId: number) {
+        let sql = "INSERT INTO users_tags (tag_id, user_id) VALUE (?, ?)";
+        let values = [
+            tagId,
+            userId,
+        ];
+        return (this.request(sql, values));
+    }
+
     public addTag(tag: string, in_or_out: string) {
         let sql = "INSERT INTO tags (tag, in_or_out) VALUE (?, ?)";
         let values = [
@@ -37,15 +46,6 @@ class tagServices {
         let sql = "SELECT * FROM tags WHERE id=?";
         let values = [
             id
-        ];
-        return (this.request(sql, values));
-    }
-
-    public setUserTag(tag_id: number, user_id: number) {
-        let sql = "INSERT INTO tags (user_id, tag_id, VALUES (?,?)";
-        let values = [
-            user_id,
-            tag_id,
         ];
         return (this.request(sql, values));
     }

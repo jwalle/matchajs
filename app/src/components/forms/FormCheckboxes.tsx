@@ -60,7 +60,7 @@ export default class FormCheckboxes extends React.Component<FormCheckboxesProps,
     const errors: any = {};
     if (tag.length > 10) { errors.tag = 'tag is too long'; }
     if (!tag) { errors.tag = 'please enter a tag'; }
-    if (this.tagExist(tag)) { errors.tag = 'this tag already exist !'}
+    if (this.tagExist(tag)) { errors.tag = 'this tag already exist !'; }
     return errors;
 }
 
@@ -79,8 +79,18 @@ export default class FormCheckboxes extends React.Component<FormCheckboxesProps,
             <div>
                 <form onSubmit={this.handleSubmit}>
                 {errors.tag && <Danger title="tag" text={errors.tag} />}
-                        <input type="text" placeholder="Add your own !" className="tagTextInput" value={addTagValue} onChange={this.handleChangeAddTag}/>
-                        <input type="submit" value="+" className="addTagButton" />
+                        <input
+                            type="text"
+                            placeholder="Add your own !"
+                            className="tagTextInput"
+                            value={addTagValue}
+                            onChange={this.handleChangeAddTag}
+                        />
+                        <input
+                            type="submit"
+                            value="+"
+                            className="addTagButton"
+                        />
                 </form>
             </div> 
         </div>

@@ -1,5 +1,8 @@
 {
-    "extends": ["tslint-react"],
+    "extends": [
+        "tslint",
+        "tslint-config-prettier"
+    ],
     "rules": {
         "jsx-boolean-value": false,
         "align": [

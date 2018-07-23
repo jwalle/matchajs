@@ -43,6 +43,14 @@ class Api {
                 message: 'Hello World !'
             });
         });
+
+        this.express.use(function (req, res, next) {
+            console.log('\n====================================');
+            console.log('API request ----> ', req.path); // populated!
+            console.log('====================================\n');
+            next();
+          });
+
         this.express.use('/', router);
         this.express.use('/api', UserRouter.router);
         this.express.use('/api/tags', TagsRouter.router);

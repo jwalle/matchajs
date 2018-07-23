@@ -5,19 +5,22 @@ body {
     color: #34495e;
   }
   
+.user-container {
+  background: var(--ivory);
+}
+
   main {    
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    background: var(--ivory);
   }
 
   h2 {
     font-size: 1.4em;
     padding: 10px;
   }
-  
-section {
+
+section, #photoUpload {
     border: 2px solid #cccccc1f;
     background-color: var(--prussian);
     color: aliceblue;
