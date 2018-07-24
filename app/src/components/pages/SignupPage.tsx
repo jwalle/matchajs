@@ -1,10 +1,9 @@
 import * as React from 'react';
-import SignupForm from './forms/SignupFormAll';
+import SignupForm from '../forms/SignupFormAll';
 import { connect } from 'react-redux';
-import { signup } from '../actions/auth';
-import NavigationRightGuest from './navigationBar/navigationRightGuest';
+import { signup } from '../state/actions/auth';
+import NavigationRightGuest from '../navigationBar/navigationRightGuest';
 import { Container } from 'semantic-ui-react';
-require('./styles/SignupPage.css');
 
 export interface SignupPageProps {
     history: {

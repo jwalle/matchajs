@@ -4,7 +4,6 @@ import NavigationRightUser from './navigationRightUser';
 import axios from 'axios';
 const path = require('path');
 const PHOTOS_DIR = path.resolve(__dirname, 'data/photos/');
-require('./navigation.css');
 
 export interface NavigationBarState {
     picture: string;
@@ -16,7 +15,7 @@ export default class NavigationBar extends React.Component<{}, NavigationBarStat
 
         this.state = {
             picture: '',
-        }
+        };
       }
 
       componentWillMount() {

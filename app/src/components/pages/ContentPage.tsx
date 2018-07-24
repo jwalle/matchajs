@@ -1,11 +1,10 @@
 import * as React from 'react';
 import axios from 'axios';
-import Discovery from './discoveryContent/discovery';
+import Discovery from '../discoveryContent/discovery';
 import { NavLink, Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import { logout } from '../actions/auth';
-require('./styles/ContentPage.css');
+import { logout } from '../state/actions/auth';
 // const localeIp = '/api';
 
 export interface ContentPageProps {

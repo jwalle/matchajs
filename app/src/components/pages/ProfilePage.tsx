@@ -1,12 +1,11 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import axios from 'axios';
-import UpdateUserInfoForm from './forms/UpdateUserInfoForm';
-import FormBio from './forms/FormBio';
-import ProfilBasics from './Profile/ProfileBasics';
-import * as formTypes from './forms/formTypes';
+import UpdateUserInfoForm from '../forms/UpdateUserInfoForm';
+import FormBio from '../forms/FormBio';
+import ProfilBasics from '../Profile/ProfileBasics';
+import * as formTypes from '../forms/formTypes';
 import { Form, Flag, Divider, Icon, Button, Image, Container, Modal, Input } from 'semantic-ui-react';
-require('./styles/profilePage.css');
 
 // declare var Promise: any;
 
@@ -62,7 +61,7 @@ export default class ProfilePage extends React.Component<ProfilePageProps, Profi
         })
             .then(res => {
                 self.setState({
-                    picture: require(`../../data/photos/${res.data[0].link}`), // plop
+                    picture: require(`../../../data/photos/${res.data[0].link}`), // plop
                 });
             })
             .catch(err => console.log('error axios profilePhoto :', err));

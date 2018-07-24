@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import Danger from './messages/Message';
-import Checkboxes from './forms/FormCheckboxes';
-import PhotoUploadForm from './forms/photoUploadForm';
+import Danger from '../messages/Message';
+import Checkboxes from '../forms/FormCheckboxes';
+import PhotoUploadForm from '../forms/photoUploadForm';
 import { Container, Header, Button, Form, Icon } from 'semantic-ui-react';
-require('./styles/FirstLogin.css');
 import axios from 'axios';
 
 interface FirstLoginProps {

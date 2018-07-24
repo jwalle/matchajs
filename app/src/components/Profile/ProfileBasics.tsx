@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as formTypes from '../forms/formTypes';
 import { Divider, Icon, Container, IconProps } from 'semantic-ui-react';
-require('../styles/profilePage.css');
 
 export interface ProfileBasicsProps {
     user: formTypes.UserData;

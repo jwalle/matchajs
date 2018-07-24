@@ -1,5 +1,4 @@
 import * as React from 'react';
-require('../styles/modal.css');
 
 interface ModalProps {
     show: boolean;

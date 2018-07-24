@@ -4,7 +4,6 @@ import { Container, Header, Button, Form, Icon } from 'semantic-ui-react';
 import Modal from '../tools/Modal';
 import PhotoUploadPreview from './PhotoUploadPreview';
 import Danger from '../messages/Message';
-require('../styles/UploadPhoto.css');
 
 export interface PhotoUploadFormProps {}
 

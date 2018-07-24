@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Icon } from 'semantic-ui-react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
-require('../styles/uploadPreview.css');
 
 export interface PhotoPreviewProps {
     handleClose: Function;

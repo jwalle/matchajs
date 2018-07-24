@@ -2,14 +2,13 @@ import * as React from 'react';
 import axios from 'axios';
 const path = require('path');
 import * as moment from 'moment';
-import ProfilBasics from './Profile/ProfileBasics';
+import ProfilBasics from '../Profile/ProfileBasics';
 // import UserCard from './userCard';
 // import GoogleMap from './GoogleMap';
 // import GoogleMapReact from 'google-map-react';
 import { Flag, Divider, Icon, Button, Image, Container, Dropdown } from 'semantic-ui-react';
 const PHOTOS_DIR = path.resolve(__dirname, 'data/photos/');
 
-require('./userPage.css');
 // let googleMap = require('../../public/images/googleMap.png');
 // declare var Promise: any;
 // const GOOGLE_API = 'https://maps.google.com/maps/api/geocode/json';

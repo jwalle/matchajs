@@ -1,5 +1,4 @@
 import * as React from 'react';
-require('./discovery.css');
 
 export default class Discovery extends React.Component {
 

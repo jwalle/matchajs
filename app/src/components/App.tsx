@@ -2,8 +2,6 @@ import * as React from 'react';
 import NavigationBar from './navigationBar/navigation';
 import { connect } from 'react-redux';
 // let backGround = require('../../public/images/signupBackground.jpeg');
-require('./styles/App.css');
-require('./styles/reset.css');
 
 interface AppProps {
   children: any;

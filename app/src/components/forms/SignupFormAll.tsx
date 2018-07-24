@@ -3,12 +3,11 @@ import { Form, FormGroup, Button, Container } from 'semantic-ui-react';
 import * as moment from 'moment';
 import * as Validator from 'validator';
 import Danger from '../messages/Message';
-import { signup } from '../../actions/auth';
+import { signup } from '../state/actions/auth';
 import SignupForm1 from './SignupForm1';
 import SignupForm2 from './SignupForm2';
 import SignupForm3 from './SignupForm3';
 import * as formTypes from './formTypes'; 
-require('./SignupForm.css');
 
 export interface SignupFormProps {
     submit: Function;

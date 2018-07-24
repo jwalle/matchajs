@@ -1,7 +1,7 @@
 import * as React from 'react';
-import LoginForm from './forms/LoginForm';
+import LoginForm from '../forms/LoginForm';
 import { connect } from 'react-redux';
-import { login } from '../actions/auth'; 
+import { login } from '../state/actions/auth'; 
 import { Container } from 'semantic-ui-react';
 
 export interface LoginPageProps {

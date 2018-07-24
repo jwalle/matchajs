@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import Info from './messages/Message';
+import Info from '../messages/Message';
 
 interface DashboardProps {
     isConfirmed: boolean;
