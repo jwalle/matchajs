@@ -1,13 +1,24 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Danger from '../messages/Message';
 import Checkboxes from '../forms/FormCheckboxes';
 import PhotoUploadForm from '../forms/photoUploadForm';
+import { getAllTags, addNewTag, ADD_NEW_TAG } from '../state/actions/tags';
 import { Container, Header, Button, Form, Icon } from 'semantic-ui-react';
 import axios from 'axios';
 
 interface FirstLoginProps {
     isConfirmed: boolean;
+    getAllTags: Function;
+    addNewTag: Function;
+    tags: {
+        id: number;
+        tag: string;
+        in_or_out: string;
+        value: boolean;
+    }[];
+    tag: any; // TODO
 }
 
 interface FirstLoginState {
@@ -25,7 +36,7 @@ interface FirstLoginState {
     };
 }
 
-class FirstLogin extends React.Component <FirstLoginProps, FirstLoginState> {
+export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginState> {
     constructor(props: FirstLoginProps) {
         super(props);
 
@@ -42,60 +53,56 @@ class FirstLogin extends React.Component <FirstLoginProps, FirstLoginState> {
     }
 
     componentWillMount() {
-        this.getTags();
+        this.props.getAllTags();
     }
 
-    getTags = () => {
-        let self = this;
-        axios({
-            method: 'get',
-            url: '/api/tags/getAll',
-            responseType: 'json'
-        })
-            .then(res => {
-                console.log(res.data);
-                self.setState({
-                    data: {
-                        tags: res.data
-                    }
-                });
-            })
-            .catch(err => console.log('error axios getTags :', err));
-    }
+    // getTags = () => {
+    //     let self = this;
+    //     this.props.getAllTags()
+    //         .then((res: any) => {
+    //             console.log(res.data);
+    //             self.setState({
+    //                 data: {
+    //                     tags: res.data
+    //                 }
+    //             });
+    //         })
+    //         .catch((err: any) => console.log('error axios getTags :', err));
+    // }
 
-    insertNewTag = (tag: string, inOrOut: string, id: number) => {
-        let newTags = this.state.data.tags;
-        newTags.push({
-            id: id,
-            tag: tag,
-            in_or_out: inOrOut,
-            value: true
-        });
-        this.setState({
-            data: {
-                tags: newTags
-            }
-        });
-    }
+    // insertNewTag = (tag: string, inOrOut: string, id: number) => {
+    //     let newTags = this.props.tags;
+    //     newTags.push({
+    //         id: id,
+    //         tag: tag,
+    //         in_or_out: inOrOut,
+    //         value: true
+    //     });
+    //     this.setState({
+    //         data: {
+    //             tags: newTags
+    //         }
+    //     });
+    // }
 
-    addTag = (newTag: string, inOrOut: string) => {
-        let self = this;
-        axios({
-            method: 'post',
-            url: '/api/tags/addTag',
-            data: {
-                newTag: newTag,
-                inOrOut: inOrOut
-            }
-        })
-        .then(res => {
-            if (res.status === 200) {
-                let id = res.data.insertID;
-                self.insertNewTag(newTag, inOrOut, id);
-            }
-        })
-        .catch(err => console.log('error axios getTags :', err));
-    }
+    // addTag = (newTag: string, inOrOut: string) => {
+    //     let self = this;
+    //     axios({
+    //         method: 'post',
+    //         url: '/api/tags/addTag',
+    //         data: {
+    //             newTag: newTag,
+    //             inOrOut: inOrOut
+    //         }
+    //     })
+    //     .then(res => {
+    //         if (res.status === 200) {
+    //             let id = res.data.insertID;
+    //             self.insertNewTag(newTag, inOrOut, id);
+    //         }
+    //     })
+    //     .catch(err => console.log('error axios getTags :', err));
+    // }
 
     toggleCheckbox = (tag: string) => {
         let newState = Object.assign({}, this.state.data);
@@ -106,10 +113,6 @@ class FirstLogin extends React.Component <FirstLoginProps, FirstLoginState> {
             newState.tags[index].value = !this.state.data.tags[index].value;
             this.setState({data: newState});
         }
-    }
-
-    submitNewTag = (value: string, inOut: string) => {
-        this.addTag(value, inOut);
     }
 
     handleClose = () => {
@@ -137,33 +140,35 @@ class FirstLogin extends React.Component <FirstLoginProps, FirstLoginState> {
 
     render() {
         const {data, errors, loading} = this.state;
-        const tags = data.tags;
-
+        const tags = this.props.tags;
         return(
           <main id="mainFirstLogin">
             <div id="PhotoUpload">
                 <PhotoUploadForm />
             </div>
-            <form>
+            {/* <form> */}
             {errors.global && <Danger title="Global error" text="Something went wrong" />}
-            <Checkboxes inOut="in" tags={tags} toggleCheckbox={this.toggleCheckbox} submitNewTag={this.submitNewTag} />
-            <Checkboxes inOut="out" tags={tags} toggleCheckbox={this.toggleCheckbox} submitNewTag={this.submitNewTag} />
+        <Checkboxes inOut="in" tags={tags} toggleCheckbox={this.toggleCheckbox} submitNewTag={this.props.addNewTag} />
+        <Checkboxes inOut="out" tags={tags} toggleCheckbox={this.toggleCheckbox} submitNewTag={this.props.addNewTag} />
                 <Button color="green" onClick={this.onSubmit}>
                     <Icon name="checkmark" /> Confirm
                     </ Button>
                     <Button color="grey" onClick={this.handleClose}>
                         No thanks
                 </ Button>
-            </form>
+            {/* </form> */}
           </main>
         );
     }
 }
 
-function mapStateToProps(state: any) {
-    return {
-        isConfirmed: !!state.user.confirmed
-    };
-}
+const mapStateToProps = (state: any) => ({
+    tags: state.tags.items,
+    isConfirmed: !!state.user.confirmed
+});
 
-export default connect<{}, any>(mapStateToProps, { })(FirstLogin);
+const mapDispatchToProps = (dispatch: any) => {
+    return bindActionCreators({addNewTag, getAllTags}, dispatch);
+};
+
+export default connect<any, any>(mapStateToProps, mapDispatchToProps)(FirstLogin);

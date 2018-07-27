@@ -19,7 +19,13 @@ export class tagsRouter {
         .then((results: any) => {
             if (results){
                 // console.log('RESULTS ---> ',results);
-                res.status(200).send(results);
+                let tag = {
+                    id: results.insertId,
+                    tag: newTag,
+                    inOrOut: inOrOut,
+                    value: false
+                };
+                res.status(200).send(tag);
             }
         })
         .catch((err) => {
