@@ -47,7 +47,6 @@ class Api {
         this.express.use(function (req, res, next) {
             console.log('\n====================================');
             console.log('API request ----> ', req.path); // populated!
-            console.log('====================================\n');
             next();
           });
 

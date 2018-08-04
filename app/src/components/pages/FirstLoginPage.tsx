@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import Danger from '../messages/Message';
 import Checkboxes from '../forms/FormCheckboxes';
 import PhotoUploadForm from '../forms/photoUploadForm';
-import { getAllTags, addNewTag, ADD_NEW_TAG } from '../state/actions/tags';
+import { getAllTags, addNewTag, toggleTag } from '../state/actions/tags';
 import { Container, Header, Button, Form, Icon } from 'semantic-ui-react';
 import axios from 'axios';
 
@@ -12,6 +12,8 @@ interface FirstLoginProps {
     isConfirmed: boolean;
     getAllTags: Function;
     addNewTag: Function;
+    toggleTag: Function;
+    loading: boolean;
     tags: {
         id: number;
         tag: string;
@@ -55,6 +57,12 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
     componentWillMount() {
         this.props.getAllTags();
     }
+
+    // componentWillReceiveProps(nextProps: FirstLoginProps) {
+    //     if (this.props.tags.length !== nextProps.tags.length) {
+    //         nextProps.getAllTags();
+    //     }
+    // }
 
     // getTags = () => {
     //     let self = this;
@@ -105,13 +113,13 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
     // }
 
     toggleCheckbox = (tag: string) => {
-        let newState = Object.assign({}, this.state.data);
-        let index = this.state.data.tags.findIndex(x => x.tag === tag);
+        let { tags } = this.props;
+        // let newState = Object.assign({}, this.state.data);
+        let index = tags.findIndex(x => x.tag === tag);
         if (index === -1) {
             console.error('ERROR: this index does not exist');
         } else {
-            newState.tags[index].value = !this.state.data.tags[index].value;
-            this.setState({data: newState});
+            this.props.toggleTag(index);
         }
     }
 
@@ -119,28 +127,27 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
         console.log('close this'); // TODO
     }
 
-    setTagApi = (tagId: number, userId: number) => {
-        axios.post('/api/tags/setTag', {tagId, userId}).then(res => res.data.user);
+    setTagApi = (setTags: number[], userId: number) => {
+        axios.post('/api/tags/setTag', {setTags, userId}).then(res => res.data.user);
     }
 
     onSubmit = (e: any) => {
         e.preventDefault();
         let userId = 1;
-        let tags = this.state.data.tags;
+        let tags = this.props.tags;
+        let setTags: number[] = [];
         tags.forEach((tag) => {
             if (tag.value === true) {
-                console.log(tag.tag);
-                this.setTagApi(tag.id, userId);
+                setTags.push(tag.id);
             }
         });
-        // this.setState({loading: true});
+        this.setTagApi(setTags, userId);
         console.log('DATA SUBMITTED: ', this.state.data);
-        // this.submit(this.state.data);
     }
 
     render() {
-        const {data, errors, loading} = this.state;
-        const tags = this.props.tags;
+        const {data, errors} = this.state;
+        const {tags, loading} = this.props;
         return(
           <main id="mainFirstLogin">
             <div id="PhotoUpload">
@@ -148,14 +155,24 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
             </div>
             {/* <form> */}
             {errors.global && <Danger title="Global error" text="Something went wrong" />}
-        <Checkboxes inOut="in" tags={tags} toggleCheckbox={this.toggleCheckbox} submitNewTag={this.props.addNewTag} />
-        <Checkboxes inOut="out" tags={tags} toggleCheckbox={this.toggleCheckbox} submitNewTag={this.props.addNewTag} />
-                <Button color="green" onClick={this.onSubmit}>
-                    <Icon name="checkmark" /> Confirm
-                    </ Button>
-                    <Button color="grey" onClick={this.handleClose}>
-                        No thanks
+            <Checkboxes
+                inOut="in"
+                loading={loading}
+                tags={tags}
+                toggleCheckbox={this.toggleCheckbox}
+                submitNewTag={this.props.addNewTag} />
+            <Checkboxes
+                inOut="out"
+                loading={loading}
+                tags={tags}
+                toggleCheckbox={this.toggleCheckbox}
+                submitNewTag={this.props.addNewTag} />
+            <Button color="green" onClick={this.onSubmit}>
+                <Icon name="checkmark" /> Confirm
                 </ Button>
+                <Button color="grey" onClick={this.handleClose}>
+                    No thanks
+            </ Button>
             {/* </form> */}
           </main>
         );
@@ -164,11 +181,12 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
 
 const mapStateToProps = (state: any) => ({
     tags: state.tags.items,
+    loading: state.tags.loading,
     isConfirmed: !!state.user.confirmed
 });
 
 const mapDispatchToProps = (dispatch: any) => {
-    return bindActionCreators({addNewTag, getAllTags}, dispatch);
+    return bindActionCreators({addNewTag, getAllTags, toggleTag}, dispatch);
 };
 
 export default connect<any, any>(mapStateToProps, mapDispatchToProps)(FirstLogin);

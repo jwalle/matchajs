@@ -75,6 +75,7 @@ module.exports = {
   //devtool: 'inline-source-map',
   devServer: {
     host: '0.0.0.0',
+    hot: false,
     port: 8080,
     noInfo: true,
     historyApiFallback: true,
@@ -88,7 +89,10 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin('styles.css'),
     new HtmlWebpackPlugin({title: 'Matcha', template: 'index.html'}),
-    new webpack.DefinePlugin({'process.env.NODE_ENV': '"production"'}),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.DefinePlugin({'process.env.NODE_ENV': '"development"'}),
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr/)
   ]
 };

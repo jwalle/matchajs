@@ -22,7 +22,7 @@ export class tagsRouter {
                 let tag = {
                     id: results.insertId,
                     tag: newTag,
-                    inOrOut: inOrOut,
+                    in_or_out: inOrOut,
                     value: false
                 };
                 res.status(200).send(tag);
@@ -37,17 +37,9 @@ export class tagsRouter {
     // @desc    set a tag to a user
     // @access  Public
     public setTag(req: Request, res: Response, next: NextFunction): void {
-        const { tagId, userId } = req.body;
-        tagsService.setTag(tagId, userId)
-        .then((results: any) => {
-            if (results){
-                // console.log('RESULTS ---> ',results);
-                res.status(200).send(results);
-            }
-        })
-        .catch((err) => {
-            console.log("addTag error :" + err);
-        });
+        const { setTags, userId } = req.body;
+        tagsService.setTag(setTags, userId);
+        res.status(200);
     }
 
     // @route   GET api/tags

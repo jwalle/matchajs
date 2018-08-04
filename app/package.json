@@ -8,7 +8,7 @@
     "npm": "3.10.10"
   },
   "scripts": {
-    "dev": "webpack-dev-server --progress --host 0.0.0.0",
+    "dev": "webpack-dev-server --progress --colors --host 0.0.0.0",
     "start": "./node_modules/.bin/webpack -d --watch",
     "build": "./node_modules/.bin/webpack",
     "test": "jest --no-cache"
@@ -93,6 +93,7 @@
     "@types/classnames": "^2.2.3",
     "@types/jest": "^23.3.0",
     "@types/lodash": "^4.14.104",
+    "@types/webpack-env": "^1.13.6",
     "awesome-typescript-loader": "^3.4.1",
     "babel-core": "6.21.0",
     "babel-jest": "^23.4.0",

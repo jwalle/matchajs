@@ -18,34 +18,32 @@ export interface PhotoPreviewState {
     };
     pixelCrop: any;
     cropResult: any;
+    // cropper: Cropper;
 }
 
 export default class PhotoPreview extends React.Component<PhotoPreviewProps, PhotoPreviewState> {
-    refs!: {
-        cropper: Cropper;
-    };
-
     constructor(props: PhotoPreviewProps) {
-    super(props);
+        super(props);
 
-    this.state = {
-        file: '',
-        cropResult: null,
-        crop: {
-            x: 20,
-            y: 10,
-            width: 160,
-            height: 160
-        },
-        pixelCrop: ''
-    };
-  }
+        this.state = {
+            file: '',
+            cropResult: null,
+            crop: {
+                x: 20,
+                y: 10,
+                width: 160,
+                height: 160
+            },
+            pixelCrop: ''
+        };
+    }
+    cropper!: Cropper;
 
-  handleSubmit = (e: any) => {
-      e.preventDefault();
-      console.log('handle submit-', this.state.file);
-      this.cropImage();
-      this.props.handleSubmit();
+    handleSubmit = (e: any) => {
+        e.preventDefault();
+        console.log('handle submit-', this.state.file);
+        this.cropImage();
+        this.props.handleSubmit();
   }
 
   handleImageChange = (e: any) => {
@@ -61,11 +59,11 @@ export default class PhotoPreview extends React.Component<PhotoPreviewProps, Pho
   }
 
     cropImage = () => {
-        if (typeof this.refs.cropper.getCroppedCanvas() === 'undefined') {
+        if (typeof this.cropper.getCroppedCanvas() === 'undefined') {
             return;
         }
         this.setState({
-            cropResult: this.refs.cropper.getCroppedCanvas().toDataURL()
+            cropResult: this.cropper.getCroppedCanvas().toDataURL()
         });
     }
 
@@ -78,7 +76,7 @@ export default class PhotoPreview extends React.Component<PhotoPreviewProps, Pho
             $imagePreview = (
             <Cropper
                 src={file}
-                ref={(cropper: any) => { this.refs.cropper = cropper; }}
+                ref={(ref: any) => { this.cropper = ref; }}
                 // style={{ maxHeight: 400, width: '100%' }}
                 // minHeight={160}
                 // minWidth={160}

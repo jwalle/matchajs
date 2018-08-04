@@ -5,12 +5,13 @@ class tagServices {
     }
 
     public request(sql : string, data : any) : Promise<object> {
-        console.log(sql, data);
+        console.log('request made --> ', sql, data);
         return new Promise(function (resolve, reject) {
             db.pool.getConnection(function(err, connection) {
                 connection.query(sql, data, function (err, result) {
                     if (err) reject(err);
                     connection.release();
+                    console.log('====================================\n');
                     resolve(result);
                 })
             })
@@ -18,13 +19,15 @@ class tagServices {
         })
     }
 
-    public setTag(tagId: number, userId: number) {
-        let sql = "INSERT INTO users_tags (tag_id, user_id) VALUE (?, ?)";
-        let values = [
-            tagId,
-            userId,
-        ];
-        return (this.request(sql, values));
+    public setTag(setTags: number[], userId: number) {
+        setTags.map((tagId) =>{
+            let sql = "INSERT IGNORE INTO users_tags (tag_id, user_id) VALUE (?, ?)";
+            let values = [
+                tagId,
+                userId,
+            ];
+            return (this.request(sql, values));
+        })
     }
 
     public addTag(tag: string, in_or_out: string) {

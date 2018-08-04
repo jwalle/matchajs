@@ -1,4 +1,4 @@
-import { USER_LOGGED_IN, USER_LOGGED_OUT } from '../actions/types';
+import { USER_LOGGED_IN, USER_LOGGED_OUT } from '../actions/auth';
 
 export default function user(state: any = {}, action: any = {}) {
     switch (action.type) {

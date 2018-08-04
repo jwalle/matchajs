@@ -7,7 +7,7 @@ export type userState = {
     tags: any;
 };
 
-export default combineReducers<userState>({
+export default combineReducers<{}>({
     user: userReducer,
     tags: tagsReducer
 });
