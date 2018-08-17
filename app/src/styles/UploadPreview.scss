@@ -15,7 +15,21 @@
     margin-top: 20px; 
 }
 
+#buttonsCropModal { 
+    //TODO: nothing ?
+}
+
 .submitButton {
+    padding: 12px;
+    font-weight: 700;
+    font-size: 10pt;
+    cursor: pointer;
+    background-color: var(--prussian);
+    border: 2px solid #cccccc1f;
+    margin: 10;
+}
+
+.cropButton {
     padding: 12px;
     font-weight: 700;
     font-size: 10pt;

@@ -4,8 +4,14 @@ import { Container, Header, Button, Form, Icon } from 'semantic-ui-react';
 import Modal from '../tools/Modal';
 import PhotoUploadPreview from './PhotoUploadPreview';
 import Danger from '../messages/Message';
+import * as path from 'path';
+const PHOTOS_DIR = path.resolve(__dirname, 'data/photos/');
 
-export interface PhotoUploadFormProps {}
+export interface PhotoUploadFormProps {
+    photoUpload: Function;
+    user: any;
+    photos: any;
+}
 
 export interface PhotoUploadFormState {
     modalOpen: boolean;
@@ -31,8 +37,6 @@ PhotoUploadFormState > {
         this.setState({ modalOpen: false });
     }
 
-    handleSubmitPhoto = () => console.log('photo !!');
-
     displayPhoto = (img?: string) => {
         return(
             <div className="albumPhoto" onClick={this.handleOpenModal}>
@@ -49,6 +53,17 @@ PhotoUploadFormState > {
     }
 
     public render() {
+        console.log(this.props.photos);
+        const {photos, user} = this.props;
+        let profilPhoto = 'http://via.placeholder.com/160x160';
+        if (photos) {
+            photos.map((photo: any) => {
+                if (photo.isProfil) {
+                    profilPhoto = PHOTOS_DIR + `/${user.login}/` + photo.link;
+                    return;
+                }
+            });
+        }
 
         const uploadPhotoForm = (
             <div>
@@ -61,7 +76,7 @@ PhotoUploadFormState > {
                 <h1>Your photos :</h1>
                 <div id="mainPhoto">
                     <h2>My main photo :</h2>
-                    <img src="http://via.placeholder.com/160x160" alt="pseudo here"/>
+                    <img src={profilPhoto} alt="pseudo here"/>
                 </div>
                 <div id="uploadAlbumArea" className="flex-column">
                     <p>My Album :</p>
@@ -75,7 +90,7 @@ PhotoUploadFormState > {
                 <Modal show={this.state.modalOpen}>
                     <PhotoUploadPreview 
                         handleClose={this.handleCloseModal} 
-                        handleSubmit={this.handleSubmitPhoto}
+                        handleSubmit={this.props.photoUpload}
                     />
                 </ Modal>
             </div>

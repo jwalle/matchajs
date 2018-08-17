@@ -5,6 +5,7 @@ import Danger from '../messages/Message';
 import Checkboxes from '../forms/FormCheckboxes';
 import PhotoUploadForm from '../forms/photoUploadForm';
 import { getAllTags, addNewTag, toggleTag } from '../state/actions/tags';
+import { photoUpload, getAllPhotos } from '../state/actions/photos';
 import { Container, Header, Button, Form, Icon } from 'semantic-ui-react';
 import axios from 'axios';
 
@@ -13,6 +14,8 @@ interface FirstLoginProps {
     getAllTags: Function;
     addNewTag: Function;
     toggleTag: Function;
+    photoUpload: Function;
+    getAllPhotos: Function;
     loading: boolean;
     tags: {
         id: number;
@@ -20,6 +23,7 @@ interface FirstLoginProps {
         in_or_out: string;
         value: boolean;
     }[];
+    photos: any;
     tag: any; // TODO
 }
 
@@ -56,60 +60,13 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
 
     componentWillMount() {
         this.props.getAllTags();
+        this.props.getAllPhotos(1);
     }
 
     // componentWillReceiveProps(nextProps: FirstLoginProps) {
     //     if (this.props.tags.length !== nextProps.tags.length) {
     //         nextProps.getAllTags();
     //     }
-    // }
-
-    // getTags = () => {
-    //     let self = this;
-    //     this.props.getAllTags()
-    //         .then((res: any) => {
-    //             console.log(res.data);
-    //             self.setState({
-    //                 data: {
-    //                     tags: res.data
-    //                 }
-    //             });
-    //         })
-    //         .catch((err: any) => console.log('error axios getTags :', err));
-    // }
-
-    // insertNewTag = (tag: string, inOrOut: string, id: number) => {
-    //     let newTags = this.props.tags;
-    //     newTags.push({
-    //         id: id,
-    //         tag: tag,
-    //         in_or_out: inOrOut,
-    //         value: true
-    //     });
-    //     this.setState({
-    //         data: {
-    //             tags: newTags
-    //         }
-    //     });
-    // }
-
-    // addTag = (newTag: string, inOrOut: string) => {
-    //     let self = this;
-    //     axios({
-    //         method: 'post',
-    //         url: '/api/tags/addTag',
-    //         data: {
-    //             newTag: newTag,
-    //             inOrOut: inOrOut
-    //         }
-    //     })
-    //     .then(res => {
-    //         if (res.status === 200) {
-    //             let id = res.data.insertID;
-    //             self.insertNewTag(newTag, inOrOut, id);
-    //         }
-    //     })
-    //     .catch(err => console.log('error axios getTags :', err));
     // }
 
     toggleCheckbox = (tag: string) => {
@@ -131,6 +88,14 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
         axios.post('/api/tags/setTag', {setTags, userId}).then(res => res.data.user);
     }
 
+    handleSubmitPhoto = (file: string) => {
+        // let data = new FormData();
+        // data.append('file', file);
+        // data.append('userId', '1');
+        this.props.photoUpload(file, 1); // TODO : UserID
+        console.log('coucou');
+    }
+
     onSubmit = (e: any) => {
         e.preventDefault();
         let userId = 1;
@@ -147,13 +112,15 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
 
     render() {
         const {data, errors} = this.state;
-        const {tags, loading} = this.props;
+        const {tags, photos, loading} = this.props;
+        const user = {
+            login: 'happygorilla308' // TODO
+        };
         return(
           <main id="mainFirstLogin">
             <div id="PhotoUpload">
-                <PhotoUploadForm />
+                <PhotoUploadForm photoUpload={this.handleSubmitPhoto} user={user} photos={photos} />
             </div>
-            {/* <form> */}
             {errors.global && <Danger title="Global error" text="Something went wrong" />}
             <Checkboxes
                 inOut="in"
@@ -173,7 +140,6 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
                 <Button color="grey" onClick={this.handleClose}>
                     No thanks
             </ Button>
-            {/* </form> */}
           </main>
         );
     }
@@ -181,12 +147,13 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
 
 const mapStateToProps = (state: any) => ({
     tags: state.tags.items,
+    photos: state.photos.items,
     loading: state.tags.loading,
     isConfirmed: !!state.user.confirmed
 });
 
 const mapDispatchToProps = (dispatch: any) => {
-    return bindActionCreators({addNewTag, getAllTags, toggleTag}, dispatch);
+    return bindActionCreators({addNewTag, getAllTags, toggleTag, photoUpload, getAllPhotos}, dispatch);
 };
 
 export default connect<any, any>(mapStateToProps, mapDispatchToProps)(FirstLogin);

@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import userReducer from './userReducer';
 import tagsReducer from './tagsReducer';
+import photosReducer from './photosReducer';
 
 export type userState = {
     user: any;
@@ -9,5 +10,6 @@ export type userState = {
 
 export default combineReducers<{}>({
     user: userReducer,
-    tags: tagsReducer
+    tags: tagsReducer,
+    photos: photosReducer
 });

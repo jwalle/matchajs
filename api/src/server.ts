@@ -1,8 +1,15 @@
 import * as http from 'http';
 import * as debug from "debug";
 import * as dotenv from 'dotenv';
-
+import * as path  from 'path';
 import Api from './Api';
+
+// export interface Global extends NodeJS.Global {
+//     appRoot: string;
+// }
+// declare var global: Global;
+
+global.appRoot = path.resolve(__dirname);
 
 debug('ts-express:server');
 

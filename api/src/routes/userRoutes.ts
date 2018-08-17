@@ -91,7 +91,7 @@ export class UserRouter {
             .then((result1) => {
                 userServices.downloadPhoto(url, user.login.username)
                     .then((result2) => {
-                        userServices.insertNewPhoto(result2, result1)
+                        userServices.insertNewPhoto(result2, result1, 1)
                             .then(() => {
                                 })
                         })

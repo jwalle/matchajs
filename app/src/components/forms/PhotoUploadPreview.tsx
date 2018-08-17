@@ -9,16 +9,7 @@ export interface PhotoPreviewProps {
 }
 
 export interface PhotoPreviewState {
-    file: string; // ???
-    crop: {
-        x: number;
-        y: number;
-        width?: number;
-        height?: number;
-    };
-    pixelCrop: any;
-    cropResult: any;
-    // cropper: Cropper;
+    file: string;
 }
 
 export default class PhotoPreview extends React.Component<PhotoPreviewProps, PhotoPreviewState> {
@@ -26,25 +17,24 @@ export default class PhotoPreview extends React.Component<PhotoPreviewProps, Pho
         super(props);
 
         this.state = {
-            file: '',
-            cropResult: null,
-            crop: {
-                x: 20,
-                y: 10,
-                width: 160,
-                height: 160
-            },
-            pixelCrop: ''
+            file: ''
         };
     }
     cropper!: Cropper;
 
-    handleSubmit = (e: any) => {
-        e.preventDefault();
-        console.log('handle submit-', this.state.file);
-        this.cropImage();
-        this.props.handleSubmit();
-  }
+    handleSubmit = () => {
+        let {file} = this.state;
+        if (file) {            
+            console.log('handle submit-', this.state.file);
+            this.props.handleSubmit(file);
+        }
+    }
+
+    handleCrop = () => {
+        if (this.state.file) {
+            this.cropImage();
+        }
+    }
 
   handleImageChange = (e: any) => {
       e.preventDefault();
@@ -63,35 +53,22 @@ export default class PhotoPreview extends React.Component<PhotoPreviewProps, Pho
             return;
         }
         this.setState({
-            cropResult: this.cropper.getCroppedCanvas().toDataURL()
+            file: this.cropper.getCroppedCanvas().toDataURL()
         });
     }
 
     public render() {
-        let {file, cropResult} = this.state;
+        let {file} = this.state;
         let $imagePreview = null;
-        let $imageCropPreview = null;
 
         if (file) {
             $imagePreview = (
             <Cropper
                 src={file}
                 ref={(ref: any) => { this.cropper = ref; }}
-                // style={{ maxHeight: 400, width: '100%' }}
-                // minHeight={160}
-                // minWidth={160}
             />);
         } else {
             $imagePreview = (<div className="previewText">Please select an Image</div>);
-        }
-
-        if (cropResult) {
-            $imageCropPreview = (<img
-                                    src={cropResult}
-                                    // style={{ maxHeight: 400, width: '100%', objectFit: 'contain'}} 
-                                />);
-        } else {
-            $imageCropPreview = (<div className="previewText">Please Crop your Image</div>);
         }
 
         return (
@@ -99,7 +76,7 @@ export default class PhotoPreview extends React.Component<PhotoPreviewProps, Pho
                     <div className="closeModal">
                         <Icon name="close" size="big" onClick={this.props.handleClose} />
                     </div>
-                <form className="flex-column" onSubmit={(e) => this.handleSubmit(e)}>
+                <form className="flex-column">
                     <input className="fileInput"
                         type="file"
                         onChange={(e) => this.handleImageChange(e)}
@@ -107,12 +84,14 @@ export default class PhotoPreview extends React.Component<PhotoPreviewProps, Pho
                     <div className="imgPreview">
                         {$imagePreview}
                     </div>
-                    <div className="imgPreview" style={{ marginTop: 20}}>
-                        {$imageCropPreview}
+                    <div id="buttonsCropModal">
+                        <button className="cropButton" 
+                            type="submit" 
+                            onClick={(e) => this.handleCrop()}>Crop</button>
+                        <button className="submitButton" 
+                            type="submit" 
+                            onClick={(e) => this.handleSubmit()}>Upload Image</button>
                     </div>
-                    <button className="submitButton" 
-                        type="submit" 
-                        onClick={(e) => this.handleSubmit(e)}>Upload Image</button>
                 </form>
             </div>
         );

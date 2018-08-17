@@ -74,7 +74,8 @@ class userServices {
 
     public getUser(id) {
         let sql = "SELECT * FROM users WHERE id=?";
-        return (this.selectRequest(sql, id))
+        let value = [id];
+        return (this.selectRequest(sql, value))
     }
 
     public getUserMightLikeUsers(userId) {
@@ -185,13 +186,13 @@ class userServices {
         return (this.selectRequest(sql, values)); //.insertId;
     };
 
-    public insertNewPhoto(link, idUser) {
+    public insertNewPhoto(link, idUser, isProfil) {
         let sql = "INSERT INTO photos (link, idUser, created, isProfil) VALUES (?,?,?,?)";
         let values = [
             link,
-            idUser.insertId,
+            idUser,
             Date.now(),
-            1
+            isProfil
         ];
         return (this.selectRequest(sql, values));
     }

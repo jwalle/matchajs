@@ -1,7 +1,7 @@
-import { GET_ALL_TAGS, ADD_NEW_TAG, SET_USER_TAG, TOGGLE_TAG, TAGS_LOADING } from '../actions/tags';
+import { GET_ALL_PHOTOS, PHOTO_UPLOAD, PHOTO_IS_UPLOADING, PHOTOS_ARE_LOADING } from '../actions/photos';
 
 const initialState = {
-    items: [],
+    photos: [],
     loading: false
 };
 
@@ -17,28 +17,24 @@ const updateItemInArray = (array: any, action: any) => {
     });
 };
 
-export default function tags(state: any = initialState, action: any) {
+export default function photos(state: any = initialState, action: any) {
     switch (action.type) {
-        case GET_ALL_TAGS:
+        case GET_ALL_PHOTOS:
             return {
                 ...state,
                 items: action.payload,
                 loading: false
         };
-        case TOGGLE_TAG:
+        case PHOTO_UPLOAD:
+            return {
+                state
+            };
+        case PHOTO_IS_UPLOADING:
             return {
                 ...state,
-                items: updateItemInArray(state.items, action)
+                loading: true
             };
-        case ADD_NEW_TAG:
-            return {
-                ...state, 
-                items: [
-                    ...state.items,
-                    action.payload
-                ]
-            };
-        case TAGS_LOADING:
+        case PHOTOS_ARE_LOADING:
             return {
                 ...state,
                 loading: true
