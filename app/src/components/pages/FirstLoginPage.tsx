@@ -114,7 +114,7 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
         const {data, errors} = this.state;
         const {tags, photos, loading} = this.props;
         const user = {
-            login: 'happygorilla308' // TODO
+            login: 'goldenmouse113' // TODO
         };
         return(
           <main id="mainFirstLogin">

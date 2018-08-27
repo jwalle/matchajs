@@ -21,7 +21,7 @@ export class PhotosRouter {
         userService.getUser(userId)
         .then((user: any) => {
             const filename = user[0].login + '-' + Date.now() + '.jpg';
-            const dir = `${global.appRoot}/../data/photos/${user[0].login}`;
+            const dir = `${global.appRoot}/../../app/data/photos/${user[0].login}`;
             const link = dir + `/${filename}`;
             let base64Image = photo.split(';base64,').pop();
             if (!fs.existsSync(dir)) {

@@ -56,20 +56,32 @@ PhotoUploadFormState > {
         console.log(this.props.photos);
         const {photos, user} = this.props;
         let profilPhoto = 'http://via.placeholder.com/160x160';
+        let $albumPreview = null;
         if (photos) {
-            photos.map((photo: any) => {
+            photos.map((photo: any, index: number) => {
                 if (photo.isProfil) {
+                    photos.splice(index, 1);
                     profilPhoto = PHOTOS_DIR + `/${user.login}/` + photo.link;
                     return;
                 }
             });
-        }
 
-        const uploadPhotoForm = (
-            <div>
-
-            </div>
+        $albumPreview = (
+             for (let i = 0; i < 4; i++) {
+                // let photoAddress = '';
+                // if (photos[i]) {
+                //     photoAddress = PHOTOS_DIR + `/${user.login}/` + photos[i].link;
+                // }
+                // this.displayPhoto(photoAddress);
+                console.log(i);
+            }
         );
+        
+            // if (photos) {
+            //     $albumPreview = (photos.map((photo: any, index: number) => {
+            //         this.displayPhoto(PHOTOS_DIR + `/${user.login}/` + photo.link);
+            //     }));
+            // }
 
         return (
             <div id="uploadArea" className="flex-column">
@@ -81,10 +93,7 @@ PhotoUploadFormState > {
                 <div id="uploadAlbumArea" className="flex-column">
                     <p>My Album :</p>
                     <div id="album" className="flex-row">
-                        {this.displayPhoto()}
-                        {this.displayPhoto()}
-                        {this.displayPhoto()}
-                        {this.displayPhoto()}
+                        {$albumPreview}
                     </div>
                 </div>
                 <Modal show={this.state.modalOpen}>
