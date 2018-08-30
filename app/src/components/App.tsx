@@ -1,16 +1,24 @@
 import * as React from 'react';
 import NavigationBar from './navigationBar/navigation';
+import { loginFromToken } from './state/actions/auth';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
 // let backGround = require('../../public/images/signupBackground.jpeg');
 
 interface AppProps {
   children: any;
-  isAuth: boolean;  
+  isAuth: boolean;
+  loginFromToken: Function;
 }
 
 class App extends React.Component<AppProps, {}> {
-  constructor(props: any) {
+  constructor(props: AppProps) {
     super(props);    
+  }
+
+  componentWillMount() {
+    this.props.loginFromToken();
   }
 
   render() {
@@ -31,8 +39,13 @@ class App extends React.Component<AppProps, {}> {
 
 function mapStateToProps(state: any) {
   return {
-      isAuth: !!state.user.token
+      isAuth: !!state.user.token,
   };
 }
 
-export default connect<any, any>(mapStateToProps, {})(App);
+const mapDispatchToProps = (dispatch: any) => {
+  return bindActionCreators(
+    { loginFromToken }, dispatch);
+};
+
+export default connect<any, any>(mapStateToProps, mapDispatchToProps)(App);

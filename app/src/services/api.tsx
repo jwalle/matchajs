@@ -3,7 +3,9 @@ import axios from 'axios';
 export default {
     user: {
         login: (credentials: object) =>
-            axios.post('/api/auth', {credentials}).then(res => res.data.user),
+            axios.post('/api/auth', {credentials}).then(res => res),
+        loginFromToken: (token: string) =>
+            axios.post('/api/authFromToken', {token}).then(res => res),
         signup: (user: object) =>
             axios.post('/api/signup', {user}).then(res => res.data.user),
         updateUserInfo: (data: object) =>
@@ -21,9 +23,15 @@ export default {
             axios.post('/api/tags/setTag', {tagId, userId}).then(res => res.data.user)
     },
     photos: {
+        getProfil: (userId: number) => 
+            axios.get('/api/photos/getProfil/' + userId).then(res => res.data),
         getAllFromUser: (userId: number) =>
             axios.get('/api/photos/getAllFromUser/' + userId).then(res => res.data),
         photoUpload: (photo: string, userId: number) =>
-            axios.post('/api/photos/photoUpload', {photo, userId})
+            axios.post('/api/photos/photoUpload', {photo, userId}),
+        deletePhoto: (photoId: number) =>
+            axios.delete('/api/photos/deletePhoto/' + photoId),
+        swapToProfil: (photoId: number, userId: number) =>
+            axios.post('/api/photos/swapToProfil/', {photoId, userId})
     }
 };

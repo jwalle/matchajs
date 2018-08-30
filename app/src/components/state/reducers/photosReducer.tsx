@@ -1,20 +1,36 @@
-import { GET_ALL_PHOTOS, PHOTO_UPLOAD, PHOTO_IS_UPLOADING, PHOTOS_ARE_LOADING } from '../actions/photos';
+import {
+    DELETE_PHOTO,
+    GET_ALL_PHOTOS,
+    GET_PROFIL_PHOTO,
+    PHOTO_UPLOAD,
+    PHOTO_IS_UPLOADING,
+    PHOTOS_ARE_LOADING, 
+    SWAP_TO_PROFIL } from '../actions/photos';
 
 const initialState = {
     photos: [],
-    loading: false
+    profil: [],
+    loading: false,
 };
 
-const updateItemInArray = (array: any, action: any) => {
-    return array.map((item: any, index: number) => {
-        if (index !== action.payload) {
-            return item;
+const makeSwappedState = (state: any, id: number) => {
+    let oldProfil = state.profil;
+    let newProfil = {};
+    oldProfil.isProfil = false;
+    state.photos.map((photo: any) => {
+        if (photo.id === id) {
+            photo.isProfil = true;
+            newProfil = photo;
         }
-        return {
-            ...item,
-            value : !item.value
-        };
     });
+    return {
+        ...state,
+        photos: [
+            ...state.photos.filter((photo: any) => photo.id !== id),
+            oldProfil
+        ],
+        profil: newProfil
+    };
 };
 
 export default function photos(state: any = initialState, action: any) {
@@ -22,13 +38,27 @@ export default function photos(state: any = initialState, action: any) {
         case GET_ALL_PHOTOS:
             return {
                 ...state,
-                items: action.payload,
+                photos: action.payload,
                 loading: false
-        };
+            };
+        case GET_PROFIL_PHOTO:
+            return {
+                ...state,
+                profil: action.payload[0],
+                loading: false
+            };
         case PHOTO_UPLOAD:
             return {
                 state
             };
+        case DELETE_PHOTO:
+            const photoId = action.photoId;
+            return {
+                ...state,
+                photos: state.photos.filter((photo: any) => photo.id !== photoId)
+            };
+        case SWAP_TO_PROFIL:
+            return makeSwappedState(state, action.newProfilId);
         case PHOTO_IS_UPLOADING:
             return {
                 ...state,

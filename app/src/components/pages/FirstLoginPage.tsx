@@ -5,7 +5,7 @@ import Danger from '../messages/Message';
 import Checkboxes from '../forms/FormCheckboxes';
 import PhotoUploadForm from '../forms/photoUploadForm';
 import { getAllTags, addNewTag, toggleTag } from '../state/actions/tags';
-import { photoUpload, getAllPhotos } from '../state/actions/photos';
+import { photoUpload, getAllPhotos, getProfil, photoDelete, swapToProfil } from '../state/actions/photos';
 import { Container, Header, Button, Form, Icon } from 'semantic-ui-react';
 import axios from 'axios';
 
@@ -16,6 +16,9 @@ interface FirstLoginProps {
     toggleTag: Function;
     photoUpload: Function;
     getAllPhotos: Function;
+    getProfil: Function;
+    photoDelete: Function;
+    swapToProfil: Function;
     loading: boolean;
     tags: {
         id: number;
@@ -24,6 +27,7 @@ interface FirstLoginProps {
         value: boolean;
     }[];
     photos: any;
+    profil: any;
     tag: any; // TODO
 }
 
@@ -61,6 +65,7 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
     componentWillMount() {
         this.props.getAllTags();
         this.props.getAllPhotos(1);
+        this.props.getProfil(1);
     }
 
     // componentWillReceiveProps(nextProps: FirstLoginProps) {
@@ -112,14 +117,20 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
 
     render() {
         const {data, errors} = this.state;
-        const {tags, photos, loading} = this.props;
+        const {tags, photos, profil, loading} = this.props;
         const user = {
-            login: 'goldenmouse113' // TODO
+            login: 'happygorilla308' // TODO
         };
         return(
           <main id="mainFirstLogin">
             <div id="PhotoUpload">
-                <PhotoUploadForm photoUpload={this.handleSubmitPhoto} user={user} photos={photos} />
+                <PhotoUploadForm
+                photoUpload={this.handleSubmitPhoto}
+                swapToProfil={this.props.swapToProfil}
+                photoDelete={this.props.photoDelete}
+                user={user}
+                photos={photos}
+                profil={profil} />
             </div>
             {errors.global && <Danger title="Global error" text="Something went wrong" />}
             <Checkboxes
@@ -147,13 +158,15 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
 
 const mapStateToProps = (state: any) => ({
     tags: state.tags.items,
-    photos: state.photos.items,
+    photos: state.photos.photos,
+    profil: state.photos.profil,
     loading: state.tags.loading,
     isConfirmed: !!state.user.confirmed
 });
 
 const mapDispatchToProps = (dispatch: any) => {
-    return bindActionCreators({addNewTag, getAllTags, toggleTag, photoUpload, getAllPhotos}, dispatch);
+    return bindActionCreators(
+    { addNewTag, getAllTags, toggleTag, photoUpload, photoDelete, getAllPhotos, getProfil, swapToProfil }, dispatch);
 };
 
 export default connect<any, any>(mapStateToProps, mapDispatchToProps)(FirstLogin);

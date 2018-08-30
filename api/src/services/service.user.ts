@@ -18,16 +18,13 @@ class userServices {
         return userPass === credentialsPass;
     }
 
-    public toAuthJSON(email) {
-        return {
-            email,
-            token: this.generateJWT(email)
-        }
+    public toAuthJSON(payload) {
+        return this.generateJWT(payload);
     }
 
-    public generateJWT(email) {
+    public generateJWT(payload) {
         return jwt.sign({
-            email: email
+            payload
             },
             process.env.JWT_SECRET
         );

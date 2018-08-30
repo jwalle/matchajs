@@ -9,8 +9,11 @@ const PHOTOS_DIR = path.resolve(__dirname, 'data/photos/');
 
 export interface PhotoUploadFormProps {
     photoUpload: Function;
+    photoDelete: Function;
+    swapToProfil: Function;
     user: any;
     photos: any;
+    profil: any;
 }
 
 export interface PhotoUploadFormState {
@@ -37,51 +40,59 @@ PhotoUploadFormState > {
         this.setState({ modalOpen: false });
     }
 
-    displayPhoto = (img?: string) => {
+    displayPhoto = (index: number, img?: string, id?: number) => {
         return(
-            <div className="albumPhoto" onClick={this.handleOpenModal}>
-                <img
-                    src={img ? img : 'http://via.placeholder.com/120x120'}
-                    alt="pseudo here"
-                />
-                <div className="photoOverlay">
-                    <Icon link name="user" className="toMainOverlayButton" onClick={() => console.log('toMain')}/>
-                    <Icon link name="trash" className="toTrashOverlayButton" onClick={() => console.log('toTrash')}/>
-                </div>
+            <div className="albumPhoto" key={index}>         
+                {img ? <div>
+                    <img
+                        src={img ? img : 'http://via.placeholder.com/120x120'}
+                        onClick={this.handleOpenModal}
+                        alt="pseudo here"
+                    />
+                    <div className="photoOverlay">
+                        <Icon
+                            link
+                            name="user"
+                            className="toMainOverlayButton"
+                            onClick={() => this.props.swapToProfil(id, 1)} /> {/* TODO: USER_ID */}
+                        <Icon
+                            link
+                            name="trash"
+                            className="toTrashOverlayButton"
+                            onClick={() => this.props.photoDelete(id)} />
+                    </div>
+                </div> : 
+                <Icon
+                    link
+                    name="add"
+                    size="huge"
+                    onClick={this.handleOpenModal} />}
             </div>
+        );
+    }
+
+    displayAlbum = (user: any, photos: any) => {
+        return (
+            [0, 1, 2, 3].map((index: number) => {
+                let photoAddress = '';
+                let id = 0;
+                if (photos && photos[index]) {
+                    photoAddress = PHOTOS_DIR + `/${user.login}/` + photos[index].link;
+                    id = photos[index].id; // moche
+                }
+                return this.displayPhoto(index, photoAddress, id);
+            })
         );
     }
 
     public render() {
         console.log(this.props.photos);
-        const {photos, user} = this.props;
+        const {photos, profil, user} = this.props;
         let profilPhoto = 'http://via.placeholder.com/160x160';
-        let $albumPreview = null;
-        if (photos) {
-            photos.map((photo: any, index: number) => {
-                if (photo.isProfil) {
-                    photos.splice(index, 1);
-                    profilPhoto = PHOTOS_DIR + `/${user.login}/` + photo.link;
-                    return;
-                }
-            });
 
-        $albumPreview = (
-             for (let i = 0; i < 4; i++) {
-                // let photoAddress = '';
-                // if (photos[i]) {
-                //     photoAddress = PHOTOS_DIR + `/${user.login}/` + photos[i].link;
-                // }
-                // this.displayPhoto(photoAddress);
-                console.log(i);
-            }
-        );
-        
-            // if (photos) {
-            //     $albumPreview = (photos.map((photo: any, index: number) => {
-            //         this.displayPhoto(PHOTOS_DIR + `/${user.login}/` + photo.link);
-            //     }));
-            // }
+        if (profil) {
+            profilPhoto = PHOTOS_DIR + `/${user.login}/` + profil.link;
+        }
 
         return (
             <div id="uploadArea" className="flex-column">
@@ -93,7 +104,7 @@ PhotoUploadFormState > {
                 <div id="uploadAlbumArea" className="flex-column">
                     <p>My Album :</p>
                     <div id="album" className="flex-row">
-                        {$albumPreview}
+                        {this.displayAlbum(user, photos)}
                     </div>
                 </div>
                 <Modal show={this.state.modalOpen}>

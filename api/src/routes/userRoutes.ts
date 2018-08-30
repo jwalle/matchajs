@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import userServices from '../services/service.user'
+import * as jwt from "jsonwebtoken";
 let request = require('request');
 
 export interface userType{
@@ -99,7 +100,6 @@ export class UserRouter {
     }
 
     public makeOneUser(req: Request, res: Response, next: NextFunction): void {
-        console.log('----------> PLOP');
         this.makeUser()
         .then((user : any) => {
              return ((JSON.parse(user).results[0]));
@@ -108,23 +108,6 @@ export class UserRouter {
             this.fillDb(response)
         })
         .catch((error) => {throw error});
-    }
-
-    public auth(req: Request, res: Response, next: NextFunction): void {
-        const { credentials } = req.body;
-
-        userServices.getUserByEmail(credentials.email)
-        .then((results: any) => {
-            const user: any  = results[0];
-            if (user && userServices.isValidPassword(user.password , credentials.password)) {
-                res.json({user: userServices.toAuthJSON(user.email)})
-            } else {
-                res.status(400).json({errors: { global: "Invalid credentials"}})                
-            }
-        })
-        .catch(err => {
-            console.log('auth ERROR : ', err);
-        })
     }
 
     public signup(req: Request, res: Response, next: NextFunction): void {
@@ -136,12 +119,69 @@ export class UserRouter {
     }
 
     public updateUserInfo(req: Request, res: Response, next: NextFunction): void {
-        // console.log("PLLLLLOOOOP ", req);
         userServices.updateUserInfo(req.body)
         .then((results: any) => {
             if (results) {
                 res.status(200).end();
             }
+        })
+    }
+
+    public authFromToken(req: Request, res: Response, next: NextFunction): void {
+        let token = req.body.token;
+        if (!token) {
+            res.status(401).json({message: 'Must pass token !'});
+        }
+        jwt.verify(token, process.env.JWT_SECRET, (err, _res) => {
+            if (err) throw err;
+            userServices.getUser(_res.payload.id)
+            .then((user: any) => {
+                if (user && (user = user[0])) { // beurk
+                    // let u = makeCleanUser(results);
+                    res.status(200).json({
+                        user : {
+                            id: user.id,
+                            login: user.login,
+                            firstname: user.firstname,
+                            lastname: user.lastname,
+                            gender: user.gender,
+                            orientation: user.orientation,
+                            dob: user.dob,
+                            confirmed: user.confirmed,
+                        },
+                        token
+                    }).send();
+                }
+            })
+        })
+    }
+
+    public auth(req: Request, res: Response, next: NextFunction): void {
+        const { credentials } = req.body;
+
+        userServices.getUserByEmail(credentials.email)
+        .then((results: any) => {
+            const user: any  = results[0];
+            if (user && userServices.isValidPassword(user.password , credentials.password)) {
+                res.status(200).json({
+                    user : {
+                        id: user.id,
+                        login: user.login,
+                        firstname: user.firstname,
+                        lastname: user.lastname,
+                        gender: user.gender,
+                        orientation: user.orientation,
+                        dob: user.dob,
+                        confirmed: user.confirmed,
+                    },
+                    token: userServices.toAuthJSON({id: user.id, login: user.login})
+                }).send();
+            } else {
+                res.status(400).json({errors: { global: "Invalid credentials"}})                
+            }
+        })
+        .catch(err => {
+            console.log('auth ERROR : ', err);
         })
     }
 
@@ -151,6 +191,7 @@ export class UserRouter {
         this.router.get('/getUser/:id', this.getUser);
         this.router.post('/getMightLike/:id', this.mightLike);
         this.router.post('/auth', this.auth);
+        this.router.post('/authFromToken', this.authFromToken);
         this.router.post('/signup', this.signup);
         this.router.post('/updateUserInfo', this.updateUserInfo);
     }

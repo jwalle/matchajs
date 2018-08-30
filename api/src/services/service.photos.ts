@@ -20,8 +20,26 @@ class photosServices {
     }
 
     public getAllFromUser(userId: number) {
-        let sql = "SELECT * FROM photos WHERE idUser=?";
+        let sql = "SELECT * FROM photos WHERE idUser=? AND isProfil=0";
         let values = [userId];
+        return (this.request(sql, values));
+    }
+
+    public getProfil(userId: number) {
+        let sql = "SELECT * FROM photos WHERE idUser=? AND isProfil=1";
+        let values = [userId];
+        return (this.request(sql, values));
+    }
+
+    public deletePhoto(photoId: number) {
+        let sql = "DELETE FROM photos WHERE id=?";
+        let values = [photoId];
+        return (this.request(sql, values));
+    }
+
+    public changeProfil(photoId: number, isProfil: boolean) {
+        let sql = "UPDATE photos SET isProfil=? WHERE id=?";
+        let values = [isProfil, photoId];
         return (this.request(sql, values));
     }
 

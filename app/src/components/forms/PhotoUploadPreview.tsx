@@ -9,7 +9,7 @@ export interface PhotoPreviewProps {
 }
 
 export interface PhotoPreviewState {
-    file: string;
+    file: any;
 }
 
 export default class PhotoPreview extends React.Component<PhotoPreviewProps, PhotoPreviewState> {

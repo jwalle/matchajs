@@ -1,9 +1,18 @@
 import { USER_LOGGED_IN, USER_LOGGED_OUT } from '../actions/auth';
 
-export default function user(state: any = {}, action: any = {}) {
+const initialState = {
+    user: {},
+    token: ''
+};
+
+export default function user(state: any = initialState, action: any = {}) {
     switch (action.type) {
         case USER_LOGGED_IN:
-            return action.user;
+            return {
+                user: action.user,
+                token: action.token
+                
+            };
         case USER_LOGGED_OUT:
             return {};
         default:

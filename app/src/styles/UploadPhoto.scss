@@ -22,6 +22,10 @@
     flex-wrap: wrap;
 }
 
+.albumPhoto img {
+    width: 120px;
+}
+
 .photoOverlay {
     position: absolute;
     background-color: #0000007a;
