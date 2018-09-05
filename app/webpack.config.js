@@ -44,13 +44,12 @@ module.exports = {
         exclude: '/node_modules/',
         loader: 'ts-loader'
       }, {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        include: PHOTOS_DIR,
-        loader: "file-loader?name=./data/photos/[name].[ext]"
-      }, {
         test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
         include: [
           /node_modules/, IMAGES_DIR, FONT_DIR
+        ],
+        exclude: [
+          PHOTOS_DIR
         ],
         use: {
           loader: 'url-loader',

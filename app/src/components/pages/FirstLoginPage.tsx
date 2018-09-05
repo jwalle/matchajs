@@ -4,12 +4,13 @@ import { bindActionCreators } from 'redux';
 import Danger from '../messages/Message';
 import Checkboxes from '../forms/FormCheckboxes';
 import PhotoUploadForm from '../forms/photoUploadForm';
+import api from '../../services/api';
 import { getAllTags, addNewTag, toggleTag } from '../state/actions/tags';
 import { photoUpload, getAllPhotos, getProfil, photoDelete, swapToProfil } from '../state/actions/photos';
-import { Container, Header, Button, Form, Icon } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import axios from 'axios';
 
-interface FirstLoginProps {
+export interface FirstLoginProps {
     isConfirmed: boolean;
     getAllTags: Function;
     addNewTag: Function;
@@ -20,6 +21,7 @@ interface FirstLoginProps {
     photoDelete: Function;
     swapToProfil: Function;
     loading: boolean;
+    user: any;
     tags: {
         id: number;
         tag: string;
@@ -64,15 +66,9 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
 
     componentWillMount() {
         this.props.getAllTags();
-        this.props.getAllPhotos(1);
-        this.props.getProfil(1);
+        this.props.getAllPhotos(this.props.user.id);
+        this.props.getProfil(this.props.user.id);
     }
-
-    // componentWillReceiveProps(nextProps: FirstLoginProps) {
-    //     if (this.props.tags.length !== nextProps.tags.length) {
-    //         nextProps.getAllTags();
-    //     }
-    // }
 
     toggleCheckbox = (tag: string) => {
         let { tags } = this.props;
@@ -89,21 +85,14 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
         console.log('close this'); // TODO
     }
 
-    setTagApi = (setTags: number[], userId: number) => {
-        axios.post('/api/tags/setTag', {setTags, userId}).then(res => res.data.user);
-    }
-
     handleSubmitPhoto = (file: string) => {
-        // let data = new FormData();
-        // data.append('file', file);
-        // data.append('userId', '1');
-        this.props.photoUpload(file, 1); // TODO : UserID
-        console.log('coucou');
+        const userId = this.props.user.id;
+        this.props.photoUpload(file, userId);
     }
 
     onSubmit = (e: any) => {
         e.preventDefault();
-        let userId = 1;
+        let userId = this.props.user.id;
         let tags = this.props.tags;
         let setTags: number[] = [];
         tags.forEach((tag) => {
@@ -111,16 +100,13 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
                 setTags.push(tag.id);
             }
         });
-        this.setTagApi(setTags, userId);
-        console.log('DATA SUBMITTED: ', this.state.data);
+        api.tags.setTagsApi(setTags, userId);
+        api.user.unsetFirstLogin(userId);
     }
 
     render() {
-        const {data, errors} = this.state;
-        const {tags, photos, profil, loading} = this.props;
-        const user = {
-            login: 'happygorilla308' // TODO
-        };
+        const {errors} = this.state;
+        const {user, tags, photos, profil, loading} = this.props;
         return(
           <main id="mainFirstLogin">
             <div id="PhotoUpload">
@@ -157,6 +143,7 @@ export class FirstLogin extends React.Component <FirstLoginProps, FirstLoginStat
 }
 
 const mapStateToProps = (state: any) => ({
+    user: state.user.user,
     tags: state.tags.items,
     photos: state.photos.photos,
     profil: state.photos.profil,

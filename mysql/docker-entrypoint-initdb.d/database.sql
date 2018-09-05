@@ -42,6 +42,7 @@ CREATE TABLE `users` (
   `lastseen` date NULL,
   `isconnected` tinyint(1) NULL,
   `confirmed` tinyint(1) NULL,
+   `firstLogin` boolean not null default 1,
   `text1` text,
   `text2` text,
   `text3` text,

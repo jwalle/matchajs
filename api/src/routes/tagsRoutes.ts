@@ -37,8 +37,8 @@ export class tagsRouter {
     // @desc    set a tag to a user
     // @access  Public
     public setTag(req: Request, res: Response, next: NextFunction): void {
-        const { setTags, userId } = req.body;
-        tagsService.setTag(setTags, userId);
+        const { tagsId, userId } = req.body;
+        tagsService.setTag(tagsId, userId);
         res.status(200);
     }
 

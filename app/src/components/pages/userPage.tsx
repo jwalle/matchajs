@@ -7,7 +7,7 @@ import ProfilBasics from '../Profile/ProfileBasics';
 // import GoogleMap from './GoogleMap';
 // import GoogleMapReact from 'google-map-react';
 import { Flag, Divider, Icon, Button, Image, Container, Dropdown } from 'semantic-ui-react';
-const PHOTOS_DIR = path.resolve(__dirname, 'data/photos/');
+const PHOTOS_DIR = path.resolve(__dirname, '../data/photos/');
 
 // let googleMap = require('../../public/images/googleMap.png');
 // declare var Promise: any;
@@ -95,14 +95,15 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
 
     getProfilePhoto() {
         let self = this;
+        let user = this.state.user;
         axios({
             method: 'get',
-            url: '/api/getProfilePhoto/' + self.state.user.id,
+            url: '/api/getProfilePhoto/' + user.id,
             responseType: 'json'
         })
             .then(res => {
                 self.setState({
-                    picture: PHOTOS_DIR + '/' + res.data[0].link, // plop
+                    picture: `../../../data/photos/${user.login}/${res.data[0].link}`, // plop
                 });
             })
             .catch(err => console.log('error axios profilePhoto :', err));

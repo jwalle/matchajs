@@ -61,7 +61,7 @@ export default class ProfilePage extends React.Component<ProfilePageProps, Profi
         })
             .then(res => {
                 self.setState({
-                    picture: require(`../../../data/photos/${res.data[0].link}`), // plop
+                    picture: `../../../data/photos/${res.data[0].link}`, // plop
                 });
             })
             .catch(err => console.log('error axios profilePhoto :', err));
@@ -139,7 +139,7 @@ export default class ProfilePage extends React.Component<ProfilePageProps, Profi
                     <div id="location"><p>{user.city}, {user.country}</p></div>
             </div>
         );
-        
+
         return (
             <div className="main-container">
                 <div id="topUserPage" />

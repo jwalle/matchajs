@@ -127,6 +127,16 @@ export class UserRouter {
         })
     }
 
+    public unsetFirstLogin(req: Request, res: Response, next: NextFunction): void {
+        let userId = req.body.userId;
+        userServices.unsetFirstLogin(userId)
+        .then((results: any) => {
+            if (results) {
+                res.status(200).end();
+            }
+        })
+    }
+
     public authFromToken(req: Request, res: Response, next: NextFunction): void {
         let token = req.body.token;
         if (!token) {
@@ -148,6 +158,7 @@ export class UserRouter {
                             orientation: user.orientation,
                             dob: user.dob,
                             confirmed: user.confirmed,
+                            firstLogin: user.firstLogin
                         },
                         token
                     }).send();
@@ -173,6 +184,7 @@ export class UserRouter {
                         orientation: user.orientation,
                         dob: user.dob,
                         confirmed: user.confirmed,
+                        firstLogin: user.firstLogin
                     },
                     token: userServices.toAuthJSON({id: user.id, login: user.login})
                 }).send();
@@ -194,6 +206,7 @@ export class UserRouter {
         this.router.post('/authFromToken', this.authFromToken);
         this.router.post('/signup', this.signup);
         this.router.post('/updateUserInfo', this.updateUserInfo);
+        this.router.post('/unsetFirstLogin', this.unsetFirstLogin);
     }
 }
 

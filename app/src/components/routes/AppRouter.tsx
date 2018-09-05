@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { BrowserRouter, HashRouter, Route , Switch } from 'react-router-dom';
 import UserRoute from './UserRoute';
+import FirstRoute from './FirstRoute';
 import GuestRoute from './GuestRoute';
 import { loginFromToken } from '../state/actions/auth';
 
@@ -27,7 +28,7 @@ export class AppRouter extends React.Component<{}> {
                     <GuestRoute exact path="/signup" component={SignupPage}/>
                     <UserRoute path="/dashboard" component={DashboardPage}/>
                     <UserRoute path="/profile" component={ProfilePage}/>
-                    <UserRoute path="/first" component={FirstLoginPage}/>
+                    <FirstRoute path="/first" component={FirstLoginPage}/>
                     <Route exact path="/" component={ContentPage} />
                     <Route component={NotFoundPage} />
                 </Switch>

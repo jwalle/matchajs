@@ -99,7 +99,7 @@ PhotoUploadFormState > {
                 <h1>Your photos :</h1>
                 <div id="mainPhoto">
                     <h2>My main photo :</h2>
-                    <img src={profilPhoto} alt="pseudo here"/>
+                    <img src={profilPhoto} onClick={this.handleOpenModal} alt="pseudo here"/>
                 </div>
                 <div id="uploadAlbumArea" className="flex-column">
                     <p>My Album :</p>

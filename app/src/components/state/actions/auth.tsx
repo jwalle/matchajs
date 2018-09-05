@@ -1,4 +1,5 @@
 import api from '../../../services/api';
+import { getProfil } from './photos';
 
 export const USER_LOGGED_IN = 'USER_LOGGED_IN';
 export const USER_LOGGED_OUT = 'USER_LOGGED_OUT';
@@ -28,6 +29,7 @@ export const loginFromToken = () => (dispatch: any) => {
             } else {
                 // localStorage.setItem('matchaJWT', res.data.token); TODO: refresh token ?
                 dispatch(userLoggedIn(res.data.user, res.data.token));
+                dispatch(getProfil(res.data.user.id));
             }
         });
     }

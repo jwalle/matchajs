@@ -9,7 +9,9 @@ export default {
         signup: (user: object) =>
             axios.post('/api/signup', {user}).then(res => res.data.user),
         updateUserInfo: (data: object) =>
-            axios.post('/api/updateUserInfo', {data}) 
+            axios.post('/api/updateUserInfo', {data}),
+        unsetFirstLogin: (userId: number) =>
+            axios.post('/api/unsetFirstLogin', {userId})
         // getUser
         // getProfilePhoto
         // getMightLike
@@ -19,8 +21,8 @@ export default {
             axios.get('/api/tags/getAll').then(res => res.data),
         newTag: (newTag: string, inOrOut: string) =>
             axios.post('/api/tags/addTag', {newTag, inOrOut}).then(res => res.data),
-        setTagApi : (tagId: number, userId: number) =>
-            axios.post('/api/tags/setTag', {tagId, userId}).then(res => res.data.user)
+        setTagsApi : (tagsId: number[], userId: number) =>
+            axios.post('/api/tags/setTag', {tagsId, userId}).then(res => res.data.user)
     },
     photos: {
         getProfil: (userId: number) => 

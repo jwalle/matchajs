@@ -1,41 +1,17 @@
 import * as React from 'react';
 import { Icon, Button, Image, Container, Dropdown } from 'semantic-ui-react';
 import NavigationRightUser from './navigationRightUser';
-import axios from 'axios';
-const path = require('path');
-const PHOTOS_DIR = path.resolve(__dirname, 'data/photos/');
+import { connect } from 'react-redux';
 
-export interface NavigationBarState {
-    picture: string;
+export interface NavigationBarProps {
+    profil: any;
+    user: any;
 }
 
-export default class NavigationBar extends React.Component<{}, NavigationBarState> {
+export class NavigationBar extends React.Component<NavigationBarProps, {}> {
     constructor(props: any) {
         super(props);
-
-        this.state = {
-            picture: '',
-        };
       }
-
-      componentWillMount() {
-          this.getProfilePhoto();
-      }
-
-      getProfilePhoto = () => {
-        let self = this;
-        axios({
-            method: 'get',
-            url: '/api/getProfilePhoto/1',
-            responseType: 'json'
-        })
-            .then(res => {
-                self.setState({
-                    picture: PHOTOS_DIR + '/' + res.data[0].link, // plop
-                });
-            })
-            .catch(err => console.log('error axios profilePhoto :', err));
-    }
 
     render() {
         return (
@@ -62,8 +38,15 @@ export default class NavigationBar extends React.Component<{}, NavigationBarStat
                         /><h2 className="navTitleLeft">Matchas</h2></span>
                     </div>
                 </div>
-                <NavigationRightUser picture={this.state.picture} />
+                <NavigationRightUser profil={this.props.profil} user={this.props.user} />
             </div>
         );
     }
 }
+
+const mapStateToProps = (state: any) => ({
+    profil: state.photos.profil,
+    user: state.user.user
+});
+
+export default connect<NavigationBarProps, null>(mapStateToProps, null)(NavigationBar);

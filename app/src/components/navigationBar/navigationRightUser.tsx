@@ -1,12 +1,20 @@
 import * as React from 'react';
 import { Icon } from 'semantic-ui-react';
+import * as path from 'path';
+const PHOTOS_DIR = path.resolve(__dirname, 'data/photos/');
 
 export interface NavigationBarProps {
-    picture: string;
+    profil: any;
+    user: any;
 }
 
 export default class NavigationBar extends React.Component<NavigationBarProps, {}> {
     render() {
+        const { profil, user } = this.props;
+        let profilPhoto = 'http://via.placeholder.com/100x100';
+        if (profil) {
+            profilPhoto = `../../../data/photos/${user.login}/${profil.link}`;
+        }
         return (
                 <div className="navRight">
                    <div className="navLinksRight">
@@ -25,10 +33,10 @@ export default class NavigationBar extends React.Component<NavigationBarProps, {
                         </Icon></span>
                     </div>
                     <div className="navUser">
-                        <a href="/profile" className="navUserImage">
+                        <a href="/#/profile" className="navUserImage">
                             <span className="navUserThumb">
                                 {/* <img src="http://via.placeholder.com/120x120" alt="pseudo here" /> */}
-                            <img src={this.props.picture} alt="pseudo here" />
+                            <img src={profilPhoto} alt="pseudo here" />
                             </span>
                         </a>
                     </div>

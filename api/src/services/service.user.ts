@@ -64,6 +64,14 @@ class userServices {
         return (this.selectRequest(sql, values))
     }
 
+    public unsetFirstLogin(userId) {
+        let sql = "UPDATE users SET firstLogin=0 WHERE id=?"
+        let values = [
+            userId
+        ];
+        return (this.selectRequest(sql, values))
+    }
+
     public getUserByEmail(email) {
         let sql = "SELECT * FROM users WHERE email=?";
         return (this.selectRequest(sql, email))
