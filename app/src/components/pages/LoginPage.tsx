@@ -19,7 +19,6 @@ class LoginPage extends React.Component<LoginPageProps, {}> {
     submit = (data: any) => this.props.login(data).then(() => this.props.history.push('/dashboard'));
 
     render() {
-        console.log('YOU ARE HERE !');
         return (
             <Container id="centralContainer">             
                 <h1>Welcome back !</h1>
