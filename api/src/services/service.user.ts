@@ -111,20 +111,22 @@ class userServices {
     }
 
     createNewUser(user) : Promise<object>  {
-        let sql = "INSERT INTO users (login, password, email, gender, dob, registered, country, city, nat) VALUES (?,?,?,?,?,?,?,?,?)";
+        let sql = "INSERT INTO users (login, firstname, lastname, password, email, gender, orientation, dob, registered, country, city, nat) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         let values = [
             user.username,
+            user.firstname,
+            user.lastname,
             user.password,
             user.email,
             user.gender,
-//            user.dob,
-            "today",
-            "last year",
+            user.orientation,
+            new Date(user.birthday.year, user.birthday.month ,user.birthday.day),
+            new Date(),
             user.country,
             user.city,
-            'FR' //TODO : countries API/Json
+            'FR' // TODO : countries API/Json
         ];
-        return (this.selectRequest(sql, values)); //.insertId;
+        return (this.selectRequest(sql, values));
     };
 
     insertNewUser(user) : Promise<object>  {

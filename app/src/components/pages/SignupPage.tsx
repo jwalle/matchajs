@@ -3,7 +3,6 @@ import SignupForm from '../forms/SignupFormAll';
 import { connect } from 'react-redux';
 import { signup } from '../state/actions/auth';
 import NavigationRightGuest from '../navigationBar/navigationRightGuest';
-import { Container } from 'semantic-ui-react';
 
 export interface SignupPageProps {
     history: {
@@ -24,9 +23,9 @@ class SignupPage extends React.Component<SignupPageProps, {}> {
       <div>
         <h1 id="logo" className="navLogo"><a href="/">MATCHA</a></h1>
         <NavigationRightGuest />
-        <Container id="centralContainer"> 
+        <div id="centralContainer"> 
           <SignupForm submit={this.submit} />
-        </Container>
+        </div>
       </div>
     );
   }

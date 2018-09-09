@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Form, FormGroup, Button, Container } from 'semantic-ui-react';
+import { Form } from 'semantic-ui-react';
 import * as Validator from 'validator';
 import FormName from './FormName';
-import Danger from '../messages/Message';
+import { Danger } from '../messages/Message';
 import * as formTypes from './formTypes'; 
 
 export interface SignupFormProps {
@@ -51,7 +51,11 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
         if (Object.keys(errors).length === 0 ) {
             this.setState({loading: true});
             this.props.submit(this.state.data)
-            .catch((err: any) => this.setState({errors: err.response.data.errors, loading: false }));
+            .catch((err: any) => this.setState({
+                errors: {
+                    global : err
+                }
+            }));
         }
     }
 
@@ -60,7 +64,7 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
     }
 
     onChangeTerm = () => {
-        this.setState({ term: !!this.state.term });
+        this.setState({ term: !this.state.term });
         console.log('term = ', this.state.term);
     }
 
@@ -76,55 +80,52 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
 
     validate = (data: SignupFormState3['data']) => {
         const errors: any = {};
+        if (!data.firstname || !data.lastname) { errors.name = 'You have to enter your name'; }
         if (!Validator.isEmail(data.email)) { errors.email = 'invalid email'; }
         if (!data.password) { errors.password = 'You have to enter a password'; }
         if (!data.passwordVerif) { errors.password = 'You have to re-enter your password'; }
         if (data.password !== data.passwordVerif) {errors.password = 'the verification password is different'; }
-        // if (!this.state.term) {errors.term = 'You must accept the Terms !!'; }
+        if (!this.state.term) {errors.term = 'You must accept the Terms !!'; }
 
         // TODO : Add more validation (strlen, complex password,...)
         return errors;
     }
 
     render() {
-        const {data, errors, loading} = this.state;
+        const {data, errors} = this.state;
         return (
-            <Container>
-                <h1 style={{color: 'red'}}>You are : {this.props.data.gender} and {this.props.data.orientation}</h1>
-                <h1 style={{color: 'red'}}>
-                You are {this.props.data.username} from : {this.props.data.country}, {this.props.data.city}
-                </h1>
-                <Form onSubmit={this.onSubmit} loading={loading}>
-                    {errors.global && <Danger title="Global error" text="Something went wrong" />}
+            <div>
+                <form onSubmit={this.onSubmit} className="flex-col login-form">
+                {errors.global && <Danger text="Something went wrong" /> && console.error(errors.global)}
                         <FormName data={data} errors={errors} updateName={this.onSelectName} /> 
-                        <Form.Field error={!!errors.email}>
-                            <Form.Input
+                            <input
+                                className="myInput"
                                 type="email"
                                 id="email"
                                 name="email"
-                                autoComplete="email"                                
-                                placeholder="Enter your email here"
+                                autoComplete="email"
+                                placeholder="your.email@example.com"
                                 value={data.email}
-                                style={{ width: '415px' }}                                
+                                style={{ width: '320px' }}
                                 onChange={this.onChange}
                             />
                         {errors.email && <Danger title="Email" text={errors.email} />}
-                        </Form.Field>       
-                        <Form.Group>
-                            <Form.Field error={!!errors.password} autoComplete="off">
-                                <Form.Input
+                        <div>
+                            <label htmlFor="password">password :</label>
+                            <div>
+                                <input
+                                    className="myInput"
                                     type="password"
                                     autoComplete="new-password"
                                     id="password"
                                     name="password"
-                                    placeholder="Enter your password here"
+                                    placeholder="6 characters minimum"
                                     value={data.password}
                                     style={{ width: '200px' }}
                                     onChange={this.onChange}
                                 />
-                            </Form.Field>
-                            <Form.Field error={!!errors.password}>
-                                <Form.Input
+                                <input
+                                    className="myInput"
                                     type="password"
                                     autoComplete="off"                                    
                                     id="passwordVerif"
@@ -134,18 +135,31 @@ export default class SignupForm extends React.Component < SignupFormProps, Signu
                                     style={{ width: '200px' }}
                                     onChange={this.onChange}
                                 />
-                            {errors.password && <Danger title="Password" text={errors.password} />} 
-                            </Form.Field>
-                        </Form.Group>
-                        {errors.term && <Danger title="term" text={errors.term} />}                     
-                        <Form.Checkbox
-                            label="I agree to the Terms and Conditions" 
-                            onChange={this.onChangeTerm}
-                        />
-                    <Button primary onClick={this.onPrevious}>Back</Button>
-                    <Button primary>Login</Button>
-                </Form>
-            </Container>            
+                            </div>
+                            {errors.password && <Danger title="Password" text={errors.password} />}
+                        </div>
+                        <div style={{paddingBottom: '15px'}}>
+                            <input
+                                type="checkbox"
+                                id="terms"
+                                name="subscribe"
+                                value="newsletter"
+                                onChange={this.onChangeTerm}
+                            />
+                            <label htmlFor="terms">I agree to the Terms and Conditions</label>
+                        </div>
+                        {errors.term && <Danger title="term" text={errors.term} />}
+                    <div style={{width: '80%', paddingTop: '15px'}}>
+                        <button
+                            style={{float: 'left'}}
+                            className="btn btn-cancel"
+                            onClick={this.onPrevious}>Back</button>
+                        <button
+                            style={{float: 'right'}}
+                            className="btn btn-primary">Submit !</button>
+                    </div>
+                </form>
+            </div>            
         );
     }
 }

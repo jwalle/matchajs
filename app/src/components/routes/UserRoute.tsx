@@ -25,10 +25,10 @@ interface UserRouteProps {
 // };
 
 const UserRoute: React.SFC<UserRouteProps> = ({isAuth, firstLogin, component, ...rest}) => {
-  let confirmed = false;
+  let confirmed = true;
   console.log(isAuth, firstLogin);
   if (!isAuth) {
-    return <Redirect to="/login" />;
+    return <Redirect to="/" />;
   } else if (!confirmed) {
     return <Route {...rest} render={() => React.createElement(ConfirmPage)} />;
   } else if (firstLogin) {
@@ -41,7 +41,7 @@ const UserRoute: React.SFC<UserRouteProps> = ({isAuth, firstLogin, component, ..
 function mapStateToProps(state: any) {
     return {
       isAuth: !!state.user.token,
-      firstLogin: !!state.user.user.firstLogi,
+      firstLogin: !!state.user.user.firstLogin,
       user: state.user.user
     };
   }

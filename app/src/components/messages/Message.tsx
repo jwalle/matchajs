@@ -2,17 +2,25 @@ import * as React from 'react';
 import { Message } from 'semantic-ui-react';
 
 interface MessageProps {
-    title: string;
+    title?: string;
     text: string;
 }
 
+// export const Danger: React.SFC<MessageProps> = (props) => {
+//         return(
+//         <Message negative>
+//             <Message.Header>{props.title}</Message.Header>
+//             <p>{props.text}</p>
+//         </Message>);
+//         };
+
 export const Danger: React.SFC<MessageProps> = (props) => {
-        return(
-        <Message negative>
-            <Message.Header>{props.title}</Message.Header>
-            <p>{props.text}</p>
-        </Message>);
-        };
+            return(
+            <span className="msg msg-danger">
+                <div className="arrow-top" />
+                <p>{props.text}</p>
+            </span>);
+            };
 
 export const Info: React.SFC<MessageProps> = (props) => {
             return(

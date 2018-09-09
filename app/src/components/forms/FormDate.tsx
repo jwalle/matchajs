@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Moment from 'moment';
-import Danger from '../messages/Message';
+import { Danger } from '../messages/Message';
 import { Container, Header, Divider, Form, FormGroup, Button, Dropdown } from 'semantic-ui-react';
 import * as formTypes from './formTypes'; 
 
@@ -113,10 +113,9 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
         const { errors } = this.props;
         const { data } = this.state;
         return (
-            <Form.Field error={!!errors.birthday}>
+            <div>
             <label htmlFor="birthday">Your birthday :</label>
-                <Form.Group>                    
-                    {/* <Divider hidden/> */}
+                <Form.Group className="flex" style={{padding: '15px'}}>                    
                     <Form.Select
                         selection
                         placeholder="Month"
@@ -125,6 +124,7 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
                         value={data.birthday.month}
                         options={months}
                         onChange={this.onSelectMonth}
+                        style={{minWidth: '140px'}}
                     />
                     <Form.Select
                         selection
@@ -133,6 +133,7 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
                         value={data.birthday.day}
                         options={this.state.days}
                         onChange={this.onSelectDay}
+                        style={{minWidth: '85px'}}
                     />
                     <Form.Select
                         selection
@@ -144,7 +145,7 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
                     />
                 </Form.Group>
                 {errors.birthday && <Danger title="Birthday" text={errors.birthday} />}                
-            </Form.Field>
+            </div>
             
         );
     }

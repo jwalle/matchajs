@@ -25,6 +25,7 @@ export default class SignupFormAll extends React.Component < SignupFormProps, Si
 
         this.state = {
             currentStep: 'intro',
+            // currentStep: 'intro',
             data: {
                 gender: 'F',
                 orientation: 'S',

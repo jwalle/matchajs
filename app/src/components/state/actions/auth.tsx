@@ -37,10 +37,10 @@ export const loginFromToken = () => (dispatch: any) => {
 
 export const login = (credentials: any) => (dispatch: any) => 
     api.user.login(credentials).then(res => {
-        console.log(res);
         if (res.status !== 200) {
             // dispatch(userLoginFailure(res.error));
         } else {
+            console.log(res);
             localStorage.setItem('matchaJWT', res.data.token);
             dispatch(userLoggedIn(res.data.user, res.data.token));
         }
@@ -48,8 +48,8 @@ export const login = (credentials: any) => (dispatch: any) =>
     
 export const signup = (credentials: any) => (dispatch: any) => 
     api.user.signup(credentials).then(user => {
-        localStorage.setItem('matchaJWT', user.token);
-        // dispatch(userLoggedIn(res.data.user, res.data.token));
+        localStorage.setItem('matchaJWT', user.data.token);
+        dispatch(userLoggedIn(user.data.user, user.data.token));
     });
 
 export const logout = () => (dispatch: any) => {

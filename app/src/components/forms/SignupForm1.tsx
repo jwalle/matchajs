@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Form, FormGroup, Button } from 'semantic-ui-react';
 import * as Validator from 'validator';
 import Danger from '../messages/Message';
 import * as formTypes from './formTypes'; 
@@ -49,57 +48,62 @@ export default class SignupForm1 extends React.Component<SignupFormProps, Signup
 
     render() {
 
-        const { loading } = this.state;
+        const { gender, orientation } = this.state.data;
 
         return (
             <div id="formOneButtons">
-                <div id="GenderButtons">
-                <Button.Group size="big">
-                    <Button
-                        value="F"
-                        toggle
-                        active={this.state.data.gender === 'F'}
-                        onClick={() => this.onChangeGender('F')}
-                    >Female
-                    </ Button>
-                    <Button.Or />
-                    <Button
+                <div id="GenderButtons" className="flex">
+                    <input
+                        checked={gender === 'M'}
+                        type="radio"
+                        name="sex"
                         value="M"
-                        toggle
-                        active={this.state.data.gender === 'M'}
-                        onClick={() => this.onChangeGender('M')}
-                    >Male
-                    </ Button>
-                </Button.Group>
+                        data-icon=""
+                        onChange={() => this.onChangeGender('M')}
+                    />
+                    <span className="radio-inter">-</span> 
+                    <input
+                        checked={gender === 'F'}
+                        type="radio"
+                        name="sex"
+                        value="F"
+                        data-icon=""
+                        onChange={() => this.onChangeGender('F')}
+                    />
                 </div>
-                <div id="orientationButtons">
-                <Button.Group>
-                    <Button
+                <div id="orientationButtons" className="flex">
+                    <input
+                        type="radio"
+                        name="ori"
                         value="S"
-                        toggle
-                        active={this.state.data.orientation === 'S'}
-                        onClick={() => this.onChangeOrientation('S')}
-                    >Straight
-                    </ Button>
-                    <Button.Or />
-                    <Button
+                        data-icon="Straight"
+                        checked={orientation === 'S'}
+                        onChange={() => this.onChangeOrientation('S')}
+                    />
+                    <span className="radio-inter">-</span> 
+                    <input
+                        type="radio"
+                        name="ori"
                         value="G"
-                        toggle
-                        active={this.state.data.orientation === 'G'}
-                        onClick={() => this.onChangeOrientation('G')}
-                    >gay
-                    </ Button>
-                    <Button.Or />
-                    <Button
+                        data-icon="Gay"
+                        checked={orientation === 'G'}
+                        onChange={() => this.onChangeOrientation('G')}
+                    />
+                    <span className="radio-inter">-</span> 
+                    <input
+                        type="radio"
+                        name="ori"
                         value="B"
-                        toggle
-                        active={this.state.data.orientation === 'B'}
-                        onClick={() => this.onChangeOrientation('B')}
-                    >Bisexual
-                    </ Button>
-                </Button.Group>
+                        data-icon="Bisexual"
+                        checked={orientation === 'B'}
+                        onChange={() => this.onChangeOrientation('B')}
+                    />
                 </div>
-                <Button className="formOneNextButton" onClick={() => this.onSubmit()}>Next</Button>
+                <button
+                    className="btn btn-primary"
+                    style={{float: 'right'}}
+                    onClick={() => this.onSubmit()}>Next
+                </button>
             </div>
         );
     }

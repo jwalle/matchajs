@@ -1,6 +1,6 @@
 import { Form, FormGroup, Button, Dropdown, Container } from 'semantic-ui-react';
 import * as React from 'react';
-import Danger from '../messages/Message';
+import { Danger } from '../messages/Message';
 import * as formTypes from './formTypes';
 
 export interface FormNameProps {
@@ -39,26 +39,28 @@ export default class FormName extends React.Component < FormNameProps, FormNameS
         const { data } = this.state;
         const { errors } = this.props;
         return (
-            <Form.Field error={!!errors.name}>
+            <div>
                 <label htmlFor="location">Your Name :</label>
-                <Form.Group>
-                    <Form.Input
+                <div className="flex">
+                    <input
+                        className="myInput"
                         value={data.firstname}
                         autoComplete="given-name"
-                        placeholder="Firstname"
+                        placeholder="First name"
                         name="firstname"
                         onChange={this.onSelect}
                     />
-                    <Form.Input
+                    <input
+                        className="myInput"
                         value={data.lastname}
-                        placeholder="Lastname"
+                        placeholder="Last name"
                         autoComplete="family-name"
                         name="lastname"
                         onChange={this.onSelect}
                     />
-                </Form.Group>
+                </div>
                 {errors.name && <Danger title="Name" text={errors.name} />}                
-            </Form.Field>
+            </div>
         );
     }
 }

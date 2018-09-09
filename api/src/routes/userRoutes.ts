@@ -113,8 +113,31 @@ export class UserRouter {
     public signup(req: Request, res: Response, next: NextFunction): void {
         userServices.createNewUser(req.body.user)
         .then((results: any) => {
-            if (results)
-                res.status(200);
+            if (results) {
+                userServices.getUser(results.insertId)
+                .then((result: any) => {
+                    const user = result[0];
+                    console.log('COUCOU', user);
+                    if (user) {
+                        res.status(200).json({
+                            user : {
+                                id: user.id,
+                                login: user.login,
+                                firstname: user.firstname,
+                                lastname: user.lastname,
+                                gender: user.gender,
+                                orientation: user.orientation,
+                                dob: user.dob,
+                                confirmed: user.confirmed,
+                                firstLogin: user.firstLogin
+                            },
+                            token: userServices.toAuthJSON({id: user.id, login: user.login})
+                        }).send();
+                    } else {
+                        res.status(400).json({errors: { global: "Backend Signup error"}})                
+                    }
+                })
+            }
         })
     }
 

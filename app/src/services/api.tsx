@@ -7,7 +7,7 @@ export default {
         loginFromToken: (token: string) =>
             axios.post('/api/authFromToken', {token}).then(res => res),
         signup: (user: object) =>
-            axios.post('/api/signup', {user}).then(res => res.data.user),
+            axios.post('/api/signup', {user}).then(res => res),
         updateUserInfo: (data: object) =>
             axios.post('/api/updateUserInfo', {data}),
         unsetFirstLogin: (userId: number) =>

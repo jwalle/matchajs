@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Form, Button, Container } from 'semantic-ui-react';
-import Danger from '../messages/Message';
+import { Danger } from '../messages/Message';
 import FormDate from './FormDate';
 import FormLocation from './FormLocation';
 import * as Moment from 'moment';
@@ -124,26 +124,34 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
 
         const {data, errors, loading} = this.state;
         return (
-            <Container>
-             <Form onSubmit={this.onSubmit} loading={loading}>
-                {errors.global && <Danger title="Global error" text="Something went wrong" />}    
-                <Form.Field error={!!errors.username}>
-                    <label htmlFor="username">Username :</label>
-                    <input
-                        id="username"
-                        name="username"
-                        placeholder="toto420"
-                        value={data.username}
-                        onChange={this.onChange}
-                    />
-                    {errors.username && <Danger title="Username" text={errors.username} />}
-                    </Form.Field>
+            <div>
+                <form onSubmit={this.onSubmit} className="flex-col login-form">
+                    {errors.global && <Danger title="Global error" text="Something went wrong" />}
+                    <div>
+                        <label htmlFor="username">Username :</label>
+                        <input
+                            className="myInput"
+                            id="username"
+                            name="username"
+                            placeholder="toto420"
+                            value={data.username}
+                            onChange={this.onChange}
+                        />
+                        {errors.username && <Danger title="Username" text={errors.username} />}
+                    </div>
                     <FormDate data={data} errors={errors} submitDate={this.onSelectBirthday}/>
                     <FormLocation data={data} errors={errors} updateLocation={this.onSelectLocation} />
-                <Button type="button" primary onClick={this.onPrevious}>Back</Button>
-                <Button primary>Next</Button>
-            </Form>
-            </Container>    
+                    <div style={{width: '80%'}}>
+                        <button
+                            className="btn btn-primary"
+                            style={{float: 'left'}}
+                            type="button"
+                            onClick={this.onPrevious}
+                        >Back</button>
+                        <button className="btn btn-primary" style={{float: 'right'}}>Next</button>
+                    </div>
+                </form>
+            </div>
         );
     }
 }

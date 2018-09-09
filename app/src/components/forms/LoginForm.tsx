@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Form, Button, FormGroup } from 'semantic-ui-react';
 import * as Validator from 'validator';
-import { Danger, Info } from '../messages/Message';
+import { Danger } from '../messages/Message';
 
 export interface AppProps {
     submit: Function;
@@ -57,20 +57,22 @@ export default class App extends React.Component < AppProps, AppState > {
     validate = (data: AppState['data']) => {
         const errors: any = {};
         if (!Validator.isEmail(data.email)) { errors.email = 'invalid email'; }
-        if (!data.password) { errors.password = 'can\'t be blank'; }
+        if (!data.email) { errors.email = 'please enter an email adress'; }
+        if (!data.password) { errors.password = 'invalid password'; }
         return errors;
     }
 
     render() {
 
-        const {data, errors, loading} = this.state;
+        const {data, errors} = this.state;
 
         return (
-            <Form onSubmit={this.onSubmit} loading={loading}>
+            <form onSubmit={this.onSubmit} className="flex-column login-form">
                 {errors.global && <Danger title="global" text={errors.global} />}
-                <Form.Field error={!!errors.email}>
+                <div style={{width: '100%'}}>
                     <label htmlFor="email">email :</label>
                     <input
+                        className="myInput"
                         type="email"
                         id="email"
                         name="email"
@@ -80,10 +82,11 @@ export default class App extends React.Component < AppProps, AppState > {
                         onChange={this.onChange}
                     />
                     {errors.email && <Danger title="email" text={errors.email} />}
-                </Form.Field>
-                <Form.Field error={!!errors.password}>
+                </div>
+                <div style={{width: '100%'}}>
                     <label htmlFor="password">password :</label>                    
                     <input
+                        className="myInput"
                         type="password"
                         id="password"
                         name="password"
@@ -93,9 +96,9 @@ export default class App extends React.Component < AppProps, AppState > {
                         onChange={this.onChange}
                     />
                     {errors.password && <Danger title="Password" text={errors.password} />}  
-                </Form.Field>
-                <Button primary>Login</Button>
-            </Form>
+                </div>
+                <button className="btn btn-primary btn-login">Login</button>
+            </form>
         );
     }
 }

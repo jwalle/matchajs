@@ -1,7 +1,6 @@
-import { Form, FormGroup, Button, Dropdown, Container } from 'semantic-ui-react';
+import { Form } from 'semantic-ui-react';
 import * as React from 'react';
-import Danger from '../messages/Message';
-import * as Validator from 'validator';
+import { Danger } from '../messages/Message';
 import * as formTypes from './formTypes';
 
 export interface FormLocationProps {
@@ -95,10 +94,11 @@ export default class FormLocation extends React.Component < FormLocationProps, F
         const { data } = this.state;
         const { errors } = this.props;
         return (
-            <Form.Field error={!!errors.location}>
+            <div>
                 <label htmlFor="location">Your Location :</label>            
-                <Form.Group>
+                <Form.Group className="flex" style={{padding: '15px'}}>
                     <Form.Select
+                        fluid
                         placeholder="Select your country"
                         selection
                         value={data.country}
@@ -106,6 +106,7 @@ export default class FormLocation extends React.Component < FormLocationProps, F
                         onChange={this.onSelectCountry}
                     />
                     <Form.Select
+                        fluid
                         placeholder="Select your cities"
                         selection
                         // {...!!this.state.citiesList ? 'disabled' : ''}
@@ -115,7 +116,7 @@ export default class FormLocation extends React.Component < FormLocationProps, F
                     />
                 </Form.Group>
                 {errors.location && <Danger title="Location" text={errors.location} />}                
-            </Form.Field>
+            </div>
         );
     }
 }

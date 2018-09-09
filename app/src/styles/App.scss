@@ -16,6 +16,12 @@
   /* --bg:  url('../../../data/images/signupBackground.jpeg'); */
 }
 
+$bright-prussian: #226a9b;
+$prussian: #0b3c5d;
+$sky: #328cc1;
+$gold: #d9b310;
+$ivory: #1d2731;
+
 @font-face {
   font-family: 'Champagne & Limousines';
   src: url('/data/fonts/Champagne.ttf') format('truetype');
@@ -24,8 +30,6 @@
 }
 
 body {
-    background-image: var(--bg);    
-    padding-top: 70px;
   }
   .table .btn-link {
     padding: 0px 12px;
@@ -49,14 +53,22 @@ body {
   grid-template-rows: 160px auto 100px;
 }
 
-.guest-container {
-  /* background-image: url('../../../data/images/signupBackground.jpeg'); */
-  background-size: cover;
-  background-position: center;
-  overflow: hidden;
-  min-height: 900px;
-}
+// .guest-container {
+// }
 
 .user-container {
   padding-top: 66px;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
