@@ -1,0 +1,35 @@
+.user-block {
+    width: 120px;
+    height: 181px;
+    border: solid 1px black;
+    cursor: pointer;
+    img {
+        width: 100%;
+        height: 130px;
+        object-fit: cover;
+    }
+    &:hover {
+        border: solid 1px $gold;
+    }
+}
+
+.lower-user-block {
+    background: $prussian;
+    color: white;
+    text-align: center;
+        h2 {
+            padding: 7 10 0 10;
+            font-size: 16px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        p {
+            padding: 7 10 7 10;
+            font-size: 12px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+}

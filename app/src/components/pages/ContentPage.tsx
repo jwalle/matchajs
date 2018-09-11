@@ -30,14 +30,17 @@ class ContentPage extends React.Component<ContentPageProps, {}> {
   render() {
     return (
       <div className="main-front">
-        <Discovery />
+        <div className="main-grid">
+          <h1 className="disco-title liked-title"><span>Profiles you liked</span></h1>
+          <Discovery class="liked-profiles" />
+          <h1 className="disco-title new-title"><span>New Profiles</span></h1>
+          <Discovery class="new-profiles" />
+        </div>
         <h1>Welcome</h1>
-        {this.props.isAuth ?
-         <button onClick={() => this.props.logout()}>Logout</button> :
-         <Link to="/login">Login</Link>}
+        <button onClick={() => this.props.logout()}>Logout</button>
         <button className="btn btn-primary" style={{ float: 'left' }} onClick={() => this.makeUser()}>
-          Make User
-          </button>
+        Make User
+        </button>
       </div>
     );
   }

@@ -1,0 +1,69 @@
+.main-front {
+    > * {
+        font-family: $open-sans;
+        letter-spacing: 0;
+    }
+    background: $prussian;
+    min-height: 100%;
+}
+
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 900px 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+    ". liked-title ."
+    ". liked ."
+    ". new-title ."
+    ". new .";
+    padding-top: 20px;    
+}
+
+#main-liked-profiles {
+    grid-area: liked;
+    background: $ivory;
+    padding: 20 0;
+    justify-content: space-around;
+}
+
+#main-new-profiles {
+    grid-area: new;
+    background: $ivory;
+    padding: 20 0;
+    justify-content: space-around;
+}
+
+.disco-title {
+    grid-area: liked-title;
+    font-family: $champagne;
+    font-size: 1.7em;
+    padding: 10;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    background: $ivory;
+    &:before {
+        width: 90%;
+        height: 1px;
+        content: "";
+        background: $gold;
+        top: 50%;
+        position: absolute;
+        transform: translate(0, -100%);
+        left: 5%;
+        z-index: -1;
+    }
+    span {
+        color: $gold;
+        background: $ivory;
+        padding: 5px 10px;
+    }
+}
+
+.liked-title {
+    grid-area: liked-title;
+}
+
+.new-title {
+    grid-area: new-title;
+}

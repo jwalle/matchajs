@@ -1,51 +1,29 @@
 import * as React from 'react';
+import UserBlock from './UserBlock';
 
-export default class Discovery extends React.Component {
+export interface DiscoveryProps {
+    class: string;
+}
+
+export default class Discovery extends React.Component<DiscoveryProps, {}> {
 
     render() {
+        const user = {
+            img: '../../../data/photos/happygorilla308/happygorilla308-1535384495459.jpg',
+            // img: 'https://source.unsplash.com/collection/1390381/',
+            login: 'lilia',
+            age: 18,
+            location: {city: 'paris'}
+        };
+
         return (
-            <div className="discovery">
-                <div id="discovery-interest">
-                    <div id="interest-layout">
-                        <div id="interest">They love: Metal</div>
-                        <div id="interested">
-                            <div id="interested-profile">
-                                <img src="http://via.placeholder.com/140" alt="pseudo here" />
-                                <p className="interested-name">Lilia</p>
-                                <p className="interested-match">90 %</p>
-                            </div>
-                            <div id="interested-profile">
-                                <img src="http://via.placeholder.com/140" alt="pseudo here" />
-                                <p className="interested-name">Lilia</p>
-                                <p className="interested-match">90 %</p>
-                            </div>
-                            <div id="interested-profile">
-                                <img src="http://via.placeholder.com/140" alt="pseudo here" />
-                                <p className="interested-name">Lilia</p>
-                                <p className="interested-match">90 %</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="discovery-snapshot">
-                    <div id="snapshot-layout">
-                        <div id="snap-txt">They have new picture :</div>
-                        <div id="snapshot-profiles">
-                            <div className="snapshot-profile">
-                                <div className="snap-new-pic" />
-                                <img
-                                    className="snap-profile-pic"
-                                    src="http://via.placeholder.com/100/white"
-                                    alt="pseudo here"
-                                />
-                                <div className="snap-bottom">
-                                    <p className="snap-name">Lilia</p>
-                                    <p className="snap-quote">"My last vacation !"</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div id={'main-' + this.props.class} className="flex">
+                <UserBlock user={user} />
+                <UserBlock user={user} />
+                <UserBlock user={user} />
+                <UserBlock user={user} />
+                <UserBlock user={user} />
+                <UserBlock user={user} />
             </div>
         );
     }
