@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 const BUILD_DIR = path.resolve(__dirname, 'public/js');
@@ -25,20 +25,17 @@ module.exports = {
     filename: '[name].js'
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.s?css$/,
         exclude: [/node_modules/],
-        loader: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader'
-            }, {
-              loader: 'sass-loader'
-            }
-          ]
-        })
+        use: [{
+          loader: MiniCssExtractPlugin.loader,
+          options: {},
+          },
+          'css-loader',
+          'sass-loader'
+        ],
       }, {
         test: /\.tsx?$/,
         exclude: '/node_modules/',
@@ -60,14 +57,11 @@ module.exports = {
       }, {
         test: /\.s?css$/,
         include: [/node_modules/],
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: [
-            {
-              loader: 'css-loader'
-            },
-          ]
-        })
+        use: [{
+          loader: MiniCssExtractPlugin.loader,
+         },
+          'css-loader'
+        ],
       }
     ]
   },
@@ -86,7 +80,7 @@ module.exports = {
     }
   },
   plugins: [
-    new ExtractTextPlugin('styles.css'),
+    new MiniCssExtractPlugin({filename: 'styles.css'}),
     new HtmlWebpackPlugin({title: 'Matcha', template: 'index.html'}),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
