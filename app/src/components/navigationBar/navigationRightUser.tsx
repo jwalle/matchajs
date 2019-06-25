@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Icon } from 'semantic-ui-react';
 import * as path from 'path';
+import { withRouter } from 'react-router-dom';
 const PHOTOS_DIR = path.resolve(__dirname, 'data/photos/');
 
 export interface NavigationBarProps {

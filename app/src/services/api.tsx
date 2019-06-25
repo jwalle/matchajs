@@ -11,7 +11,11 @@ export default {
         updateUserInfo: (data: object) =>
             axios.post('/api/updateUserInfo', {data}),
         unsetFirstLogin: (userId: number) =>
-            axios.post('/api/unsetFirstLogin', {userId})
+            axios.post('/api/unsetFirstLogin', {userId}),
+        getRandUsers: () =>
+            axios.get('/api/getRandUsers').then(res => res.data),
+        getSearchResults: (filters: any) =>
+            axios.post('/api/getSearchResults', {filters}).then(res => res.data),
         // getUser
         // getProfilePhoto
         // getMightLike

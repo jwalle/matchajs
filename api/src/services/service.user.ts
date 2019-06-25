@@ -83,6 +83,18 @@ class userServices {
         return (this.selectRequest(sql, value))
     }
 
+    public getRandUsers() {
+        let sql = "SELECT u.id, u.login, u.dob, u.city , p.link\
+        FROM `users` u\
+        LEFT JOIN photos p\
+        ON p.idUser = u.id AND p.isProfil = 1\
+        WHERE 1\
+        ORDER BY RAND()\
+        LIMIT 6";
+        let value = [];
+        return (this.selectRequest(sql, value))
+    }
+
     public getUserMightLikeUsers(userId) {
         let sql = "SELECT * FROM users WHERE id!=? ORDER BY RAND() LIMIT 6";
         return (this.selectRequest(sql, [userId]))

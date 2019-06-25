@@ -46,6 +46,7 @@ class HomePage extends React.Component<HomePageProps, HomePageState> {
             <button onClick={() => this.togSignForm()} className="btn-join btn btn-primary">JOIN US NOW</button>
         </div>
     );
+
     const loginMiddle = (
         <div id="front-middle">
             <LoginForm submit={this.submitLogin} />
@@ -72,16 +73,15 @@ class HomePage extends React.Component<HomePageProps, HomePageState> {
     // TODO: make the logo;
     return (
     <div className="home-front">
-        <div className="front-bg">
-            <img src="../public/images/homeFaces3.jpg" alt="bg-public"/>
-        </div>
+        <div className="front-bg" />
         <div id="front-logo" onClick={() => this.togNoForm()}>
             <h1>Matcha</h1>
         </div>
-        {activeForm !== 'login' ? <button
-                                    className="btn btn-primary btn-sign"
-                                    onClick={() => this.togLogForm()}>Sign in</button>
-                                : ''}
+        {activeForm !== 'login' ?
+            <button
+            className="btn btn-primary btn-sign"
+            onClick={() => this.togLogForm()}>Sign in</button>
+            : ''}
         {mySwitch()}
     </div>
     );

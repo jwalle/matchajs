@@ -5,6 +5,7 @@ import { NavLink, Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { logout } from '../state/actions/auth';
+import api from '../../services/api';
 // const localeIp = '/api';
 
 export interface ContentPageProps {
@@ -12,14 +13,26 @@ export interface ContentPageProps {
   logout: any;
 }
 
-class ContentPage extends React.Component<ContentPageProps, {}> {
+interface State {
+  randUsers: any;
+}
+
+class ContentPage extends React.Component<ContentPageProps, State> {
   constructor(props: any) {
     super(props);
 
-    this.makeUser = this.makeUser.bind(this);
+    this.state = {
+      randUsers: undefined,
+    };
   }
 
-  makeUser() {
+  componentWillMount() {
+    api.user.getRandUsers()
+      .then((res) => this.setState({randUsers: res}))
+      .catch((err) => console.log(err));
+  } 
+
+  makeUser = () => {
     axios({
       method: 'get',
       url: '/api/makeUser/',
@@ -32,9 +45,9 @@ class ContentPage extends React.Component<ContentPageProps, {}> {
       <div className="main-front">
         <div className="main-grid">
           <h1 className="disco-title liked-title"><span>Profiles you liked</span></h1>
-          <Discovery class="liked-profiles" />
+          <Discovery class="liked-profiles" users={this.state.randUsers} />
           <h1 className="disco-title new-title"><span>New Profiles</span></h1>
-          <Discovery class="new-profiles" />
+          <Discovery class="new-profiles"  users={this.state.randUsers} />
         </div>
         <h1>Welcome</h1>
         <button onClick={() => this.props.logout()}>Logout</button>

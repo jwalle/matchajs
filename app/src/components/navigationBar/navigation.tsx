@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Icon, Button, Image, Container, Dropdown } from 'semantic-ui-react';
 import NavigationRightUser from './navigationRightUser';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 export interface NavigationBarProps {
     profil: any;
@@ -24,12 +25,12 @@ export class NavigationBar extends React.Component<NavigationBarProps, {}> {
                         </a>
                     </div>
                     <div className="navLinks navItem">
-                        <span><Icon 
+                        <Link to={'/search'}><Icon 
                             className="navIconLeft"
                             color="blue"
                             name="search"
                             size="big"
-                        /><h2 className="navTitleLeft">Search</h2></span>
+                        /><h2 className="navTitleLeft">Search</h2></Link>
                         <span><Icon 
                             className="navIconLeft"
                             color="blue"

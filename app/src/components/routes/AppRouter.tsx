@@ -16,6 +16,7 @@ import SignupPage from '../pages/SignupPage';
 import DashboardPage from '../misc/dashboard';
 import FirstLoginPage from '../pages/FirstLoginPage';
 import HomePage from '../pages/HomePage';
+import SearchPage from '../pages/SearchPage';
 
 export class AppRouter extends React.Component<{}> {
 
@@ -26,7 +27,9 @@ export class AppRouter extends React.Component<{}> {
                 <Switch>
                     <GuestRoute exact path="/" component={HomePage} />
                     <FirstRoute path="/first" component={FirstLoginPage}/>
-                    <UserRoute path="/welcome" component={ContentPage}/>
+                    {/* <UserRoute path="/welcome" component={ContentPage}/> */}
+                    <UserRoute path="/welcome" component={SearchPage}/>
+                    <UserRoute path="/search" component={SearchPage}/>
                     <UserRoute path="/user/:idUser" component={UserPage}/>
                     <UserRoute path="/dashboard" component={DashboardPage}/>
                     <UserRoute path="/profile" component={ProfilePage}/>
