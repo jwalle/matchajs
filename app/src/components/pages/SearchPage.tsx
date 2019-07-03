@@ -4,6 +4,7 @@ import { NavLink, Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import api from '../../services/api';
+import Filters from '../Filters';
 // const localeIp = '/api';
 
 export interface SearchPageProps {
@@ -13,6 +14,7 @@ export interface SearchPageProps {
 interface State {
   filters: any;
   searchResults: any;
+  filtersOpened: boolean;
 }
 
 class SearchPage extends React.Component<SearchPageProps, State> {
@@ -22,6 +24,7 @@ class SearchPage extends React.Component<SearchPageProps, State> {
     this.state = {
       filters: undefined,
       searchResults: undefined,
+      filtersOpened: true,
     };
   }
 
@@ -29,14 +32,23 @@ class SearchPage extends React.Component<SearchPageProps, State> {
     api.user.getSearchResults(this.state.filters)
       .then((res) => this.setState({searchResults: res}))
       .catch((err) => console.log(err));
-  } 
+  }
+
+  toggleFilters = () => {
+    this.setState({
+      filtersOpened: !this.state.filtersOpened
+    });
+  }
 
   render() {
+    const { filtersOpened } = this.state;
     return (
       <div className="main-front">
         <div className="search-main-grid">
-          <h1 className="search-titles filters-title"><span>Filters</span></h1>
-          <div id="main-filters">PLOP</div>
+          <h1 className="search-titles filters-title"><span onClick={() => this.toggleFilters()}>Filters</span></h1>
+          <div className={`main-filters ${filtersOpened && 'main-filters-open'}`}>
+            <Filters />
+          </div>
           <h1 className="search-titles results-title"><span>Your search results</span></h1>
               {/* <Discovery class="liked-profiles" users={this.state.searchResults} /> */}
         </div>

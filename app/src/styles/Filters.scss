@@ -1,0 +1,17 @@
+#filter-box {
+    border: 2px red solid;
+}
+
+.range-slider {
+    margin: 20px;
+    width: 500px;
+}
+
+.age-slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    p {
+        color: var(--gold);
+    }
+}

@@ -19,12 +19,24 @@
     padding-top: 20px;    
 }
 
-#main-filters {
+.main-filters {
     grid-area: filters;
     background: #1d2731;
-    padding: 20;
-    height: 100px;
+    height: 0;
+    overflow: hidden;
+    transition: all .5s ease-in-out;
+    line-height: 0;
+    padding: 0 1em;
+    color: transparent;
 }
+
+.main-filters-open {
+    line-height: 1.5;
+    padding-top: 1em;
+    height: auto;
+    padding-bottom: 1em;
+    color: black;
+  }
 
 #main-results {
     grid-area: results;
