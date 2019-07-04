@@ -1,17 +1,29 @@
 #filter-box {
-    border: 2px red solid;
+    // border: 2px red solid;
 }
 
 .range-slider {
-    margin: 20px;
-    width: 500px;
+    margin: 15px;
+    width: 24vw;
 }
 
-.age-slider {
+.main-slider {
     display: flex;
     align-items: center;
     justify-content: center;
     p {
+        padding-top: 6px;
         color: var(--gold);
+    }
+}
+
+.filter-slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    h3 {
+        color: var(--sky);
+        margin-right: 25px;
+        padding-top: 6px;
     }
 }

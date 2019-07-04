@@ -1,13 +1,14 @@
 import * as React from 'react';
-import Slider, { Range } from 'rc-slider';
-import 'rc-slider/assets/index.css';
+import CustomSlider from './CustomSlider';
 
 export interface Props {
     // fitersOpened: boolean;
 }
 
 interface State {
-  values: number[];
+  ageRange: number[];
+  popRange: number[];
+  locRange: number[];
 }
 
 class Filters extends React.Component<Props, State> {
@@ -15,39 +16,40 @@ class Filters extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      values: [22, 44],
+      ageRange: [22, 44],
+      popRange: [10, 90],
+      locRange: [1, 20],
     };
   }
 
+  onChangeAge = (values: number[]) => {
+    this.setState({ageRange: values});
+  } 
+
+  onChangePop = (values: number[]) => {
+    this.setState({popRange: values});
+  } 
+
+  onChangeLoc = (values: number[]) => {
+    this.setState({locRange: values});
+  } 
+
   render() {
-      // const {fitersOpened} = this.props;
-      const railStyle = {height: '12px', backgroundColor: '#0b3c5d', borderRadius: 12  };
-      const trackStyle = [{height: '12px', backgroundColor: '#d9b310',  borderRadius: 12  }];
-      const HandleStyle = [{height: '20px', width: '20px', backgroundColor: '#1d2731', borderColor: 'd9b310' },
-      {height: '20px', width: '20px', backgroundColor: '#1d2731', borderColor: 'd9b310' }];
-      const {values} = this.state;
+      const {ageRange, popRange, locRange} = this.state;
       return (
       <div id="filter-box">
-        <div className="fiter-age">
-        <h3>Son âge</h3>
-          <div className="age-slider">
-            <p>{values[0]}</p>
-            <Range min={18} max={99}
-                defaultValue={[22, 40]}
-                tipFormatter={(value: any) => `${value} ans`}
-                allowCross={false}
-                railStyle={railStyle}
-                trackStyle={trackStyle}
-                handleStyle={HandleStyle}
-                onChange={(_values) => this.setState({values: _values})}
-                className="range-slider"/>
-            <p>{values[1]}</p>
-          </div>
+        <div className="filter-slider">
+          <h3>Son âge</h3>
+          <CustomSlider minMax={[18, 99]} values={ageRange} tipFormat=" ans" onChange={this.onChangeAge} />
         </div>
-          <h1>PLOP</h1>
-          <h1>PLOP</h1>
-          <h1>PLOP</h1>
-          <h1>PLOP</h1>
+        <div className="filter-slider">
+          <h3>Sa popularite</h3>
+          <CustomSlider minMax={[0, 100]} values={popRange} tipFormat=" %" onChange={this.onChangePop} />
+        </div>
+        <div className="filter-slider">
+          <h3>Sa distance</h3>
+          <CustomSlider minMax={[1, 1000]} values={locRange} tipFormat=" km" onChange={this.onChangeLoc} />
+        </div>
       </div>
     );
   }

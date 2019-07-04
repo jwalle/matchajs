@@ -9,7 +9,7 @@
 
 .search-main-grid {
     display: grid;
-    grid-template-columns: 1fr 80vw 1fr;
+    grid-template-columns: 1fr auto 1fr;
     grid-template-rows: auto;
     grid-template-areas:
     ". filters-title ."
@@ -78,6 +78,7 @@
 
 .filters-title {
     grid-area: filters-title;
+    min-width: 80vw;
 }
 
 .results-title {
