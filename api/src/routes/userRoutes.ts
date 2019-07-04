@@ -106,10 +106,10 @@ export class UserRouter {
         let url = user.picture.large;
 
         userServices.insertNewUser(user)
-            .then((result1) => {
+            .then((result1: any) => {
                 userServices.downloadPhoto(url, user.login.username)
                     .then((result2) => {
-                        userServices.insertNewPhoto(result2, result1, 1)
+                        userServices.insertNewPhoto(result2, result1.insertId , 1)
                             .then(() => {
                                 })
                         })

@@ -40,7 +40,7 @@ build/Release
 app/node_modules/
 api/node_modules/
 jspm_packages/
-app/public/
+api/public/*
 app/data
 api/dist
 api/data

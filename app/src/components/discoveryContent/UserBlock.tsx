@@ -24,7 +24,7 @@ export default class UserBlock extends React.Component<UserBlockProps, UserBlock
     let photo = undefined;
     let age = moment().diff(moment(user.dob), 'years');
     if (user.link) {
-       photo = `../../../data/photos/${user.login}/${user.link}`;
+       photo = 'http://localhost:3000' + `/photos/${user.login}/${user.link}`;
     } else {
       photo = 'http://via.placeholder.com/200x200';
     } 

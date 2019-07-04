@@ -2,7 +2,7 @@ import * as Download from 'download-file';
 import * as jwt from "jsonwebtoken";
 import * as randomstring from "randomstring";
 import * as loremIpsum from "lorem-ipsum";
-const countriesJSON = require('../../data/countries');
+const countriesJSON = require('../../../app/src/data/countries');
 
 let db = require('../db');
 
@@ -107,7 +107,7 @@ class userServices {
 
     public downloadPhoto(url, login) {
         return new Promise((resolve, reject) => {
-            let directory = "../app/data/photos/";                      // Docker: Check if it work
+            let directory = `../api/public/photos/${login}/`;                      // Docker: Check if it work
             let filename = login + '-' + Date.now() + '.jpg';
             let dlOptions = {
                 directory: directory,

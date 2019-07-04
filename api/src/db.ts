@@ -5,8 +5,8 @@ import {createPool} from 'mysql';
             connectionLimit: 10,
             // host: 'mysql_1', //Docker
             host: 'localhost',
-            user: 'jwalle',
-            password: '1234',
+            user: 'root',
+            password: 'root',
             database: 'matchadb'
         });
 
