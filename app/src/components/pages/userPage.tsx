@@ -6,7 +6,8 @@ import ProfilBasics from '../Profile/ProfileBasics';
 // import UserCard from './userCard';
 // import GoogleMap from './GoogleMap';
 // import GoogleMapReact from 'google-map-react';
-import { Flag, Divider, Icon, Button, Image, Container, Dropdown } from 'semantic-ui-react';
+import { Flag, Divider, Icon, Button, Image, Container, Dropdown, Loader } from 'semantic-ui-react';
+import api from '../../services/api';
 const PHOTOS_DIR = path.resolve(__dirname, '../data/photos/');
 
 // let googleMap = require('../../public/images/googleMap.png');
@@ -21,7 +22,7 @@ export interface UserPageProps {
 
 export interface UserPageState {
     user: any;
-    picture: string;
+    loading: boolean;
     age: any;
     mightLike: any;
     center: {
@@ -35,15 +36,12 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
     constructor(props: UserPageProps) {
         super(props);
 
-        this.getUser = this.getUser.bind(this);
         this.getMightLikeUsers = this.getMightLikeUsers.bind(this);
-        this.getAge = this.getAge.bind(this);
-        this.getProfilePhoto = this.getProfilePhoto.bind(this);
         // this.fromAddress = this.fromAddress.bind(this);
 
         this.state = {
-            user: [],
-            picture: '',
+            user: undefined,
+            loading: true,
             age: 1,
             mightLike: [],
             center: {
@@ -72,10 +70,10 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
     //     });
     // }
 
-    getAge() {
+    getAge = () => {
         let age = parseInt(moment(this.state.user.dob, 'YYYY-MM-DD h:mm:ss').fromNow(), 10);
         this.setState({ age });
-    }   
+    }
 
     getMightLikeUsers() {
         let self = this;
@@ -88,40 +86,20 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                 console.log(res);
                 self.setState({
                     mightLike: res.data, // plop
+                    loading: false,
                 });
             })
             .catch(err => console.log('error axios mightLikeUSERS :', err));
     }
 
-    getProfilePhoto() {
-        let self = this;
-        let user = this.state.user;
-        axios({
-            method: 'get',
-            url: '/api/getProfilePhoto/' + user.id,
-            responseType: 'json'
-        })
+    getUser = () => {
+        const UserID = this.props.match.params.idUser;
+        api.user.getUserProfile(UserID)
             .then(res => {
-                self.setState({
-                    picture: `../../../data/photos/${user.login}/${res.data[0].link}`, // plop
+                this.setState({
+                    user: res.user[0]
                 });
             })
-            .catch(err => console.log('error axios profilePhoto :', err));
-    }
-
-    getUser() {
-        let self = this;
-        axios({
-            method: 'get',
-            url: '/api/getUser/' + this.props.match.params.idUser,
-            responseType: 'json'
-        })
-            .then(res => {
-                self.setState({
-                    user: res.data.user[0]
-                });
-            })
-            .then(this.getProfilePhoto)
             .then(this.getAge)
             .then(this.getMightLikeUsers)
             // .then(this.fromAddress)
@@ -129,9 +107,14 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
     }
 
     render() {
-        const user = this.state.user;
+        const { user, loading } = this.state;
+        if (loading) { return <Loader />; }
         const flag = user.nat;
-        const picture = this.state.picture;
+        const pos = user.photos.findIndex((i: any) => i.isProfil === 1);
+        let picture = 'http://via.placeholder.com/100x100';
+        if (user && user.photos && user.photos[pos].link) {
+            picture = 'http://localhost:3000' + `/photos/${user.login}/${user.photos[pos].link}`;
+        }
         const gender = user.gender === 'male' ?
             <Icon color="yellow" name="man" /> : <Icon color="yellow" name="woman" />;
 
@@ -139,47 +122,46 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
             { key: 'block', text: 'Block', icon: 'user' },
             { key: 'blockAndReport', text: 'Block and Report', icon: 'settings' },
         ];
-        console.log(picture);
         return (
             <div>
                 <div id="whole-bg" />
                 <div id="plop1">
-                <img
-                    src={typeof(picture) === 'string' ? picture : 'http://via.placeholder.com/160'}
-                    alt="background"
-                    id="header-bg" // more specific
-                /></div>  
+                    <img
+                        src={typeof (picture) === 'string' ? picture : 'http://via.placeholder.com/160'}
+                        alt="background"
+                        id="header-bg" // more specific
+                    /></div>
                 <header>
-                        <img
-                         src={typeof(picture) === 'string' ? picture : 'http://via.placeholder.com/160'}
-                         alt="Profil picture"
-                         className="section-img profile" // more specific
-                        />
-                        <h1 className="title">{user.firstname} {user.lastname} <Flag name={user.nat} /></h1>
-                        <p className="location">{this.state.age} • {gender}• {user.city}, {user.country}</p>
-                        {/* <h2>{user.login}<Icon name="circle" color="green" /></h2> */}
-                        <div className="options">
-                            <a href="#" className="options-link">Something ?</a>
-                            <a href="#" className="options-link">Something ?</a>
-                            <a href="#" className="options-link options-msg">Message</a>
-                            <a href="#" className="options-link">
-                                <Icon 
-                                    name="star"
-                                    // size="big"
-                                    className="likeButton"
-                                    color="grey"
-                                />
+                    <img
+                        src={typeof (picture) === 'string' ? picture : 'http://via.placeholder.com/160'}
+                        alt="Profil picture"
+                        className="section-img profile" // more specific
+                    />
+                    <h1 className="title">{user.firstname} {user.lastname} <Flag name={user.nat} /></h1>
+                    <p className="location">{this.state.age} • {gender}• {user.city}, {user.country}</p>
+                    {/* <h2>{user.login}<Icon name="circle" color="green" /></h2> */}
+                    <div className="options">
+                        <a href="#" className="options-link">Something ?</a>
+                        <a href="#" className="options-link">Something ?</a>
+                        <a href="#" className="options-link options-msg">Message</a>
+                        <a href="#" className="options-link">
+                            <Icon
+                                name="star"
+                                // size="big"
+                                className="likeButton"
+                                color="grey"
+                            />
+                        </a>
+                        <a href="#" className="options-link">
+                            ...
                             </a>
-                            <a href="#" className="options-link">
-                                ...
-                            </a>
-                        </ div>
+                    </ div>
                 </header>
                 <main id="userPageMain">
                     <div id="main-bg" />
                     <section>
                         <h2>Who I am plop</h2>
-                        <p>{user.text1}</p>                            
+                        <p>{user.text1}</p>
                     </ section>
                     <section>
                         <h2>What I like doing</h2>
@@ -187,7 +169,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                     </section>
                     <section>
                         <h2>What I am looking for</h2>
-                        <p>{user.text3}</p>                            
+                        <p>{user.text3}</p>
                     </section>
                     <section>
                         <h2>About me</h2>
@@ -196,56 +178,56 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                     <section>
                         <img className="section-img" src="../../data/images/googleMap.png" alt="google PAM" />
                     </section>
-                        {/* <GoogleMap center={this.state.center} zoom={this.state.zoom}/> */}
-                        <section>
-                            <h2>My interest</h2>                        
-                            <Icon size="big" id="interestsIcon" color="grey" name="reddit alien"/>
-                            <p>Foot, Computer, Science, Video Games, Music, ...</p> 
-                        </ section>
-                        <section>
-                        <h2>You might also like</h2>                        
-                            <div className="mightLikeUser">
-                                <a href="/profile" className="mightLikeUserImage">
-                                    <span className="mightLikeUserThumb">
-                                        <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
-                                    </span>
-                                </a>
-                            </div>
-                            <div className="mightLikeUser">
-                                <a href="/profile" className="mightLikeUserImage">
-                                    <span className="mightLikeUserThumb">
-                                        <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
-                                    </span>
-                                </a>
-                            </div>
-                            <div className="mightLikeUser">
-                                <a href="/profile" className="mightLikeUserImage">
-                                    <span className="mightLikeUserThumb">
-                                        <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
-                                    </span>
-                                </a>
-                            </div>
-                            <div className="mightLikeUser">
-                                <a href="/profile" className="mightLikeUserImage">
-                                    <span className="mightLikeUserThumb">
-                                        <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
-                                    </span>
-                                </a>
-                            </div>
-                            <div className="mightLikeUser">
-                                <a href="/profile" className="mightLikeUserImage">
-                                    <span className="mightLikeUserThumb">
-                                        <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
-                                    </span>
-                                </a>
-                            </div>
-                            <div className="mightLikeUser">
-                                <a href="/profile" className="mightLikeUserImage">
-                                    <span className="mightLikeUserThumb">
-                                        <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
-                                    </span>
-                                </a>
-                            </div>
+                    {/* <GoogleMap center={this.state.center} zoom={this.state.zoom}/> */}
+                    <section>
+                        <h2>My interest</h2>
+                        <Icon size="big" id="interestsIcon" color="grey" name="reddit alien" />
+                        <p>Foot, Computer, Science, Video Games, Music, ...</p>
+                    </ section>
+                    <section>
+                        <h2>You might also like</h2>
+                        <div className="mightLikeUser">
+                            <a href="/profile" className="mightLikeUserImage">
+                                <span className="mightLikeUserThumb">
+                                    <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
+                                </span>
+                            </a>
+                        </div>
+                        <div className="mightLikeUser">
+                            <a href="/profile" className="mightLikeUserImage">
+                                <span className="mightLikeUserThumb">
+                                    <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
+                                </span>
+                            </a>
+                        </div>
+                        <div className="mightLikeUser">
+                            <a href="/profile" className="mightLikeUserImage">
+                                <span className="mightLikeUserThumb">
+                                    <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
+                                </span>
+                            </a>
+                        </div>
+                        <div className="mightLikeUser">
+                            <a href="/profile" className="mightLikeUserImage">
+                                <span className="mightLikeUserThumb">
+                                    <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
+                                </span>
+                            </a>
+                        </div>
+                        <div className="mightLikeUser">
+                            <a href="/profile" className="mightLikeUserImage">
+                                <span className="mightLikeUserThumb">
+                                    <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
+                                </span>
+                            </a>
+                        </div>
+                        <div className="mightLikeUser">
+                            <a href="/profile" className="mightLikeUserImage">
+                                <span className="mightLikeUserThumb">
+                                    <img src="http://via.placeholder.com/120x120" alt="pseudo here" />
+                                </span>
+                            </a>
+                        </div>
                     </ section>
                 </main>
             </div>

@@ -7,14 +7,13 @@ const countriesJSON = require('../../../app/src/data/countries');
 let db = require('../db');
 
 class userServices {
-    constructor() {
-    }
+    constructor() {}
 
     // TODO: add bcrypt password
 
     // TODO: create a user.tool file ?
 
-    public isValidPassword(userPass : string, credentialsPass: string): boolean {
+    public isValidPassword(userPass : string, credentialsPass : string) : boolean {
         return userPass === credentialsPass;
     }
 
@@ -25,35 +24,41 @@ class userServices {
     public generateJWT(payload) {
         return jwt.sign({
             payload
-            },
-            process.env.JWT_SECRET
-        );
+        }, process.env.JWT_SECRET);
     }
 
-    public selectRequest(sql : string, data : any) : Promise<object> {
+    public isFriend = "(CASE WHEN (SELECT UserID FROM users_likes ul WHERE ul.UserID=? && ul.LikedUser=" +
+            "u.id) THEN 1 ELSE 0 END) as friend";
+
+    public selectRequest(sql : string, data : any) : Promise < object > {
         console.log('request made --> ', sql, data);
         return new Promise(function (resolve, reject) {
-            db.pool.getConnection(function(err, connection) {
-                connection.query(sql, data, function (err, result) {
-                    if (err) reject(err);
-                    connection.release();
-                    console.log('====================================\n');
-                    resolve(result);
+            db
+                .pool
+                .getConnection(function (err, connection) {
+                    connection
+                        .query(sql, data, function (err, result) {
+                            if (err) 
+                                reject(err);
+                            connection.release();
+                            console.log('====================================\n');
+                            resolve(result);
+                        })
                 })
-            })
             // db.connection.end();
         })
     }
 
     public updateUserInfo(data) {
         console.log("------>", data);
-        let sql = "UPDATE users SET login=?, firstname=?, lastname=?, email=?, dob=?, country=?, city=?, text1=?, text2=?, text3=? WHERE id=?"
+        let sql = "UPDATE users SET login=?, firstname=?, lastname=?, email=?, dob=?, country=?, ci" +
+                "ty=?, text1=?, text2=?, text3=? WHERE id=?"
         let values = [
             data.username,
             data.firstname,
             data.lastname,
             data.email,
-            new Date(data.birthday.year, data.birthday.month ,data.birthday.day),
+            new Date(data.birthday.year, data.birthday.month, data.birthday.day),
             data.country,
             data.city,
             data.text1,
@@ -66,9 +71,7 @@ class userServices {
 
     public unsetFirstLogin(userId) {
         let sql = "UPDATE users SET firstLogin=0 WHERE id=?"
-        let values = [
-            userId
-        ];
+        let values = [userId];
         return (this.selectRequest(sql, values))
     }
 
@@ -83,15 +86,61 @@ class userServices {
         return (this.selectRequest(sql, value))
     }
 
+    public getUserProfile(ProfileID, UserID) {
+        let sql = `SELECT *, ${this.isFriend} FROM users u WHERE u.id=?`;
+        let value = [UserID, ProfileID];
+        return (this.selectRequest(sql, value))
+    }
+
     public getRandUsers() {
         let sql = "SELECT u.id, u.login, u.dob, u.city , p.link\
         FROM `users` u\
+        LE" +
+                "FT JOIN photos p\
+        ON p.idUser = u.id AND p.isProfil = 1\
+        WHERE 1" +
+                "\
+        ORDER BY RAND()\
+        LIMIT 6";
+        let value = [];
+        return (this.selectRequest(sql, value))
+    }
+
+    public getNewUsers(UserID) {
+        let sql = `SELECT u.id, u.login, u.dob, u.city, p.link, ${this.isFriend}\
+        FROM users u\
+        LEFT JOIN photos p\
+        ON p.idUser = u.id AND p.isProfil = 1\
+        WHERE u.id != ?\
+        ORDER BY RAND()\
+        LIMIT 6`;
+        let value = [UserID, UserID];
+        return (this.selectRequest(sql, value))
+    }
+
+    public getLikedUsers(UserID) {
+        let sql = `SELECT u.id, u.login, u.dob, u.city, p.link, ${this.isFriend}\
+        FROM users_likes ul\
+        LEFT JOIN users u\
+        ON u.id=ul.LikedUser\
+        LEFT JOIN photos p\
+        ON p.idUser = u.id AND p.isProfil = 1\
+        WHERE ul.UserID=?\
+        ORDER BY RAND()\
+        LIMIT 6`;
+        let value = [UserID, UserID];
+        return (this.selectRequest(sql, value))
+    }
+
+    public searchUsers(filters : any, UserID : number) {
+        let sql = `SELECT u.id, u.login, u.dob, u.city , p.link, ${this.isFriend}\
+        FROM users u\
         LEFT JOIN photos p\
         ON p.idUser = u.id AND p.isProfil = 1\
         WHERE 1\
         ORDER BY RAND()\
-        LIMIT 6";
-        let value = [];
+        LIMIT 20`;
+        let value = [UserID];
         return (this.selectRequest(sql, value))
     }
 
@@ -105,9 +154,14 @@ class userServices {
         return (this.selectRequest(sql, [userId, 1]))
     }
 
+    public getUserPhotos(userId) {
+        let sql = "SELECT id, link, isProfil FROM photos WHERE idUser=?";
+        return (this.selectRequest(sql, [userId]))
+    }
+
     public downloadPhoto(url, login) {
         return new Promise((resolve, reject) => {
-            let directory = `../api/public/photos/${login}/`;                      // Docker: Check if it work
+            let directory = `../api/public/photos/${login}/`; // Docker: Check if it work
             let filename = login + '-' + Date.now() + '.jpg';
             let dlOptions = {
                 directory: directory,
@@ -115,15 +169,16 @@ class userServices {
             };
             console.log('CCCCC');
             Download(url, dlOptions, function (err) {
-                if (err)
+                if (err) 
                     reject(err);
                 resolve(filename);
             });
         })
     }
 
-    createNewUser(user) : Promise<object>  {
-        let sql = "INSERT INTO users (login, firstname, lastname, password, email, gender, orientation, dob, registered, country, city, nat) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+    createNewUser(user) : Promise < object > {
+        let sql = "INSERT INTO users (login, firstname, lastname, password, email, gender, orientat" +
+                "ion, dob, registered, country, city, nat) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         let values = [
             user.username,
             user.firstname,
@@ -132,7 +187,7 @@ class userServices {
             user.email,
             user.gender,
             user.orientation,
-            new Date(user.birthday.year, user.birthday.month ,user.birthday.day),
+            new Date(user.birthday.year, user.birthday.month, user.birthday.day),
             new Date(),
             user.country,
             user.city,
@@ -141,37 +196,45 @@ class userServices {
         return (this.selectRequest(sql, values));
     };
 
-    insertNewUser(user) : Promise<object>  {
+    insertNewUser(user) : Promise < object > {
         let sql = "INSERT INTO users (\
             login,\
             firstname,\
-            lastname,\
+            las" +
+                "tname,\
             password,\
             email,\
             gender,\
-            orientation,\
+        " +
+                "    orientation,\
             dob,\
             registered,\
             city,\
-            country,\
+" +
+                "            country,\
             nat,\
             isconnected,\
-            confirmed,\
+            co" +
+                "nfirmed,\
             lastseen,\
             text1,\
             text2,\
-            text3,\
+       " +
+                "     text3,\
             size,\
             ethnicity,\
             religion,\
-            status,\
+ " +
+                "           status,\
             smoke,\
             drink,\
             drugs,\
-            sign,\
+" +
+                "            sign,\
             diet,\
             kids\
-        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        ) VALUES (?,?,?," +
+                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         let values = [
             user.login.username,
             user.name.first,
@@ -179,18 +242,26 @@ class userServices {
             user.login.password,
             user.email,
             user.gender[0],
-            randomstring.generate({length: 1, charset:'sbg'}), // orientation
+            randomstring.generate({length: 1, charset: 'sbg'}), // orientation
             new Date(user.dob.date),
             new Date(user.registered.date),
             city,
             country, // ???
-            user.nat.toLowerCase(),
+            user
+                .nat
+                .toLowerCase(),
             Math.random() >= 0.5, // Boolean random
             1,
             randomDate(user.registered),
-            loremIpsum({count: getRandomInt(1, 10)}),
-            loremIpsum({count: getRandomInt(1, 10)}),
-            loremIpsum({count: getRandomInt(1, 10)}),
+            loremIpsum({
+                count: getRandomInt(1, 10)
+            }),
+            loremIpsum({
+                count: getRandomInt(1, 10)
+            }),
+            loremIpsum({
+                count: getRandomInt(1, 10)
+            }),
             getRandomInt(150, 200),
             ethnicity.randomElement(),
             religion.randomElement(),
@@ -208,9 +279,7 @@ class userServices {
     public insertNewPhoto(link, idUser, isProfil) {
         let sql = "INSERT INTO photos (link, idUser, created, isProfil) VALUES (?,?,?,?)";
         let values = [
-            link,
-            idUser,
-            Date.now(),
+            link, idUser, Date.now(),
             isProfil
         ];
         return (this.selectRequest(sql, values));
@@ -221,27 +290,93 @@ export default new userServices();
 
 // const city = getCities(country[0]).randomElement;
 
-const ethnicity = ['Asian', 'Indian', 'White', 'Black', 'Hispanic', 'Other'];
+const ethnicity = [
+    'Asian',
+    'Indian',
+    'White',
+    'Black',
+    'Hispanic',
+    'Other'
+];
 const religion = ['Atheism', 'Christianity', 'Judaism', 'Islam', 'Other'];
 const status = ['Single', 'Seeing Someone', 'Married', 'Open Relationship'];
 const smoke = ['Yes', 'No', 'Sometimes'];
 const drink = ['Yes', 'No', 'Sometimes'];
 const drugs = ['Yes', 'No', 'Sometimes'];
-const sign = ['Aquarius', 'Pisces', 'Aries', 'Taurus', 'gemini', 'Cancer', 'leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
+const sign = [
+    'Aquarius',
+    'Pisces',
+    'Aries',
+    'Taurus',
+    'gemini',
+    'Cancer',
+    'leo',
+    'Virgo',
+    'Libra',
+    'Scorpio',
+    'Sagittarius',
+    'Capricorn'
+];
 const diet = ['Omnivore', 'Vegetarian', 'Vegan'];
-const indoorTags = ['Music', 'Foot', 'Computer', 'Science', 'Gaming', 'Movies', 'Acting', 'Cooking', 'Crocheting', 'Crossword puzzles',
-                'Dance', 'DIY', 'Fashion', 'Homebrewing', 'CTG', 'Sculpting', 'Reading', 'WoodWorking', 'Painting', 'Playing musical instruments',
-                'Singing', 'Watching TV', 'drawing', 'Yoga'];
-const outdoorTags = ['Archery', 'Astronomy', 'Basketball', 'Camping', 'Canyoning', 'Driving', 'Fishing', 'Geocaching', 'Hiking',
-                'Horseback Riding', 'Hunting', 'Jogging', 'Martial Art', 'Motor sports', 'Paintball', 'Parkour', 'Photography', 'Rock climbing',
-                'Roller skating', 'Skateboarding', 'Rugby', 'Skiing', 'Snowboarding', 'Walking'];              
+const indoorTags = [
+    'Music',
+    'Foot',
+    'Computer',
+    'Science',
+    'Gaming',
+    'Movies',
+    'Acting',
+    'Cooking',
+    'Crocheting',
+    'Crossword puzzles',
+    'Dance',
+    'DIY',
+    'Fashion',
+    'Homebrewing',
+    'CTG',
+    'Sculpting',
+    'Reading',
+    'WoodWorking',
+    'Painting',
+    'Playing musical instruments',
+    'Singing',
+    'Watching TV',
+    'drawing',
+    'Yoga'
+];
+const outdoorTags = [
+    'Archery',
+    'Astronomy',
+    'Basketball',
+    'Camping',
+    'Canyoning',
+    'Driving',
+    'Fishing',
+    'Geocaching',
+    'Hiking',
+    'Horseback Riding',
+    'Hunting',
+    'Jogging',
+    'Martial Art',
+    'Motor sports',
+    'Paintball',
+    'Parkour',
+    'Photography',
+    'Rock climbing',
+    'Roller skating',
+    'Skateboarding',
+    'Rugby',
+    'Skiing',
+    'Snowboarding',
+    'Walking'
+];
 declare global {
-    interface Array<T> {
+    interface Array < T > {
         randomElement(): T;
     }
 
-    interface Object  {
-        RandomElement(): string;
+    interface Object {
+        RandomElement() : string;
     }
 }
 
@@ -253,9 +388,9 @@ Object.prototype.RandomElement = function () {
     return this[Math.floor(Math.random() * this.length)]
 };
 
-function getCountries(): string[] {
+function getCountries() : string[] {
     let countries = countriesJSON.countries;
-    let arr: string[] = new Array;
+    let arr : string[] = new Array;
     for (let x in countries) {
         if (countries.hasOwnProperty(x)) {
             arr.push(x);
@@ -264,7 +399,7 @@ function getCountries(): string[] {
     return arr;
 }
 
-function getCities(country: string): Array<string> {
+function getCities(country : string) : Array < string > {
     let countries = countriesJSON.countries;
     let cities = countries[country];
     let arr = [];
@@ -280,7 +415,6 @@ const countries = getCountries();
 const country = countries.randomElement();
 const cities = getCities(country);
 const city = cities.randomElement();
-
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);

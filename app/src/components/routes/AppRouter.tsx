@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BrowserRouter, HashRouter, Route , Switch } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Route, Switch } from 'react-router-dom';
 import UserRoute from './UserRoute';
 import FirstRoute from './FirstRoute';
 import GuestRoute from './GuestRoute';
@@ -22,20 +22,20 @@ export class AppRouter extends React.Component<{}> {
 
     render() {
         // TODO: remove loginFromtoken ? TS props problem 
-        return(
+        return (
             <App isAuth loginFromToken={loginFromToken}>
                 <Switch>
                     <GuestRoute exact path="/" component={HomePage} />
-                    <FirstRoute path="/first" component={FirstLoginPage}/>
-                    <UserRoute path="/welcome" component={ContentPage}/>
+                    <FirstRoute path="/first" component={FirstLoginPage} />
+                    <UserRoute path="/welcome" component={ContentPage} />
                     {/* <UserRoute path="/welcome" component={SearchPage}/> */}
-                    <UserRoute path="/search" component={SearchPage}/>
-                    <UserRoute path="/user/:idUser" component={UserPage}/>
-                    <UserRoute path="/dashboard" component={DashboardPage}/>
-                    <UserRoute path="/profile" component={ProfilePage}/>
+                    <UserRoute path="/search" component={SearchPage} />
+                    <UserRoute path="/user/:idUser" component={UserPage} />
+                    <UserRoute path="/dashboard" component={DashboardPage} />
+                    <UserRoute path="/profile" component={ProfilePage} />
                     <Route component={NotFoundPage} />
                 </Switch>
             </App>
         );
-     }
+    }
 }

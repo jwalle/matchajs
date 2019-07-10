@@ -1,8 +1,9 @@
 .main-front {
-    > * {
+    >* {
         font-family: $open-sans;
         letter-spacing: 0;
     }
+
     background: $prussian;
     min-height: 100%;
 }
@@ -12,33 +13,31 @@
     grid-template-columns: 1fr 80vw 1fr;
     grid-template-rows: auto;
     grid-template-areas:
-    ". liked-title ."
-    ". liked ."
-    ". new-title ."
-    ". new .";
-    padding-top: 20px;    
+        ". new-title ."
+        ". new ."
+        ". liked-title ."
+        ". liked .";
+    padding-top: 20px;
+}
+
+.main-discovery {
+    background: var(--ivory);
+    padding: 20;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+
+    a {
+        margin: 5 10;
+    }
 }
 
 #main-liked-profiles {
     grid-area: liked;
-    background: #1d2731;
-    padding: 20;
-    justify-content: space-around;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    grid-gap: 20px;
-    justify-items: center;
 }
 
 #main-new-profiles {
     grid-area: new;
-    background: #1d2731;
-    padding: 20;
-    justify-content: space-around;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    grid-gap: 20px;
-    justify-items: center;
 }
 
 .disco-title {
@@ -50,6 +49,7 @@
     position: relative;
     z-index: 1;
     background: $ivory;
+
     &:before {
         width: 90%;
         height: 1px;
@@ -61,6 +61,7 @@
         left: 5%;
         z-index: -1;
     }
+
     span {
         color: $gold;
         background: $ivory;

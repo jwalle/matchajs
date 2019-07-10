@@ -1,13 +1,16 @@
 .user-block {
-    width: 120px;
-    height: 181px;
+    width: 200px;
+    height: 300px;
     border: solid 1px black;
     cursor: pointer;
+    position: relative;
+
     img {
         width: 100%;
-        height: 130px;
+        height: 250px;
         object-fit: cover;
     }
+
     &:hover {
         border: solid 1px $gold;
     }
@@ -17,19 +20,26 @@
     background: $prussian;
     color: white;
     text-align: center;
-        h2 {
-            padding:5px;
-            font-size: 16px;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-        }
 
-        p {
-            padding: 5px;
-            font-size: 12px;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-        }
+    h2 {
+        padding: 5px;
+        font-size: 16px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    p {
+        padding: 5px;
+        font-size: 12px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+}
+
+.LikedUser {
+    position: absolute;
+    top: 10px;
+    right: 5px;
 }

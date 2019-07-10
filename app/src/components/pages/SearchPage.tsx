@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import api from '../../services/api';
 import Filters from '../Filters';
+import UserBlock from '../discoveryContent/UserBlock';
 // const localeIp = '/api';
 
 export interface SearchPageProps {
@@ -12,7 +13,12 @@ export interface SearchPageProps {
 }
 
 interface State {
-  filters: any;
+  filters: {
+    age: number[],
+    location: number,
+    popularity: number[],
+    tags: number[],
+  };
   searchResults: any;
   filtersOpened: boolean;
 }
@@ -22,15 +28,20 @@ class SearchPage extends React.Component<SearchPageProps, State> {
     super(props);
 
     this.state = {
-      filters: undefined,
+      filters: {
+        age: [],
+        location: 0,
+        popularity: [],
+        tags: [],
+      },
       searchResults: undefined,
-      filtersOpened: true,
+      filtersOpened: false,
     };
   }
 
   componentWillMount() {
     api.user.getSearchResults(this.state.filters)
-      .then((res) => this.setState({searchResults: res}))
+      .then((res) => this.setState({ searchResults: res }))
       .catch((err) => console.log(err));
   }
 
@@ -41,16 +52,27 @@ class SearchPage extends React.Component<SearchPageProps, State> {
   }
 
   render() {
-    const { filtersOpened } = this.state;
+    const { filtersOpened, searchResults } = this.state;
+    const arrows = this.state.filtersOpened ? '▲' : '▼';
     return (
       <div className="main-front">
         <div className="search-main-grid">
-          <h1 className="search-titles filters-title"><span onClick={() => this.toggleFilters()}>Filters</span></h1>
+          <h1 className="search-titles filters-title"><span onClick={() => this.toggleFilters()}>
+            {arrows} Filters  {arrows}
+          </span></h1>
           <div className={`main-filters ${filtersOpened && 'main-filters-open'}`}>
             <Filters />
           </div>
           <h1 className="search-titles results-title"><span>Your search results</span></h1>
-              {/* <Discovery class="liked-profiles" users={this.state.searchResults} /> */}
+          <div className="search-results-container">
+            <div className="search-results">
+              {
+                searchResults && searchResults.map((result: any) =>
+                  <UserBlock user={result} />
+                )
+              }
+            </div>
+          </div>
         </div>
       </div>
     );

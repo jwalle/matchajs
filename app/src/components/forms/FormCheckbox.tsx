@@ -1,16 +1,16 @@
 import * as React from 'react';
 
 export interface CheckboxFormProps {
-    box: {
-        id: number;
-        tag: string;
-        value: boolean;
-    };
-    handleCheckboxChange: Function;
+  box: {
+    id: number;
+    tag: string;
+    value: boolean;
+  };
+  handleCheckboxChange: Function;
 }
 
 export interface CheckboxFormState {
-    isChecked: boolean;
+  isChecked: boolean;
 }
 
 export default class CheckboxForm extends React.Component<CheckboxFormProps, CheckboxFormState> {
@@ -18,33 +18,34 @@ export default class CheckboxForm extends React.Component<CheckboxFormProps, Che
     super(props);
 
     this.state = {
-        isChecked: false,
+      isChecked: false,
     };
   }
 
   componentWillMount() {
-      this.setState({isChecked: this.props.box.value});
+    this.setState({ isChecked: this.props.box.value });
   }
 
   toggleCheckbox = () => {
     const { tag } = this.props.box;
-    this.setState({ isChecked: !this.state.isChecked});
+    this.setState({ isChecked: !this.state.isChecked });
     this.props.handleCheckboxChange(tag);
   }
 
   public render() {
-    const {id, tag} = this.props.box;
+    const { id, tag } = this.props.box;
     const isChecked = this.state.isChecked;
 
     return (
-        <div key={id} className="tagBox">
-            <input
-                type="checkbox"
-                checked={isChecked}
-                onChange={this.toggleCheckbox}
-            />
-            <label>{tag}</label>
-        </div>
+      <label key={id} className="container-tag-box">
+        {tag}
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={this.toggleCheckbox}
+        />
+        <span className="checkmark-tag"></span>
+      </label>
     );
   }
 }

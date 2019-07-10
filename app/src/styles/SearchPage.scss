@@ -1,8 +1,9 @@
 .main-front {
-    > * {
+    >* {
         font-family: $open-sans;
         letter-spacing: 0;
     }
+
     background: $prussian;
     min-height: 100%;
 }
@@ -12,11 +13,11 @@
     grid-template-columns: 1fr auto 1fr;
     grid-template-rows: auto;
     grid-template-areas:
-    ". filters-title ."
-    ". filters ."
-    ". results-title ."
-    ". results .";
-    padding-top: 20px;    
+        ". filters-title ."
+        ". filters ."
+        ". results-title ."
+        ". results .";
+    padding-top: 20px;
 }
 
 .main-filters {
@@ -36,7 +37,28 @@
     height: auto;
     padding-bottom: 1em;
     color: black;
-  }
+}
+
+.tagBoxes-filters {
+    background: #1d2731;
+    height: 0;
+    overflow: hidden;
+    transition: all .5s ease-in-out;
+    line-height: 0;
+    padding: 0 1em;
+    color: transparent;
+    display: none;
+}
+
+.tagBoxes-filters-open {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    line-height: 1.1;
+    padding-top: 1em;
+    height: auto;
+    padding-bottom: 1em;
+    color: black;
+}
 
 #main-results {
     grid-area: results;
@@ -58,6 +80,7 @@
     position: relative;
     z-index: 1;
     background: $ivory;
+
     &:before {
         width: 90%;
         height: 1px;
@@ -69,6 +92,7 @@
         left: 5%;
         z-index: -1;
     }
+
     span {
         color: $gold;
         background: $ivory;
@@ -83,4 +107,22 @@
 
 .results-title {
     grid-area: results-title;
+}
+
+.search-results-container {
+    grid-area: results;
+    background-color: var(--ivory);
+}
+
+.search-results {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 80vw;
+    justify-content: center;
+    align-items: center;
+    padding: 20;
+
+    a {
+        margin: 5 10;
+    }
 }

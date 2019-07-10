@@ -9,20 +9,14 @@ export interface DiscoveryProps {
 export default class Discovery extends React.Component<DiscoveryProps, {}> {
 
     render() {
-        // const user = {
-        //     img: '../../../data/photos/happygorilla308/happygorilla308-1535384495459.jpg',
-        //     // img: 'https://source.unsplash.com/collection/1390381/',
-        //     login: 'lilia',
-        //     age: 18,
-        //     location: {city: 'paris'}
-        // };
-        console.log('PLOP: ', this.props.users);
         return (
-            <div id={'main-' + this.props.class} className="flex">
+            <div id={'main-' + this.props.class} className="main-discovery">
                 {
-                    this.props.users && this.props.users.map((user: any) => 
+                    this.props.users ? this.props.users.map((user: any) =>
                         <UserBlock key={user.id} user={user} />
                     )
+                        : <h1 style={{ padding: '50px 0px' }}>You should like more profil !</h1>
+
                 }
             </div>
         );
