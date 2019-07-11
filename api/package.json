@@ -19,6 +19,7 @@
     "@types/jsonwebtoken": "^7.2.5",
     "body-parser": "^1.18.2",
     "compression": "1.6.1",
+    "cors": "^2.8.5",
     "debug": "^3.1.0",
     "dotenv": "^5.0.0",
     "download-file": "^0.1.5",

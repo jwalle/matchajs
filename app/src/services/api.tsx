@@ -1,49 +1,51 @@
 import axios from 'axios';
+import fetchApi from './FetchApi';
 
 export default {
     user: {
         login: (credentials: object) =>
-            axios.post('/api/auth', { credentials }).then(res => res),
+            fetchApi('/api/auth/signin', { credentials }, 'post').then(res => res),
         loginFromToken: (token: string) =>
-            axios.post('/api/authFromToken', { token }).then(res => res),
+            fetchApi('/api/auth/authFromToken', { token }, 'post').then(res => res),
         signup: (user: object) =>
-            axios.post('/api/signup', { user }).then(res => res),
+            fetchApi('/api/auth/signup', { user }, 'post').then(res => res),
         updateUserInfo: (data: object) =>
-            axios.post('/api/updateUserInfo', { data }),
+            fetchApi('/api/user/updateUserInfo', { data }, 'post'),
         unsetFirstLogin: (userId: number) =>
-            axios.post('/api/unsetFirstLogin', { userId }),
+            fetchApi('/api/user/unsetFirstLogin', { userId }, 'post'),
         getRandUsers: () =>
-            axios.get('/api/getRandUsers').then(res => res.data),
+            fetchApi('/api/user/getRandUsers').then(res => res.data),
         getUserProfile: (UserID: number) =>
-            axios.get('/api/getUserProfile/' + UserID).then(res => res.data),
+            fetchApi('/api/user/getUserProfile/' + UserID).then(res => res.data),
         getLikedUsers: () =>
-            axios.get('/api/getLikedUsers').then(res => res.data),
+            fetchApi('/api/user/getLikedUsers').then(res => res.data),
         getNewUsers: () =>
-            axios.get('/api/getNewUsers').then(res => res.data),
+            fetchApi('/api/user/getNewUsers').then(res => res.data),
         getSearchResults: (filters: any) =>
-            axios.post('/api/getSearchResults', filters).then(res => res.data),
+            fetchApi('/api/user/getSearchResults', filters, 'post').then(res => res.data),
+        getMightLike: () =>
+            fetchApi('/api/user/getMightLike').then(res => res.data),
         // getUser
         // getProfilePhoto
-        // getMightLike
     },
     tags: {
         getTags: () =>
-            axios.get('/api/tags/getAll').then(res => res.data),
+            fetchApi('/api/tags/getAll').then(res => res.data),
         newTag: (newTag: string, inOrOut: string) =>
-            axios.post('/api/tags/addTag', { newTag, inOrOut }).then(res => res.data),
+            fetchApi('/api/tags/addTag', { newTag, inOrOut }, 'post').then(res => res.data),
         setTagsApi: (tagsId: number[], userId: number) =>
-            axios.post('/api/tags/setTag', { tagsId, userId }).then(res => res.data.user)
+            fetchApi('/api/tags/setTag', { tagsId, userId }, 'post').then(res => res.data.user)
     },
     photos: {
         getProfil: (userId: number) =>
-            axios.get('/api/photos/getProfil/' + userId).then(res => res.data),
+            fetchApi('/api/photos/getProfil/' + userId).then(res => res.data),
         getAllFromUser: (userId: number) =>
-            axios.get('/api/photos/getAllFromUser/' + userId).then(res => res.data),
+            fetchApi('/api/photos/getAllFromUser/' + userId).then(res => res.data),
         photoUpload: (photo: string, userId: number) =>
-            axios.post('/api/photos/photoUpload', { photo, userId }),
+            fetchApi('/api/photos/photoUpload', { photo, userId }, 'post'),
         deletePhoto: (photoId: number) =>
             axios.delete('/api/photos/deletePhoto/' + photoId),
         swapToProfil: (photoId: number, userId: number) =>
-            axios.post('/api/photos/swapToProfil/', { photoId, userId })
+            fetchApi('/api/photos/swapToProfil/', { photoId, userId }, 'post')
     }
 };

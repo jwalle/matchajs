@@ -77,11 +77,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
 
     getMightLikeUsers() {
         let self = this;
-        axios({
-            method: 'post',
-            url: '/api/getMightLike/' + self.state.user.id,
-            responseType: 'json'
-        })
+        api.user.getMightLike()
             .then(res => {
                 console.log(res);
                 self.setState({

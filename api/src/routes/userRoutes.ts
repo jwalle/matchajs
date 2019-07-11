@@ -50,9 +50,9 @@ export class UserRouter {
     }
 
     public mightLike(req : Request, res : Response, next : NextFunction) {
-        let query = parseInt(req.params.id, 10);
+        const {UserID} = res.locals;
         userServices
-            .getUserMightLikeUsers(query)
+            .getUserMightLikeUsers(UserID)
             .then((users) => {
                 if (users) {
                     console.log(users)
@@ -89,7 +89,7 @@ export class UserRouter {
 
     public getUserProfile(req : Request, res : Response, next : NextFunction) {
         let ProfileID = req.params.UserID;
-        const UserID = 41;
+        const {UserID} = res.locals;
         userServices
             .getUserProfile(ProfileID, UserID)
             .then((user : any) => {
@@ -118,6 +118,7 @@ export class UserRouter {
 
     public getRandUsers(req : Request, res : Response, next : NextFunction) {
         // let UserID = 1;
+        const {UserID} = res.locals;
         userServices
             .getRandUsers()
             .then((users) => {
@@ -134,7 +135,7 @@ export class UserRouter {
     }
 
     public getLikedUsers(req : Request, res : Response, next : NextFunction) {
-        let UserID = 41;
+        const {UserID} = res.locals;
         userServices
             .getLikedUsers(UserID)
             .then((users) => {
@@ -151,7 +152,7 @@ export class UserRouter {
     }
 
     public getNewUsers(req : Request, res : Response, next : NextFunction) {
-        let UserID = 41;
+        const {UserID} = res.locals;
         userServices
             .getNewUsers(UserID)
             .then((users) => {
@@ -266,7 +267,7 @@ export class UserRouter {
 
     public getSearchResults(req : Request, res : Response, next : NextFunction) : void {
         let filters = req.body.filters;
-        let UserID = 41;
+        const {UserID} = res.locals;
         userServices
             .searchUsers(filters, UserID)
             .then((results : any) => {
@@ -389,7 +390,7 @@ export class UserRouter {
             .get('/getUserProfile/:UserID', this.getUserProfile);
         this
             .router
-            .post('/getMightLike/:id', this.mightLike);
+            .get('/getMightLike', this.mightLike);
         this
             .router
             .post('/auth', this.auth);

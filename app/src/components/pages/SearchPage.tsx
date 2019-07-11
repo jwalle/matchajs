@@ -68,7 +68,7 @@ class SearchPage extends React.Component<SearchPageProps, State> {
             <div className="search-results">
               {
                 searchResults && searchResults.map((result: any) =>
-                  <UserBlock user={result} />
+                  <UserBlock key={result.id} user={result} />
                 )
               }
             </div>
