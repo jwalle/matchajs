@@ -8,7 +8,7 @@ export const USER_LOGIN_FAILURE = 'USER_LOGIN_FAILURE';
 export const userLoggedIn = (user: any, token: string) => ({
     type: USER_LOGGED_IN,
     user,
-    token
+    token,
 });
 
 export const userLoggedOut = () => ({
@@ -35,7 +35,7 @@ export const loginFromToken = () => (dispatch: any) => {
     }
 };
 
-export const login = (credentials: any) => (dispatch: any) => 
+export const login = (credentials: any) => (dispatch: any) =>
     api.user.login(credentials).then(res => {
         if (res.status !== 200) {
             // dispatch(userLoginFailure(res.error));
@@ -45,14 +45,14 @@ export const login = (credentials: any) => (dispatch: any) =>
             dispatch(userLoggedIn(res.data.user, res.data.token));
         }
     });
-    
-export const signup = (credentials: any) => (dispatch: any) => 
+
+export const signup = (credentials: any) => (dispatch: any) =>
     api.user.signup(credentials).then(user => {
         localStorage.setItem('matchaJWT', user.data.token);
         dispatch(userLoggedIn(user.data.user, user.data.token));
     });
 
 export const logout = () => (dispatch: any) => {
-        localStorage.removeItem('matchaJWT');
-        dispatch(userLoggedOut());
-    };
+    localStorage.removeItem('matchaJWT');
+    dispatch(userLoggedOut());
+};

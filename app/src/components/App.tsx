@@ -1,20 +1,22 @@
 import * as React from 'react';
-import NavigationBar from './navigationBar/navigation';
+import NavigationBar from './NavigationBar';
 import { loginFromToken } from './state/actions/auth';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Loader, Dimmer } from 'semantic-ui-react';
 
 // let backGround = require('../../public/images/signupBackground.jpeg');
 
 interface AppProps {
   children: any;
+  loading: boolean;
   isAuth: boolean;
   loginFromToken: Function;
 }
 
 class App extends React.Component<AppProps, {}> {
   constructor(props: AppProps) {
-    super(props);    
+    super(props);
   }
 
   componentWillMount() {
@@ -22,12 +24,12 @@ class App extends React.Component<AppProps, {}> {
   }
 
   render() {
-    let isAuth = this.props.isAuth;
-    let style = isAuth ? 'user-container' : 'guest-container';
+    const { isAuth, loading } = this.props;
+    const style = isAuth ? 'user-container' : 'guest-container';
 
     return (
       <div id="ui container">
-      {isAuth ? <NavigationBar /> : ''}
+        {isAuth ? <NavigationBar /> : ''}
         <div className={style}>
           {this.props.children}
         </div>
@@ -39,7 +41,8 @@ class App extends React.Component<AppProps, {}> {
 
 function mapStateToProps(state: any) {
   return {
-      isAuth: !!state.user.token,
+    isAuth: !!state.user.token,
+    loading: !!state.user.loading,
   };
 }
 

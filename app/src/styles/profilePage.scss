@@ -17,7 +17,7 @@
     color: white;
     display: grid;
     grid-template-columns: 540px 360px;
-  }
+}
 
 #rightMiddleContainer {
     grid-column: 2/3;
@@ -28,19 +28,19 @@
     grid-column: 2/3;
     grid-row: 1/2;
     color: white;
-  }
+}
 
 #topInfoProfile {
     position: absolute;
     bottom: 0;
     left: 150px;
     padding: 20px
-    /* auto size Width */
+        /* auto size Width */
 }
 
 #topInfoProfile:hover {
     background-color: #07314c;
-    border-radius: 5px; 
+    border-radius: 5px;
 }
 
 .userImage {
@@ -83,7 +83,7 @@
     height: 250px;
     background-color: #183b52;
     color: white;
-    line-height: 1.7;    
+    line-height: 1.7;
     font-size: 1.1em;
 }
 
@@ -92,7 +92,7 @@
     color: white;
 }
 
-#basics .divider{
+#basics .divider {
     margin: 5px;
 }
 
@@ -124,14 +124,14 @@
 
 
 #interests {
-    grid-column: 2/3;    
+    grid-column: 2/3;
     padding-top: 20px;
     width: 300px;
     display: flex;
     align-items: center;
 }
-  
-#interests p{
+
+#interests p {
     font-size: 1.2em;
     padding-left: 15px;
 }
@@ -145,6 +145,20 @@
     padding: 30px;
 }
 
-#updateUserInfoModal label{
+#updateUserInfoModal label {
     color: aliceblue;
+}
+
+.leaflet-container {
+    height: 300px;
+    // width: 80%;
+    margin: 0 auto;
+    overflow: scroll;
+    z-index: 5;
+
+    &::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+        /* Chrome/Safari/Webkit */
+    }
 }

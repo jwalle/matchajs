@@ -3,6 +3,7 @@ import axios from 'axios';
 const path = require('path');
 import * as moment from 'moment';
 import ProfilBasics from '../Profile/ProfileBasics';
+import MatchaMap from '../misc/matchaMap';
 // import UserCard from './userCard';
 // import GoogleMap from './GoogleMap';
 // import GoogleMapReact from 'google-map-react';
@@ -137,9 +138,9 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                     <p className="location">{this.state.age} • {gender}• {user.city}, {user.country}</p>
                     {/* <h2>{user.login}<Icon name="circle" color="green" /></h2> */}
                     <div className="options">
-                        <a href="#" className="options-link">Something ?</a>
-                        <a href="#" className="options-link">Something ?</a>
-                        <a href="#" className="options-link options-msg">Message</a>
+                        <a href="#" className="options-link">Report</a>
+                        <a href="#" className="options-link">Pass</a>
+                        <a href="#" className="options-link options-msg">Album</a>
                         <a href="#" className="options-link">
                             <Icon
                                 name="star"
@@ -149,14 +150,14 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                             />
                         </a>
                         <a href="#" className="options-link">
-                            ...
+                            Message
                             </a>
                     </ div>
                 </header>
                 <main id="userPageMain">
                     <div id="main-bg" />
                     <section>
-                        <h2>Who I am plop</h2>
+                        <h2>Who I am</h2>
                         <p>{user.text1}</p>
                     </ section>
                     <section>
@@ -171,8 +172,9 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                         <h2>About me</h2>
                         <ProfilBasics user={user} />
                     </section>
-                    <section>
-                        <img className="section-img" src="../../data/images/googleMap.png" alt="google PAM" />
+                    <section style={{ padding: 0 }}>
+                        <MatchaMap />
+                        {/* <img className="section-img" src="../../data/images/googleMap.png" alt="google PAM" /> */}
                     </section>
                     {/* <GoogleMap center={this.state.center} zoom={this.state.zoom}/> */}
                     <section>

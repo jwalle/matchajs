@@ -54,8 +54,6 @@ class ContentPage extends React.Component<ContentPageProps, State> {
   }
 
   render() {
-    console.log(this.state.likedUsers);
-    console.log(this.state.newUsers);
     return (
       <div className="main-front">
         <div className="main-grid">
