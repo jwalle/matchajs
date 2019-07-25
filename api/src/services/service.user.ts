@@ -7,13 +7,13 @@ const countriesJSON = require('../../../app/src/data/countries');
 let db = require('../db');
 
 class userServices {
-    constructor() {}
+    constructor() { }
 
     // TODO: add bcrypt password
 
     // TODO: create a user.tool file ?
 
-    public isValidPassword(userPass : string, credentialsPass : string) : boolean {
+    public isValidPassword(userPass: string, credentialsPass: string): boolean {
         return userPass === credentialsPass;
     }
 
@@ -27,10 +27,9 @@ class userServices {
         }, process.env.JWT_SECRET);
     }
 
-    public isFriend = "(CASE WHEN (SELECT UserID FROM users_likes ul WHERE ul.UserID=? && ul.LikedUser=" +
-            "u.id) THEN 1 ELSE 0 END) as friend";
+    public isFriend = "(CASE WHEN (SELECT UserID FROM users_relations ur WHERE ur.UserID=? && ur.Type=1 && ur.TargetID=u.id) THEN 1 ELSE 0 END) as friend";
 
-    public selectRequest(sql : string, data : any) : Promise < object > {
+    public selectRequest(sql: string, data: any): Promise<object> {
         console.log('request made --> ', sql, data);
         return new Promise(function (resolve, reject) {
             db
@@ -38,7 +37,7 @@ class userServices {
                 .getConnection(function (err, connection) {
                     connection
                         .query(sql, data, function (err, result) {
-                            if (err) 
+                            if (err)
                                 reject(err);
                             connection.release();
                             console.log('====================================\n');
@@ -52,7 +51,7 @@ class userServices {
     public updateUserInfo(data) {
         console.log("------>", data);
         let sql = "UPDATE users SET login=?, firstname=?, lastname=?, email=?, dob=?, country=?, ci" +
-                "ty=?, text1=?, text2=?, text3=? WHERE id=?"
+            "ty=?, text1=?, text2=?, text3=? WHERE id=?"
         let values = [
             data.username,
             data.firstname,
@@ -87,7 +86,11 @@ class userServices {
     }
 
     public getUserProfile(ProfileID, UserID) {
-        let sql = `SELECT *, ${this.isFriend} FROM users u WHERE u.id=?`;
+        let sql = `SELECT *, ur.Type AS relation\
+        FROM users u\
+        LEFT JOIN users_relations ur\
+        ON ur.UserID=?\
+        WHERE u.id=?`;
         let value = [UserID, ProfileID];
         return (this.selectRequest(sql, value))
     }
@@ -96,10 +99,10 @@ class userServices {
         let sql = "SELECT u.id, u.login, u.dob, u.city , p.link\
         FROM `users` u\
         LE" +
-                "FT JOIN photos p\
+            "FT JOIN photos p\
         ON p.idUser = u.id AND p.isProfil = 1\
         WHERE 1" +
-                "\
+            "\
         ORDER BY RAND()\
         LIMIT 6";
         let value = [];
@@ -120,19 +123,19 @@ class userServices {
 
     public getLikedUsers(UserID) {
         let sql = `SELECT u.id, u.login, u.dob, u.city, p.link, ${this.isFriend}\
-        FROM users_likes ul\
+        FROM users_relations ur\
         LEFT JOIN users u\
-        ON u.id=ul.LikedUser\
+        ON u.id=ur.TargetID\
         LEFT JOIN photos p\
         ON p.idUser = u.id AND p.isProfil = 1\
-        WHERE ul.UserID=?\
+        WHERE ur.UserID=? AND ur.Type=1\
         ORDER BY RAND()\
         LIMIT 6`;
         let value = [UserID, UserID];
         return (this.selectRequest(sql, value))
     }
 
-    public searchUsers(filters : any, UserID : number) {
+    public searchUsers(filters: any, UserID: number) {
         let sql = `SELECT u.id, u.login, u.dob, u.city , p.link, ${this.isFriend}\
         FROM users u\
         LEFT JOIN photos p\
@@ -141,6 +144,18 @@ class userServices {
         ORDER BY RAND()\
         LIMIT 20`;
         let value = [UserID];
+        return (this.selectRequest(sql, value))
+    }
+
+    public reportUser(UserID: number, TargetID: number) {
+        let sql = `INSERT INTO users_reports (UserID, TargetID) VALUES (?,?)`;
+        let value = [UserID, TargetID];
+        return (this.selectRequest(sql, value))
+    }
+
+    public likeOrBlockUser(UserID: number, TargetID: number, Type: number) {
+        let sql = `INSERT INTO users_relations (UserID, TargetID, Type, Date) VALUES(?,?,?, NOW()) ON DUPLICATE KEY UPDATE Type=?, Date=NOW()`;
+        let value = [UserID, TargetID, Type, Type];
         return (this.selectRequest(sql, value))
     }
 
@@ -169,16 +184,16 @@ class userServices {
             };
             console.log('CCCCC');
             Download(url, dlOptions, function (err) {
-                if (err) 
+                if (err)
                     reject(err);
                 resolve(filename);
             });
         })
     }
 
-    createNewUser(user) : Promise < object > {
+    createNewUser(user): Promise<object> {
         let sql = "INSERT INTO users (login, firstname, lastname, password, email, gender, orientat" +
-                "ion, dob, registered, country, city, nat) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+            "ion, dob, registered, country, city, nat) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         let values = [
             user.username,
             user.firstname,
@@ -196,45 +211,45 @@ class userServices {
         return (this.selectRequest(sql, values));
     };
 
-    insertNewUser(user) : Promise < object > {
+    insertNewUser(user): Promise<object> {
         let sql = "INSERT INTO users (\
             login,\
             firstname,\
             las" +
-                "tname,\
+            "tname,\
             password,\
             email,\
             gender,\
         " +
-                "    orientation,\
+            "    orientation,\
             dob,\
             registered,\
             city,\
 " +
-                "            country,\
+            "            country,\
             nat,\
             isconnected,\
             co" +
-                "nfirmed,\
+            "nfirmed,\
             lastseen,\
             text1,\
             text2,\
        " +
-                "     text3,\
+            "     text3,\
             size,\
             ethnicity,\
             religion,\
  " +
-                "           status,\
+            "           status,\
             smoke,\
             drink,\
             drugs,\
 " +
-                "            sign,\
+            "            sign,\
             diet,\
             kids\
         ) VALUES (?,?,?," +
-                "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         let values = [
             user.login.username,
             user.name.first,
@@ -242,7 +257,7 @@ class userServices {
             user.login.password,
             user.email,
             user.gender[0],
-            randomstring.generate({length: 1, charset: 'sbg'}), // orientation
+            randomstring.generate({ length: 1, charset: 'sbg' }), // orientation
             new Date(user.dob.date),
             new Date(user.registered.date),
             city,
@@ -371,12 +386,12 @@ const outdoorTags = [
     'Walking'
 ];
 declare global {
-    interface Array < T > {
+    interface Array<T> {
         randomElement(): T;
     }
 
     interface Object {
-        RandomElement() : string;
+        RandomElement(): string;
     }
 }
 
@@ -388,9 +403,9 @@ Object.prototype.RandomElement = function () {
     return this[Math.floor(Math.random() * this.length)]
 };
 
-function getCountries() : string[] {
+function getCountries(): string[] {
     let countries = countriesJSON.countries;
-    let arr : string[] = new Array;
+    let arr: string[] = new Array;
     for (let x in countries) {
         if (countries.hasOwnProperty(x)) {
             arr.push(x);
@@ -399,7 +414,7 @@ function getCountries() : string[] {
     return arr;
 }
 
-function getCities(country : string) : Array < string > {
+function getCities(country: string): Array<string> {
     let countries = countriesJSON.countries;
     let cities = countries[country];
     let arr = [];

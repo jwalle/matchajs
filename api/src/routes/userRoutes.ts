@@ -1,15 +1,15 @@
-import {Router, Request, Response, NextFunction} from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import userServices from '../services/service.user'
 import * as jwt from "jsonwebtoken";
 let request = require('request');
 
 export interface userType {
-    email : string;
-    password : string;
+    email: string;
+    password: string;
 }
 
 export class UserRouter {
-    router : Router
+    router: Router
 
     constructor() {
         this.router = Router();
@@ -32,7 +32,7 @@ export class UserRouter {
         })
     }
 
-    public getUserProfilePhoto(req : Request, res : Response, next : NextFunction) {
+    public getUserProfilePhoto(req: Request, res: Response, next: NextFunction) {
         let query = parseInt(req.params.id, 10);
         userServices
             .getUserProfilePhoto(query)
@@ -44,13 +44,13 @@ export class UserRouter {
                 } else {
                     res
                         .status(404)
-                        .send({message: 'no photo found whit this id.', status: res.status});
+                        .send({ message: 'no photo found whit this id.', status: res.status });
                 }
             })
     }
 
-    public mightLike(req : Request, res : Response, next : NextFunction) {
-        const {UserID} = res.locals;
+    public mightLike(req: Request, res: Response, next: NextFunction) {
+        const { UserID } = res.locals;
         userServices
             .getUserMightLikeUsers(UserID)
             .then((users) => {
@@ -70,7 +70,7 @@ export class UserRouter {
             })
     }
 
-    public getUser(req : Request, res : Response, next : NextFunction) {
+    public getUser(req: Request, res: Response, next: NextFunction) {
         let query = req.params.id;
         userServices
             .getUser(query)
@@ -78,21 +78,21 @@ export class UserRouter {
                 if (user) {
                     res
                         .status(200)
-                        .send({user});
+                        .send({ user });
                 } else {
                     res
                         .status(404)
-                        .send({message: 'no user found whit this id.', status: res.status});
+                        .send({ message: 'no user found whit this id.', status: res.status });
                 }
             })
     }
 
-    public getUserProfile(req : Request, res : Response, next : NextFunction) {
+    public getUserProfile(req: Request, res: Response, next: NextFunction) {
         let ProfileID = req.params.UserID;
-        const {UserID} = res.locals;
+        const { UserID } = res.locals;
         userServices
             .getUserProfile(ProfileID, UserID)
-            .then((user : any) => {
+            .then((user: any) => {
                 userServices
                     .getUserPhotos(ProfileID)
                     .then((photos) => {
@@ -105,20 +105,20 @@ export class UserRouter {
                         if (_user) {
                             res
                                 .status(200)
-                                .send({user});
+                                .send({ user });
                         } else {
                             res
                                 .status(404)
-                                .send({message: 'no user found whit this id.', status: res.status});
+                                .send({ message: 'no user found whit this id.', status: res.status });
                         }
                     })
                     .catch((err) => console.log(err));
             })
     }
 
-    public getRandUsers(req : Request, res : Response, next : NextFunction) {
+    public getRandUsers(req: Request, res: Response, next: NextFunction) {
         // let UserID = 1;
-        const {UserID} = res.locals;
+        const { UserID } = res.locals;
         userServices
             .getRandUsers()
             .then((users) => {
@@ -129,13 +129,13 @@ export class UserRouter {
                 } else {
                     res
                         .status(404)
-                        .send({message: 'no user found whit this id.', status: res.status});
+                        .send({ message: 'no user found whit this id.', status: res.status });
                 }
             })
     }
 
-    public getLikedUsers(req : Request, res : Response, next : NextFunction) {
-        const {UserID} = res.locals;
+    public getLikedUsers(req: Request, res: Response, next: NextFunction) {
+        const { UserID } = res.locals;
         userServices
             .getLikedUsers(UserID)
             .then((users) => {
@@ -146,13 +146,13 @@ export class UserRouter {
                 } else {
                     res
                         .status(400)
-                        .send({message: 'no liked user found.', status: res.status});
+                        .send({ message: 'no liked user found.', status: res.status });
                 }
             })
     }
 
-    public getNewUsers(req : Request, res : Response, next : NextFunction) {
-        const {UserID} = res.locals;
+    public getNewUsers(req: Request, res: Response, next: NextFunction) {
+        const { UserID } = res.locals;
         userServices
             .getNewUsers(UserID)
             .then((users) => {
@@ -163,7 +163,7 @@ export class UserRouter {
                 } else {
                     res
                         .status(400)
-                        .send({message: 'no new user found.', status: res.status});
+                        .send({ message: 'no new user found.', status: res.status });
                 }
             })
     }
@@ -173,21 +173,21 @@ export class UserRouter {
 
         userServices
             .insertNewUser(user)
-            .then((result1 : any) => {
+            .then((result1: any) => {
                 userServices
                     .downloadPhoto(url, user.login.username)
                     .then((result2) => {
                         userServices
                             .insertNewPhoto(result2, result1.insertId, 1)
-                            .then(() => {})
+                            .then(() => { })
                     })
             });
     }
 
-    public makeOneUser(req : Request, res : Response, next : NextFunction) : void {
+    public makeOneUser(req: Request, res: Response, next: NextFunction): void {
         this
             .makeUser()
-            .then((user : any) => {
+            .then((user: any) => {
                 return ((JSON.parse(user).results[0]));
             })
             .then((response) => {
@@ -198,14 +198,14 @@ export class UserRouter {
             });
     }
 
-    public signup(req : Request, res : Response, next : NextFunction) : void {
+    public signup(req: Request, res: Response, next: NextFunction): void {
         userServices
             .createNewUser(req.body.user)
-            .then((results : any) => {
+            .then((results: any) => {
                 if (results) {
                     userServices
                         .getUser(results.insertId)
-                        .then((result : any) => {
+                        .then((result: any) => {
                             const user = result[0];
                             console.log('COUCOU', user);
                             if (user) {
@@ -223,7 +223,7 @@ export class UserRouter {
                                             confirmed: user.confirmed,
                                             firstLogin: user.firstLogin
                                         },
-                                        token: userServices.toAuthJSON({id: user.id, login: user.login})
+                                        token: userServices.toAuthJSON({ id: user.id, login: user.login })
                                     })
                                     .send();
                             } else {
@@ -240,10 +240,10 @@ export class UserRouter {
             })
     }
 
-    public updateUserInfo(req : Request, res : Response, next : NextFunction) : void {
+    public updateUserInfo(req: Request, res: Response, next: NextFunction): void {
         userServices
             .updateUserInfo(req.body)
-            .then((results : any) => {
+            .then((results: any) => {
                 if (results) {
                     res
                         .status(200)
@@ -252,11 +252,11 @@ export class UserRouter {
             })
     }
 
-    public unsetFirstLogin(req : Request, res : Response, next : NextFunction) : void {
+    public unsetFirstLogin(req: Request, res: Response, next: NextFunction): void {
         let userId = req.body.userId;
         userServices
             .unsetFirstLogin(userId)
-            .then((results : any) => {
+            .then((results: any) => {
                 if (results) {
                     res
                         .status(200)
@@ -265,12 +265,45 @@ export class UserRouter {
             })
     }
 
-    public getSearchResults(req : Request, res : Response, next : NextFunction) : void {
+    public reportUser(req: Request, res: Response, next: NextFunction): void {
+        let targetID = req.body.UserID;
+        const { UserID } = res.locals;
+        userServices
+            .reportUser(UserID, targetID)
+            .then((results: any) => {
+                if (results) {
+                    res
+                        .status(200)
+                        .end();
+                }
+            })
+    }
+
+    public updateUserRelation(req: Request, res: Response, next: NextFunction): void {
+        let { TargetID, Type } = req.body;
+        const { UserID } = res.locals;
+        userServices
+            .likeOrBlockUser(UserID, TargetID, Type)
+            .then((results: any) => {
+                if (results) {
+                    userServices.getUserProfile(TargetID, UserID)
+                        .then((user) => {
+                            console.log(user);
+                            res.status(200).send(user[0]);
+                        })
+                        .catch((err) => {
+                            res.status(400).end();
+                        })
+                }
+            })
+    }
+
+    public getSearchResults(req: Request, res: Response, next: NextFunction): void {
         let filters = req.body.filters;
-        const {UserID} = res.locals;
+        const { UserID } = res.locals;
         userServices
             .searchUsers(filters, UserID)
-            .then((results : any) => {
+            .then((results: any) => {
                 if (results) {
                     res
                         .status(200)
@@ -283,19 +316,19 @@ export class UserRouter {
             })
     }
 
-    public authFromToken(req : Request, res : Response, next : NextFunction) : void {
+    public authFromToken(req: Request, res: Response, next: NextFunction): void {
         let token = req.body.token;
         if (!token) {
             res
                 .status(401)
-                .json({message: 'Must pass token !'});
+                .json({ message: 'Must pass token !' });
         }
         jwt.verify(token, process.env.JWT_SECRET, (err, _res) => {
-            if (err) 
+            if (err)
                 throw err;
             userServices
                 .getUser(_res.payload.id)
-                .then((user : any) => {
+                .then((user: any) => {
                     if (user && (user = user[0])) {
                         userServices
                             .getUserPhotos(user.id)
@@ -326,13 +359,13 @@ export class UserRouter {
         })
     }
 
-    public auth(req : Request, res : Response, next : NextFunction) : void {
-        const {credentials} = req.body;
+    public auth(req: Request, res: Response, next: NextFunction): void {
+        const { credentials } = req.body;
 
         userServices
             .getUserByEmail(credentials.email)
-            .then((results : any) => {
-                const user : any = results[0];
+            .then((results: any) => {
+                const user: any = results[0];
                 if (user && userServices.isValidPassword(user.password, credentials.password)) {
                     res
                         .status(200)
@@ -348,7 +381,7 @@ export class UserRouter {
                                 confirmed: user.confirmed,
                                 firstLogin: user.firstLogin
                             },
-                            token: userServices.toAuthJSON({id: user.id, login: user.login})
+                            token: userServices.toAuthJSON({ id: user.id, login: user.login })
                         })
                         .send();
                 } else {
@@ -409,6 +442,12 @@ export class UserRouter {
         this
             .router
             .post('/getSearchResults', this.getSearchResults);
+        this
+            .router
+            .post('/reportUser', this.reportUser);
+        this
+            .router
+            .post('/updateUserRelation', this.updateUserRelation);
     }
 }
 

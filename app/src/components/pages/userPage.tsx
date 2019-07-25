@@ -4,17 +4,12 @@ const path = require('path');
 import * as moment from 'moment';
 import ProfilBasics from '../Profile/ProfileBasics';
 import MatchaMap from '../misc/matchaMap';
-// import UserCard from './userCard';
-// import GoogleMap from './GoogleMap';
-// import GoogleMapReact from 'google-map-react';
-import { Flag, Divider, Icon, Button, Image, Container, Dropdown, Loader } from 'semantic-ui-react';
-import api from '../../services/api';
-const PHOTOS_DIR = path.resolve(__dirname, '../data/photos/');
+import { Flag, Icon, Button, Image, Container, Dropdown, Loader, Modal, Header, Popup } from 'semantic-ui-react';
+import Api from '../../services/api';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFlag, faTimes, faEnvelope, faImages, faStar, faTags } from '@fortawesome/free-solid-svg-icons';
 
-// let googleMap = require('../../public/images/googleMap.png');
-// declare var Promise: any;
-// const GOOGLE_API = 'https://maps.google.com/maps/api/geocode/json';
-// const GEOCODE_API_KEY = 'AIzaSyBah4ewvWs7mNaM9QaEuc_JwnvrnCCsZ5M';
+const PHOTOS_DIR = path.resolve(__dirname, '../data/photos/');
 
 export interface UserPageProps {
     params: any;
@@ -31,6 +26,7 @@ export interface UserPageState {
         lng: any,
     };
     zoom: any;
+    openModal: boolean;
 }
 
 export default class UserPage extends React.Component<UserPageProps, UserPageState> {
@@ -42,6 +38,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
 
         this.state = {
             user: undefined,
+            openModal: false,
             loading: true,
             age: 1,
             mightLike: [],
@@ -55,6 +52,23 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
 
     componentWillMount() {
         this.getUser();
+    }
+
+    close = () => this.setState({ openModal: false });
+    open = () => this.setState({ openModal: true });
+    report = () => {
+        Api.user.reportUser(this.state.user.id);
+    }
+
+    updateUserRelation = (Type: number) => {
+        Api.user.updateUserRelation(this.state.user.id, Type)
+            .then((res) => this.setState({
+                user: {
+                    ...this.state.user,
+                    ...res
+                }
+            }))
+            .catch((err: any) => console.log('error like :', err));
     }
 
     // fromAddress() {
@@ -78,7 +92,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
 
     getMightLikeUsers() {
         let self = this;
-        api.user.getMightLike()
+        Api.user.getMightLike()
             .then(res => {
                 console.log(res);
                 self.setState({
@@ -91,7 +105,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
 
     getUser = () => {
         const UserID = this.props.match.params.idUser;
-        api.user.getUserProfile(UserID)
+        Api.user.getUserProfile(UserID)
             .then(res => {
                 this.setState({
                     user: res.user[0]
@@ -108,6 +122,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
         if (loading) { return <Loader />; }
         const flag = user.nat;
         const pos = user.photos.findIndex((i: any) => i.isProfil === 1);
+        const { relation } = user;
         let picture = 'http://via.placeholder.com/100x100';
         if (user && user.photos && user.photos[pos].link) {
             picture = 'http://localhost:3000' + `/photos/${user.login}/${user.photos[pos].link}`;
@@ -119,8 +134,67 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
             { key: 'block', text: 'Block', icon: 'user' },
             { key: 'blockAndReport', text: 'Block and Report', icon: 'settings' },
         ];
+
+        const ReportModal = () => (
+            <Modal dimmer="blurring"
+                className="reportModal"
+                size="small"
+                open={this.state.openModal}
+                onClose={this.close}
+                basic
+            >
+                <Modal.Content>
+                    <p>Are you sure you want to report this user ?</p>
+                </Modal.Content>
+                <Modal.Actions>
+                    <Button color="grey" onClick={this.close}>
+                        <Icon name="remove" /> No
+                </Button>
+                    <Button color="red">
+                        <Icon name="checkmark" /> Report
+                </Button>
+                </Modal.Actions>
+            </Modal>
+        );
+
+        const style = {
+            borderRadius: 0,
+            opacity: 0.7,
+            padding: '1em',
+            zIndex: 9999,
+        };
+
+        const Options = [{
+            action: this.open,
+            icon: faFlag,
+            className: '',
+            content: 'Report User'
+        }, {
+            action: relation === 2 ? () => this.updateUserRelation(0) : () => this.updateUserRelation(2),
+            icon: faTimes,
+            className: relation === 2 ? 'option-blocked' : '',
+            content: relation === 2 ? 'Unblock User' : 'Block User'
+        }, {
+            action: this.open,
+            icon: faImages,
+            className: '',
+            content: 'Gallery',
+        }, {
+            action: relation === 1 ? () => this.updateUserRelation(0) : () => this.updateUserRelation(1),
+            icon: faStar,
+            className: relation === 1 ? 'option-liked' : '',
+            content: relation === 1 ? 'Unlike User' : 'Like User'
+        }, {
+            action: this.open,
+            icon: faEnvelope,
+            className: '',
+            content: 'Message User'
+        }
+        ];
+
         return (
             <div>
+                <ReportModal />
                 <div id="whole-bg" />
                 <div id="plop1">
                     <img
@@ -138,20 +212,17 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                     <p className="location">{this.state.age} • {gender}• {user.city}, {user.country}</p>
                     {/* <h2>{user.login}<Icon name="circle" color="green" /></h2> */}
                     <div className="options">
-                        <a href="#" className="options-link">Report</a>
-                        <a href="#" className="options-link">Pass</a>
-                        <a href="#" className="options-link options-msg">Album</a>
-                        <a href="#" className="options-link">
-                            <Icon
-                                name="star"
-                                // size="big"
-                                className="likeButton"
-                                color="grey"
-                            />
-                        </a>
-                        <a href="#" className="options-link">
-                            Message
-                            </a>
+                        {Options.map((option, index) => {
+                            return <Popup
+                                key={index}
+                                trigger={<a onClick={option.action} className={option.className}>
+                                    <FontAwesomeIcon icon={option.icon} /></a>}
+                                content={option.content}
+                                style={style}
+                                position={option.content === 'Gallery' ? 'bottom center' : 'top center'}
+                                inverted
+                            />;
+                        })}
                     </ div>
                 </header>
                 <main id="userPageMain">
@@ -179,8 +250,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                     {/* <GoogleMap center={this.state.center} zoom={this.state.zoom}/> */}
                     <section>
                         <h2>My interest</h2>
-                        <Icon size="big" id="interestsIcon" color="grey" name="reddit alien" />
-                        <p>Foot, Computer, Science, Video Games, Music, ...</p>
+                        <p><FontAwesomeIcon icon={faTags} /> Foot, Computer, Science, Video Games, Music, ...</p>
                     </ section>
                     <section>
                         <h2>You might also like</h2>

@@ -1,4 +1,4 @@
-*{
+* {
   font-family: 'Open Sans', sans-serif;
 }
 
@@ -8,7 +8,7 @@
     column-count: 2;
     column-gap: 20px;
   }
-  
+
   #userPageMain section {
     break-inside: avoid;
   }
@@ -16,7 +16,7 @@
 
 @media (min-width: 960px) {
   #userPageMain {
-     column-count: 3;
+    column-count: 3;
   }
 }
 
@@ -29,7 +29,7 @@ body {
   color: #34495e;
 }
 
-#userPageMain {    
+#userPageMain {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
@@ -42,27 +42,27 @@ header {
   z-index: 100;
   margin: 0 auto;
   padding: 0;
-  left:0;
+  left: 0;
   right: 0;
   text-shadow: 0px 0px 5px #000;
 }
 
 #plop1 {
-    overflow: hidden;
-    position: fixed;
-    z-index: 100;
-    width: 100%;
-    background: #242b31;
-    height: 210px;
+  overflow: hidden;
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+  background: #242b31;
+  height: 210px;
 }
 
-#whole-bg{
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    /* background-image: url('../../data/images/signupBackground.jpeg'); */
-    /* background-image: var(--bg); */
+#whole-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* background-image: url('../../data/images/signupBackground.jpeg'); */
+  /* background-image: var(--bg); */
 }
 
 #header-bg {
@@ -90,9 +90,9 @@ header {
 }
 
 header img {
-	max-width: 120px;
+  max-width: 120px;
 }
-	
+
 .title {
   font-size: 2.0em;
   text-align: center;
@@ -106,7 +106,7 @@ header img {
   margin: 0;
   font-size: 1.1em;
   color: gray;
-  margin-bottom: 10px  
+  margin-bottom: 10px
 }
 
 .figure-img {
@@ -139,6 +139,7 @@ header img {
   background-color: var(--prussian);
   height: 40px;
 }
+
 .options a {
   width: 20%;
   display: flex;
@@ -152,15 +153,29 @@ header img {
   color: var(--gold);
 }
 
-.options-link {
-  text-decoration: none;
-  font-size: 0.9em;
-  color: var(--gold);
+.options .option-blocked {
+  color: red;
+
+  &:hover {
+    // box-shadow: none;
+    color: var(--sky);
+  }
 }
 
-.options-msg{
-	/* background: green; */
+.options .option-liked {
+  color: var(--gold);
+
+  &:hover {
+    // box-shadow: none;
+    color: var(--sky);
+  }
 }
+
+// .options-link {
+//   text-decoration: none;
+//   font-size: 0.9em;
+//   color: var(--gold);
+// }
 
 #userPageMain section {
   border: 2px solid #cccccc1f;
@@ -169,11 +184,15 @@ header img {
   margin-bottom: 20px;
   padding: 10px;
   overflow: hidden;
-}
 
-#userPageMain section h2 {
-  color: var(--gold);
-  font-family: 'Champagne & Limousines', sans-serif;
+  h2 {
+    color: var(--gold);
+    font-family: 'Champagne & Limousines', sans-serif;
+  }
+
+  p {
+    line-height: initial;
+  }
 }
 
 .section-img {
@@ -211,62 +230,61 @@ header img {
 /* OLD STUFF : */
 
 .flex {
-    display: flex;
+  display: flex;
 }
 
 .topIcons {
-    width: 200px;
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center
+  width: 200px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center
 }
 
 #googleMapContainer {
-    grid-column: 2/3;    
-    float: right;
-    padding-top: 20px;
-    width: 350px;
-    height: 400px;
+  grid-column: 2/3;
+  float: right;
+  padding-top: 20px;
+  width: 350px;
+  height: 400px;
 }
 
 #interests {
-    grid-column: 2/3;    
-    padding-top: 20px;
-    width: 300px;
-    display: flex;
-    align-items: center;
+  grid-column: 2/3;
+  padding-top: 20px;
+  width: 300px;
+  display: flex;
+  align-items: center;
 }
-  
-#interests p{
-    font-size: 1.2em;
-    padding-left: 15px;
+
+#interests p {
+  font-size: 1.2em;
+  padding-left: 15px;
 }
 
 #interestsIcon {
-    float: left;
+  float: left;
 }
 
 .mightLikeUser {
-    float: left;
-    position: relative;
+  float: left;
+  position: relative;
 }
 
 .mightLikeUserImage {
-    height: 100px;
-    position: relative;
-    display: block;
-    padding: 13px 18px 0;
+  height: 100px;
+  position: relative;
+  display: block;
+  padding: 13px 18px 0;
 }
 
 .mightLikeUserImage .mightLikeUserThumb {
-    display: block;
-    border-radius: 40px;
-    overflow: hidden;
-    width: 75px;
-    height: 75px;
-    position: relative;
+  display: block;
+  border-radius: 40px;
+  overflow: hidden;
+  width: 75px;
+  height: 75px;
+  position: relative;
 }
-

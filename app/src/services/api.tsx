@@ -25,8 +25,12 @@ export default {
             fetchApi('/api/user/getSearchResults', filters, 'post').then(res => res.data),
         getMightLike: () =>
             fetchApi('/api/user/getMightLike').then(res => res.data),
-        // getUser
-        // getProfilePhoto
+        reportUser: (UserID: number) =>
+            fetchApi('/api/user/reportUser', { UserID }, 'post').then(res => res.data),
+        blockUser: (UserID: number) =>
+            fetchApi('/api/user/blockUser', { UserID }, 'post').then(res => res.data),
+        updateUserRelation: (TargetID: number, Type: number) =>
+            fetchApi('/api/user/updateUserRelation', { TargetID, Type }, 'post').then(res => res.data),
     },
     tags: {
         getTags: () =>

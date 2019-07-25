@@ -117,12 +117,17 @@
 .search-results {
     display: flex;
     flex-wrap: wrap;
-    max-width: 80vw;
     justify-content: center;
     align-items: center;
     padding: 20;
 
     a {
         margin: 5 10;
+    }
+}
+
+@media (min-width: 620px) {
+    .search-main-grid {
+        grid-template-columns: 1fr 80vw 1fr;
     }
 }
