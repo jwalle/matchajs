@@ -8,6 +8,7 @@ import { Flag, Icon, Button, Image, Container, Dropdown, Loader, Modal, Header, 
 import Api from '../../services/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlag, faTimes, faEnvelope, faImages, faStar, faTags } from '@fortawesome/free-solid-svg-icons';
+import LoadingPage from './LoadingPage';
 
 const PHOTOS_DIR = path.resolve(__dirname, '../data/photos/');
 
@@ -57,7 +58,9 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
     close = () => this.setState({ openModal: false });
     open = () => this.setState({ openModal: true });
     report = () => {
-        Api.user.reportUser(this.state.user.id);
+        // Api.user.reportUser(this.state.user.id);
+        this.close();
+        history.back();
     }
 
     updateUserRelation = (Type: number) => {
@@ -119,7 +122,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
 
     render() {
         const { user, loading } = this.state;
-        if (loading) { return <Loader />; }
+        if (loading) { return <LoadingPage />; }
         const flag = user.nat;
         const pos = user.photos.findIndex((i: any) => i.isProfil === 1);
         const { relation } = user;
@@ -150,7 +153,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                     <Button color="grey" onClick={this.close}>
                         <Icon name="remove" /> No
                 </Button>
-                    <Button color="red">
+                    <Button color="red" onClick={this.report}>
                         <Icon name="checkmark" /> Report
                 </Button>
                 </Modal.Actions>

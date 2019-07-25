@@ -3,7 +3,6 @@ import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { FirstLogin, FirstLoginProps } from '../pages/FirstLoginPage';
 import ConfirmPage, { } from '../pages/ConfirmPage';
-import LoadingPage from '../pages/LoadingPage';
 
 interface UserRouteProps {
   component: any;
@@ -14,34 +13,16 @@ interface UserRouteProps {
   isAuth?: boolean; // isRequired but bool is set here.
 }
 
-// const UserRoute: React.SFC<UserRouteProps> = ({isAuth, firstLogin, component, ...rest}) => {
-//   return (
-//       (firstLogin && isAuth) ?
-//       <Redirect to="/first" />
-//       : <Route
-//        {...rest}
-//        render={props =>
-//             isAuth ? React.createElement(component, props) : <Redirect to="/login"/>} 
-//       />
-//   ) ;
-// };
-
-const UserRoute: React.SFC<UserRouteProps> = ({ isAuth, firstLogin, loading, component, ...rest }) => {
+const UserRoute: React.SFC<UserRouteProps> = ({ isAuth, firstLogin, loading, component: Component, ...rest }) => {
   const confirmed = true;
-  console.log(isAuth, firstLogin, loading);
-  if (loading) {
-    return <LoadingPage />;
-  }
-  if (!isAuth) {
-    return <Redirect to="/" />;
-  }
-  if (!confirmed) {
-    return <Route {...rest} render={() => React.createElement(ConfirmPage)} />;
-  }
-  if (firstLogin) {
-    return <Redirect to="/first" />;
-  }
-  return <Route {...rest} render={props => React.createElement(component, props)} />;
+  console.log(isAuth, firstLogin, loading, rest.path); 
+  // if (loading) {
+  //   return <LoadingPage />;
+  // }
+  // if (!confirmed) {
+  //   return <Route {...rest} render={() => React.createElement(ConfirmPage)} />;
+  // }
+  return <Route {...rest} render={props => isAuth ? <Component {...props}/> : <Redirect to="/#/" />} />;
 };
 
 function mapStateToProps(state: any) {

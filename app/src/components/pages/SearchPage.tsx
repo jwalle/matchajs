@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import api from '../../services/api';
 import Filters from '../Filters';
 import UserBlock from '../discoveryContent/UserBlock';
+import LoadingPage from './LoadingPage';
 // const localeIp = '/api';
 
 export interface SearchPageProps {
@@ -19,6 +20,7 @@ interface State {
     popularity: number[],
     tags: number[],
   };
+  loading: boolean;
   searchResults: any;
   filtersOpened: boolean;
 }
@@ -34,6 +36,7 @@ class SearchPage extends React.Component<SearchPageProps, State> {
         popularity: [],
         tags: [],
       },
+      loading: true,
       searchResults: undefined,
       filtersOpened: false,
     };
@@ -41,7 +44,7 @@ class SearchPage extends React.Component<SearchPageProps, State> {
 
   componentWillMount() {
     api.user.getSearchResults(this.state.filters)
-      .then((res) => this.setState({ searchResults: res }))
+      .then((res) => this.setState({ searchResults: res, loading: false }))
       .catch((err) => console.log(err));
   }
 
@@ -52,7 +55,7 @@ class SearchPage extends React.Component<SearchPageProps, State> {
   }
 
   render() {
-    const { filtersOpened, searchResults } = this.state;
+    const { filtersOpened, searchResults, loading } = this.state;
     const arrows = this.state.filtersOpened ? '▲' : '▼';
     return (
       <div className="main-front">
@@ -67,6 +70,7 @@ class SearchPage extends React.Component<SearchPageProps, State> {
           <div className="search-results-container">
             <div className="search-results">
               {
+                loading ? <LoadingPage /> :
                 searchResults && searchResults.map((result: any) =>
                   <UserBlock key={result.id} user={result} />
                 )

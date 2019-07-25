@@ -6,6 +6,8 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { logout } from '../state/actions/auth';
 import api from '../../services/api';
+import { Loader } from 'semantic-ui-react';
+import LoadingPage from './LoadingPage';
 // const localeIp = '/api';
 
 export interface ContentPageProps {
@@ -16,6 +18,8 @@ export interface ContentPageProps {
 interface State {
   newUsers: any;
   likedUsers: any;
+  newUsersLoading: boolean;
+  likedUsersLoading: boolean;
 }
 
 class ContentPage extends React.Component<ContentPageProps, State> {
@@ -25,18 +29,20 @@ class ContentPage extends React.Component<ContentPageProps, State> {
     this.state = {
       newUsers: undefined,
       likedUsers: undefined,
+      newUsersLoading: true,
+      likedUsersLoading: true,
     };
   }
 
   getLikedUsers = () => {
     api.user.getLikedUsers()
-      .then((res) => this.setState({ likedUsers: res }))
+      .then((res) => this.setState({ likedUsers: res, likedUsersLoading: false }))
       .catch((err) => console.log(err));
   }
 
   getNewUsers = () => {
     api.user.getNewUsers()
-      .then((res) => this.setState({ newUsers: res }))
+      .then((res) => this.setState({ newUsers: res, newUsersLoading: false }))
       .catch((err) => console.log(err));
   }
 
@@ -48,19 +54,21 @@ class ContentPage extends React.Component<ContentPageProps, State> {
   makeUser = () => {
     axios({
       method: 'get',
-      url: '/api/makeUser/',
+      url: '/api/user/makeUser/',
       responseType: 'json'
     }).catch(err => console.log('getLogin error : ' + err));
   }
 
   render() {
+    const {newUsers, likedUsers, newUsersLoading, likedUsersLoading} = this.state;
+    if (newUsersLoading || likedUsersLoading) { return <LoadingPage />; }
     return (
       <div className="main-front">
         <div className="main-grid">
           <h1 className="disco-title new-title"><span>New Profiles</span></h1>
-          <Discovery class="new-profiles" users={this.state.newUsers} />
+          <Discovery class="new-profiles" users={newUsers} />
           <h1 className="disco-title liked-title"><span>Profiles you liked</span></h1>
-          <Discovery class="liked-profiles" users={this.state.likedUsers} />
+          <Discovery class="liked-profiles" users={likedUsers} />
         </div>
         <h1>Welcome</h1>
         <button onClick={() => this.props.logout()}>Logout</button>

@@ -86,12 +86,12 @@ class userServices {
     }
 
     public getUserProfile(ProfileID, UserID) {
-        let sql = `SELECT *, ur.Type AS relation\
+        let sql = `SELECT u.*, ur.Type AS relation\
         FROM users u\
         LEFT JOIN users_relations ur\
-        ON ur.UserID=?\
+        ON ur.UserID=? AND ur.TargetID=?\
         WHERE u.id=?`;
-        let value = [UserID, ProfileID];
+        let value = [UserID, ProfileID, ProfileID];
         return (this.selectRequest(sql, value))
     }
 

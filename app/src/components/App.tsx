@@ -5,8 +5,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Loader, Dimmer } from 'semantic-ui-react';
 
-// let backGround = require('../../public/images/signupBackground.jpeg');
-
 interface AppProps {
   children: any;
   loading: boolean;
@@ -51,4 +49,4 @@ const mapDispatchToProps = (dispatch: any) => {
     { loginFromToken }, dispatch);
 };
 
-export default connect<any, any>(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

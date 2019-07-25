@@ -17,7 +17,7 @@ export class NavigationBar extends React.Component<NavigationBarProps, {}> {
         const { user } = this.props;
         const pos = user.photos.findIndex((i: any) => i.isProfil === 1);
         let profilPhoto = 'http://via.placeholder.com/100x100';
-        if (user && user.photos && user.photos[pos].link) {
+        if (user && user.photos && user.photos[pos] && user.photos[pos].link) {
             profilPhoto = 'http://localhost:3000' + `/photos/${user.login}/${user.photos[pos].link}`;
         }
         const trigger = (
@@ -33,7 +33,7 @@ export class NavigationBar extends React.Component<NavigationBarProps, {}> {
         return (
             <div id={'navigation'} className="fixed">
                 <div className="navLogo">
-                    <a href="/" id="logoLink">
+                    <a href="/#/" id="logoLink">
                         <img src="../../data/images/matcha3.png" id="logoImg" alt="logo" />
                         <h1>atcha</h1>
                     </a>

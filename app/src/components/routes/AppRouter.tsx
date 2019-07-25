@@ -23,7 +23,7 @@ export class AppRouter extends React.Component<{}> {
     render() {
         // TODO: remove loginFromtoken ? TS props problem 
         return (
-            <App isAuth loading loginFromToken={loginFromToken}>
+            <App>
                 <Switch>
                     <GuestRoute exact path="/" component={HomePage} />
                     <FirstRoute path="/first" component={FirstLoginPage} />
