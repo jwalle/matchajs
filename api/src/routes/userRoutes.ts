@@ -114,6 +114,7 @@ export class UserRouter {
                     })
                     .catch((err) => console.log(err));
             })
+            .catch((err) => console.log('error getUserProfile : ', err))
     }
 
     public getRandUsers(req: Request, res: Response, next: NextFunction) {
@@ -316,49 +317,6 @@ export class UserRouter {
             })
     }
 
-    public authFromToken(req: Request, res: Response, next: NextFunction): void {
-        let token = req.body.token;
-        if (!token) {
-            res
-                .status(401)
-                .json({ message: 'Must pass token !' });
-        }
-        jwt.verify(token, process.env.JWT_SECRET, (err, _res) => {
-            if (err)
-                throw err;
-            userServices
-                .getUser(_res.payload.id)
-                .then((user: any) => {
-                    if (user && (user = user[0])) {
-                        userServices
-                            .getUserPhotos(user.id)
-                            .then((photos) => {
-                                console.log(photos);
-                                res
-                                    .status(200)
-                                    .json({
-                                        user: {
-                                            id: user.id,
-                                            login: user.login,
-                                            firstname: user.firstname,
-                                            lastname: user.lastname,
-                                            gender: user.gender,
-                                            orientation: user.orientation,
-                                            dob: user.dob,
-                                            confirmed: user.confirmed,
-                                            firstLogin: user.firstLogin,
-                                            photos
-                                        },
-                                        token
-                                    })
-                                    .send();
-                            })
-                            .catch((err) => console.log(err))
-                    }
-                })
-        })
-    }
-
     public auth(req: Request, res: Response, next: NextFunction): void {
         const { credentials } = req.body;
 
@@ -408,7 +366,7 @@ export class UserRouter {
             .get('/getProfilePhoto/:id', this.getUserProfilePhoto);
         this
             .router
-            .get('/getUser/:id', this.getUser);
+            .get('/getUserProfile/:UserID', this.getUserProfile);
         this
             .router
             .get('/getRandUsers', this.getRandUsers);
@@ -427,9 +385,6 @@ export class UserRouter {
         this
             .router
             .post('/auth', this.auth);
-        this
-            .router
-            .post('/authFromToken', this.authFromToken);
         this
             .router
             .post('/signup', this.signup);

@@ -1,200 +1,159 @@
 import * as React from 'react';
 import * as moment from 'moment';
-import axios from 'axios';
-import UpdateUserInfoForm from '../forms/UpdateUserInfoForm';
-import FormBio from '../forms/FormBio';
-import ProfilBasics from '../Profile/ProfileBasics';
-import * as formTypes from '../forms/formTypes';
-import { Form, Flag, Divider, Icon, Button, Image, Container, Modal, Input } from 'semantic-ui-react';
+import ProfilBasicsEdit from '../Profile/ProfileBasicsEdit';
+import MatchaMap from '../misc/matchaMap';
+import { Flag, Icon, TextAreaProps } from 'semantic-ui-react';
+import Api from '../../services/api';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTags } from '@fortawesome/free-solid-svg-icons';
+import LoadingPage from './LoadingPage';
+import { connect } from 'react-redux';
 
-// declare var Promise: any;
-
-// const username = 'silvermeercat438';
-const id = 2;
-
-export interface ProfilePageProps {
-    params: any;
-    match: any;
-}
-
-export interface ProfilePageState {
+export interface UserProfileProps {
     user: any;
-    picture: any;
-    age: any;
-    modalOpen: boolean;
+    loading: boolean;
 }
 
-export default class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
-    constructor(props: ProfilePageProps) {
+export interface UserProfileState {
+    center: {
+        lat: any,
+        lng: any,
+    };
+    zoom: any;
+    openModal: boolean;
+    textOneOpen: boolean;
+}
+
+class UserProfile extends React.Component<UserProfileProps, UserProfileState> {
+    _tOne!: HTMLTextAreaElement;
+    constructor(props: UserProfileProps) {
         super(props);
 
-        this.getUser = this.getUser.bind(this);
-        this.getProfilePhoto = this.getProfilePhoto.bind(this);
+        // this.fromAddress = this.fromAddress.bind(this);
 
         this.state = {
-            user: {},
-            picture: [],
-            age: 1,
-            modalOpen: false,
+            openModal: false,
+            textOneOpen: false,
+            center: {
+                lat: 40.7446790,
+                lng: -73.9485420
+            },
+            zoom: 10
         };
     }
 
     componentWillMount() {
-        this.getUser(); 
+        //
     }
 
-    handleOpen = () => this.setState({ modalOpen: true });
-    
-    handleClose = () => this.setState({ modalOpen: false });
+    close = () => this.setState({ openModal: false });
+    open = () => this.setState({ openModal: true });
+    toggleTextOne = async () => {
+        await this.setState({ textOneOpen: !this.state.textOneOpen });
+        if (this._tOne) {
+            this._tOne.focus();
+        }
+    }
+
+    // fromAddress() {
+    //     let address = this.state.user.country + ', ' + this.state.user.city;
+    //     let url = `${GOOGLE_API}?address=${encodeURI(address)}&key=${GEOCODE_API_KEY}`;
+    //     axios({
+    //         method: 'get',
+    //         url: url,
+    //         responseType: 'json'
+    //     }).then((res: any) => {
+    //         console.log(res);
+    //         const { lat, lng } = res.data.results[0].geometry.location;
+    //         this.setState({center: {lat, lng}});
+    //     });
+    // }
 
     getAge = () => {
-        let age = parseInt(moment(this.state.user.dob, 'YYYY-MM-DD h:mm:ss').fromNow(), 10);
-        this.setState({ age });
-    }
-
-    getProfilePhoto() {
-        let self = this;
-        axios({
-            method: 'get',
-            url: '/api/getProfilePhoto/' + self.state.user.id,
-            responseType: 'json'
-        })
-            .then(res => {
-                self.setState({
-                    picture: `../../../data/photos/${res.data[0].link}`, // plop
-                });
-            })
-            .catch(err => console.log('error axios profilePhoto :', err));
-    }
-
-    // Add a "0" to month numb  er if < 10
-    padDateNumber = (dateNumber: string) => {
-        if (parseInt(dateNumber, 10) < 10) {
-            dateNumber = '0' + dateNumber;
-        }
-        return dateNumber;
-    }
-
-    getBirthdayObject = () => {
-        const dobMoment = moment(this.state.user.dob, 'YYYY-MM-DD h:mm:ss');
-        let user = this.state.user;
-        let birthday = {
-            day: dobMoment.day(),
-            month: this.padDateNumber(dobMoment.month().toString()),
-            year: dobMoment.year(),
-        };
-        user.birthday = birthday;
-    }
-
-    getUser() {
-        let self = this;
-        axios({
-            method: 'get',
-            url: '/api/getUser/' + id,
-            responseType: 'json'
-        })
-            .then(res => {
-                self.setState({
-                    user: res.data.user[0]
-                });
-            })
-            .then(this.getProfilePhoto)
-            .then(this.getAge)
-            .then(this.getBirthdayObject)
-            .catch(err => console.log('error axios user :', err));
-    }
-
-    submitUserInfo = (data: formTypes.ErrorsForm) =>  {
-        let self = this;
-        axios({
-            method: 'post',
-            url: '/api/updateUserInfo',
-            data: data
-        }).then(res => {
-            if (res.status === 200) {
-                self.handleClose();
-                self.getUser();
-            }
-        }).catch(err => console.log('error axios updateUserInfo :', err));
+        return parseInt(moment(this.props.user.dob, 'YYYY-MM-DD h:mm:ss').fromNow(), 10);
     }
 
     render() {
-        const user = this.state.user;
-        const flag = user.nat;
-        const picture = this.state.picture;
-        const trigger = (
-            <Icon.Group size="big">
-                <Icon color="grey" name="user" />
-                <Icon size="large" color="blue" name="dont" />
-            </Icon.Group>
-          );
-
-        const topInfo = (   
-            <div id="topInfoProfile" onClick={this.handleOpen}>
-                    <div id="login"><h2>{user.login}</h2></div>
-                    <div id="name"><h3>{user.firstname}, {user.lastname}</h3></ div>
-                    <div id="natAgeGender">
-                        <h3><Flag name={user.nat} /> - {this.state.age} - {user.gender === 'male' ? 'M' : 'F'}</h3>
-                    </div>
-                    <div id="location"><p>{user.city}, {user.country}</p></div>
-            </div>
-        );
+        const { user, loading } = this.props;
+        const { textOneOpen } = this.state;
+        if (loading) { return <LoadingPage />; }
+        const pos = user.photos.findIndex((i: any) => i.isProfil === 1);
+        let picture = 'http://via.placeholder.com/100x100';
+        if (user && user.photos && user.photos[pos].link) {
+            picture = 'http://localhost:3000' + `/photos/${user.login}/${user.photos[pos].link}`;
+        }
+        const gender = user.gender === 'male' ?
+            <Icon color="yellow" name="man" /> : <Icon color="yellow" name="woman" />;
 
         return (
-            <div className="main-container">
-                <div id="topUserPage" />
-                <div id="topCentralContainer">
-                    <div  className="userImage">
-                        <Image
-                         src={typeof(picture) === 'string' ? picture : 'http://via.placeholder.com/160'}
-                         alt="Profil picture"
-                        />
-                    </div>
-                <Modal
-                    size="small" 
-                    trigger={topInfo} 
-                    open={this.state.modalOpen}
-                    header="Change your info :" 
-                    content={
-                    <UpdateUserInfoForm 
-                        handleClose={this.handleClose} 
-                        data={this.state.user}
-                        submit={this.submitUserInfo}
-                    />} 
-                />
-                </div>
-                <div id="middleUserPage" />
-                <div id="middleCentralContainer">
-                   <Container id="texts">
-                    <FormBio
-                        updateBio={this.submitUserInfo} 
-                        bioTitle="Who I am"
-                        bioID="text1"
-                        data={this.state.user}
+            <div>
+                <div id="whole-bg" />
+                <div id="plop1">
+                    <img
+                        src={typeof (picture) === 'string' ? picture : 'http://via.placeholder.com/160'}
+                        alt="background"
+                        id="header-bg" // more specific
+                    /></div>
+                <header>
+                    <img
+                        src={typeof (picture) === 'string' ? picture : 'http://via.placeholder.com/160'}
+                        alt="Profil picture"
+                        className="section-img profile" // more specific
                     />
-                    <FormBio
-                        updateBio={this.submitUserInfo} 
-                        bioTitle="What I like doing"
-                        bioID="text2"
-                        data={this.state.user}
-                    />
-                    <FormBio
-                        updateBio={this.submitUserInfo} 
-                        bioTitle="What I am looking for"
-                        bioID="text3"
-                        data={this.state.user}
-                    />
-                    </Container>
-                    <Container id="rightMiddleContainer">
-                        <ProfilBasics user={user} />
-                        <Container id="interests">
-                            <Icon size="big" id="interestsIcon" color="grey" name="reddit alien"/>
-                            <p>Foot, Computer, Science, Video Games, Music, ...</p> 
-                        </ Container>
-                        <Divider />
-                    </ Container>
-                </div>
+                    <h1 className="title">{user.firstname} {user.lastname} <Flag name={user.nat} /></h1>
+                    <p className="location">{this.getAge()} • {gender}• {user.city}, {user.country}</p>
+                    {/* <h2>{user.login}<Icon name="circle" color="green" /></h2> */}
+                    <div className="options" />
+                </header>
+                <main id="userPageMain">
+                    <div id="main-bg" />
+                    {textOneOpen
+                        ? <section className="section-focus">
+                            <h2>Who I am</h2>
+                            <textarea
+                                className="textAreaSection"
+                                ref={(ref) => { this._tOne = ref as HTMLTextAreaElement; }}
+                                defaultValue={user.text1} />
+                            <div className="textAreaButtons">
+                                <button className="cancelButton" onClick={this.toggleTextOne}>Cancel</button>
+                                <button className="saveButton">Save</button>
+                            </div>
+                        </section>
+                        : <section className="section-clickable">
+                            <h2>Who I am</h2>
+                            <div onClick={this.toggleTextOne}><p>{user.text1}</p></div>
+                        </section>
+                    }
+                    <section>
+                        <h2>What I like doing</h2>
+                        <p>{user.text2}</p>
+                    </section>
+                    <section>
+                        <h2>What I am looking for</h2>
+                        <p>{user.text3}</p>
+                    </section>
+                    <section>
+                        <h2>About me</h2>
+                        <ProfilBasicsEdit user={user} />
+                    </section>
+                    <section style={{ padding: 0 }}>
+                        <MatchaMap />
+                        {/* <img className="section-img" src="../../data/images/googleMap.png" alt="google PAM" /> */}
+                    </section>
+                    {/* <GoogleMap center={this.state.center} zoom={this.state.zoom}/> */}
+                    <section>
+                        <h2>My interest</h2>
+                        <p><FontAwesomeIcon icon={faTags} /> Foot, Computer, Science, Video Games, Music, ...</p>
+                    </ section>
+                </main>
             </div>
         );
     }
 }
+
+const mapStateToProps = (state: any) => ({
+    loading: state.user.loading,
+    user: state.user.user
+});
+
+export default connect<UserProfileProps>(mapStateToProps)(UserProfile);

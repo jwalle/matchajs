@@ -16,34 +16,36 @@ export default class ProfileBasics extends React.Component<ProfileBasicsProps, {
 
         const orientation = () => {
             if (user.orientation === 's') {
-                return('Straight');
+                return ('Straight');
             }
             if (user.orientation === 'g') {
-                return('Gay');
+                return ('Gay');
             }
             if (user.orientation === 'b') {
-                return('Bisexual');
+                return ('Bisexual');
             }
         };
 
         // TODO : find how to add IconProps
-        let basics: { id: number, icon: any, name: string, value: string}[] = [
-            {id: 1, icon: 'intergender', name: 'Orientation', value: orientation()},
-            {id: 2, icon: 'child', name: 'Kid(s)', value: user.kids ? 'Yes' : 'None'},
-            {id: 3, icon: 'users', name: 'Status', value: user.status},
-            {id: 4, icon: 'smile', name: 'Ethnicity', value: user.ethnicity},
-            {id: 5, icon: 'resize vertical', name: 'Size', value: user.size + ' cm'},
-            {id: 6, icon: 'game', name: 'Religion', value: user.religion},
-            {id: 7, icon: 'leaf', name: 'Smoke', value: user.smoke},
-            {id: 8, icon: 'bar', name: 'Drink', value: user.drink},
-            {id: 9, icon: 'tree', name: 'Drugs', value: user.drugs},
-            {id: 10, icon: 'food', name: 'Diet', value: user.diet},
-            {id: 11, icon: 'star', name: 'Sign', value: user.sign}
+        let basics: { id: number, icon: any, name: string, value: string }[] = [
+            { id: 1, icon: 'intergender', name: 'Orientation', value: orientation() },
+            { id: 2, icon: 'child', name: 'Kid(s)', value: user.kids ? 'Yes' : 'None' },
+            { id: 3, icon: 'users', name: 'Status', value: user.status },
+            { id: 4, icon: 'smile', name: 'Ethnicity', value: user.ethnicity },
+            { id: 5, icon: 'resize vertical', name: 'Size', value: user.size + ' cm' },
+            { id: 6, icon: 'game', name: 'Religion', value: user.religion },
+            { id: 7, icon: 'leaf', name: 'Smoke', value: user.smoke },
+            { id: 8, icon: 'bar', name: 'Drink', value: user.drink },
+            { id: 9, icon: 'tree', name: 'Drugs', value: user.drugs },
+            { id: 10, icon: 'food', name: 'Diet', value: user.diet },
+            { id: 11, icon: 'star', name: 'Sign', value: user.sign }
         ];
 
+        const basicsLenght = basics.length;
+        console.log(basicsLenght);
         return (
             <Container id="basics">
-                {basics.map(b =>
+                {basics.map((b, i) =>
                     <div key={b.id}>
                         <div className="basicRow">
                             <Icon size="big" color="grey" name={b.icon} />
@@ -52,7 +54,7 @@ export default class ProfileBasics extends React.Component<ProfileBasicsProps, {
                                 {b.value ? b.value : '...'}
                             </span>
                         </div>
-                        <Divider />
+                        <Divider hidden={i + 1 === basicsLenght} />
                     </div>
                 )}
             </ Container>

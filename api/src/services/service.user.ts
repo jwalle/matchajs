@@ -308,7 +308,7 @@ export default new userServices();
 const ethnicity = [
     'Asian',
     'Indian',
-    'White',
+    'Caucasian',
     'Black',
     'Hispanic',
     'Other'
@@ -325,7 +325,7 @@ const sign = [
     'Taurus',
     'gemini',
     'Cancer',
-    'leo',
+    'Leo',
     'Virgo',
     'Libra',
     'Scorpio',
