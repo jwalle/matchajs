@@ -4,10 +4,10 @@ class tagServices {
     constructor() {
     }
 
-    public request(sql : string, data : any) : Promise<object> {
+    public request(sql: string, data: any): Promise<object> {
         console.log('request made --> ', sql, data);
         return new Promise(function (resolve, reject) {
-            db.pool.getConnection(function(err, connection) {
+            db.pool.getConnection(function (err, connection) {
                 connection.query(sql, data, function (err, result) {
                     if (err) reject(err);
                     connection.release();
@@ -19,8 +19,20 @@ class tagServices {
         })
     }
 
+    public getNotUserTags(UserID: number) {
+        let sql = "SELECT *\
+                FROM tags t\
+                WHERE t.id  NOT IN (\
+                SELECT ut.tag_id\
+                FROM users_tags ut\
+                WHERE ut.user_id=1\
+            )";
+        let values = [UserID];
+        return (this.request(sql, values));
+    }
+
     public setTag(setTags: number[], userId: number) {
-        setTags.map((tagId) =>{
+        setTags.map((tagId) => {
             let sql = "INSERT IGNORE INTO users_tags (tag_id, user_id) VALUE (?, ?)";
             let values = [
                 tagId,

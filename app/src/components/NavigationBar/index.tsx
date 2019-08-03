@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Icon, Button, Image, Container, Dropdown, Header } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
+import { getUserProfil } from '../../helpers/photosTools';
 
 export interface NavigationBarProps {
     profil: any;
@@ -15,14 +16,9 @@ export class NavigationBar extends React.Component<NavigationBarProps, {}> {
 
     render() {
         const { user } = this.props;
-        const pos = user.photos.findIndex((i: any) => i.isProfil === 1);
-        let profilPhoto = 'http://via.placeholder.com/100x100';
-        if (user && user.photos && user.photos[pos] && user.photos[pos].link) {
-            profilPhoto = 'http://localhost:3000' + `/photos/${user.login}/${user.photos[pos].link}`;
-        }
         const trigger = (
             <span className="navUserThumb">
-                <img src={profilPhoto} alt="pseudo here" />
+                <img src={getUserProfil(user)} alt="pseudo here" />
             </span>
         );
         const options = [

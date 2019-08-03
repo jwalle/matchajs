@@ -16,21 +16,21 @@ export class tagsRouter {
     public addTag(req: Request, res: Response, next: NextFunction): void {
         const { newTag, inOrOut } = req.body;
         tagsService.addTag(newTag, inOrOut)
-        .then((results: any) => {
-            if (results){
-                // console.log('RESULTS ---> ',results);
-                let tag = {
-                    id: results.insertId,
-                    tag: newTag,
-                    in_or_out: inOrOut,
-                    value: false
-                };
-                res.status(200).send(tag);
-            }
-        })
-        .catch((err) => {
-            console.log("addTag error :" + err);
-        });
+            .then((results: any) => {
+                if (results) {
+                    // console.log('RESULTS ---> ',results);
+                    let tag = {
+                        id: results.insertId,
+                        tag: newTag,
+                        in_or_out: inOrOut,
+                        value: false
+                    };
+                    res.status(200).send(tag);
+                }
+            })
+            .catch((err) => {
+                console.log("addTag error :" + err);
+            });
     }
 
     // @route   POST api/tags
@@ -47,23 +47,38 @@ export class tagsRouter {
     // @access  Public
     public getAll(req: Request, res: Response, next: NextFunction): void {
         tagsService.getAll()
-        .then((results: any) => {
-            if (results) {
-                results.forEach(element => {
-                    element.value = false;
-                });
-                res.status(200).send(results);
-            } else {
-                res.send({
+            .then((results: any) => {
+                if (results) {
+                    results.forEach(element => {
+                        element.value = false;
+                    });
+                    res.status(200).send(results);
+                } else {
+                    res.send({
                         message: 'no tags list found',
                         status: res.status
                     });
-            }
-        })
+                }
+            })
+    }
+
+    public getNotUser(req: Request, res: Response, next: NextFunction): void {
+        const { UserID } = res.locals;
+        tagsService.getNotUserTags(UserID)
+            .then((results: any) => {
+                res.status(200).send(results);
+            })
+            .catch((err) => {
+                res.send({
+                    message: 'no tags list found',
+                    status: res.status
+                });
+            })
     }
 
     init() {
         this.router.get('/getAll', this.getAll)
+        this.router.get('/getNotUser', this.getNotUser)
         this.router.post('/addTag', this.addTag)
         this.router.post('/setTag', this.setTag)
         console.log('route READY.');

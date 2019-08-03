@@ -4,10 +4,10 @@ class photosServices {
     constructor() {
     }
 
-    public request(sql : string, data : any) : Promise<object> {
+    public request(sql: string, data: any): Promise<object> {
         console.log('request made --> ', sql, data);
         return new Promise(function (resolve, reject) {
-            db.pool.getConnection(function(err, connection) {
+            db.pool.getConnection(function (err, connection) {
                 connection.query(sql, data, function (err, result) {
                     if (err) reject(err);
                     connection.release();
@@ -20,7 +20,7 @@ class photosServices {
     }
 
     public getAllFromUser(userId: number) {
-        let sql = "SELECT * FROM photos WHERE idUser=? AND isProfil=0";
+        let sql = "SELECT * FROM photos WHERE idUser=?";
         let values = [userId];
         return (this.request(sql, values));
     }

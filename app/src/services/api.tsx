@@ -27,6 +27,8 @@ export default {
             fetchApi('/api/user/getMightLike').then(res => res.data),
         reportUser: (UserID: number) =>
             fetchApi('/api/user/reportUser', { UserID }, 'post').then(res => res.data),
+        updateTraits: (Traits: any) =>
+            fetchApi('/api/user/updateTraits', { Traits }, 'post').then(res => res),
         blockUser: (UserID: number) =>
             fetchApi('/api/user/blockUser', { UserID }, 'post').then(res => res.data),
         updateUserRelation: (TargetID: number, Type: number) =>
@@ -38,7 +40,9 @@ export default {
         newTag: (newTag: string, inOrOut: string) =>
             fetchApi('/api/tags/addTag', { newTag, inOrOut }, 'post').then(res => res.data),
         setTagsApi: (tagsId: number[], userId: number) =>
-            fetchApi('/api/tags/setTag', { tagsId, userId }, 'post').then(res => res.data.user)
+            fetchApi('/api/tags/setTag', { tagsId, userId }, 'post').then(res => res.data.user),
+        getNotUserTags: () =>
+            fetchApi('/api/tags/getNotUser').then(res => res.data)
     },
     photos: {
         getProfil: (userId: number) =>

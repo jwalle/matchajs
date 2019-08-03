@@ -85,6 +85,12 @@ class userServices {
         return (this.selectRequest(sql, value))
     }
 
+    public getUserTraits(UserID) {
+        let sql = "SELECT * FROM traits WHERE UserID=?";
+        let value = [UserID];
+        return (this.selectRequest(sql, value))
+    }
+
     public getUserProfile(ProfileID, UserID) {
         let sql = `SELECT u.*, ur.Type AS relation\
         FROM users u\
@@ -159,6 +165,25 @@ class userServices {
         return (this.selectRequest(sql, value))
     }
 
+    public updateUserTraits(UserID: number, Traits: any) {
+        let sql = `UPDATE traits SET size=?, orientation=?, kids=?, status=?, ethnicity=?, religion=?, smoke=?, drink=?, drugs=?, diet=?, sign=? WHERE UserID=?`;
+        let value = [
+            Traits.size,
+            Traits.orientation,
+            Traits.kids,
+            Traits.status,
+            Traits.ethnicity,
+            Traits.religion,
+            Traits.smoke,
+            Traits.drink,
+            Traits.drugs,
+            Traits.diet,
+            Traits.sign,
+            UserID
+        ];
+        return (this.selectRequest(sql, value))
+    }
+
     public getUserMightLikeUsers(userId) {
         let sql = "SELECT * FROM users WHERE id!=? ORDER BY RAND() LIMIT 6";
         return (this.selectRequest(sql, [userId]))
@@ -211,60 +236,57 @@ class userServices {
         return (this.selectRequest(sql, values));
     };
 
-    insertNewUser(user): Promise<object> {
+    createUserTraits(UserID): Promise<object> {
+        let sql = "INSERT INTO traits (UserID, size, gender, orientation, kids, status, ethnicity, religion, smoke, drink, drugs, diet, sign) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        let values = [
+            UserID,
+            getRandomInt(150, 200),
+            getRandomInt(0, 3),
+            getRandomInt(0, 3),
+            getRandomInt(0, 2),
+            getRandomInt(0, 3),
+            getRandomInt(0, 6),
+            getRandomInt(0, 5),
+            getRandomInt(0, 3),
+            getRandomInt(0, 3),
+            getRandomInt(0, 3),
+            getRandomInt(0, 3),
+            getRandomInt(0, 12),
+        ];
+        return (this.selectRequest(sql, values));
+    };
+
+    insertNewRandUser(user): Promise<object> {
         let sql = "INSERT INTO users (\
             login,\
             firstname,\
-            las" +
-            "tname,\
+            lastname,\
             password,\
             email,\
-            gender,\
-        " +
-            "    orientation,\
             dob,\
             registered,\
             city,\
-" +
-            "            country,\
+            country,\
             nat,\
             isconnected,\
-            co" +
-            "nfirmed,\
+            confirmed,\
             lastseen,\
             text1,\
             text2,\
-       " +
-            "     text3,\
-            size,\
-            ethnicity,\
-            religion,\
- " +
-            "           status,\
-            smoke,\
-            drink,\
-            drugs,\
-" +
-            "            sign,\
-            diet,\
-            kids\
-        ) VALUES (?,?,?," +
-            "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            text3,\
+            size\
+        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         let values = [
             user.login.username,
             user.name.first,
             user.name.last,
             user.login.password,
             user.email,
-            user.gender[0],
-            randomstring.generate({ length: 1, charset: 'sbg' }), // orientation
             new Date(user.dob.date),
             new Date(user.registered.date),
             city,
             country, // ???
-            user
-                .nat
-                .toLowerCase(),
+            user.nat.toLowerCase(),
             Math.random() >= 0.5, // Boolean random
             1,
             randomDate(user.registered),
@@ -278,15 +300,6 @@ class userServices {
                 count: getRandomInt(1, 10)
             }),
             getRandomInt(150, 200),
-            ethnicity.randomElement(),
-            religion.randomElement(),
-            status.randomElement(),
-            smoke.randomElement(),
-            drink.randomElement(),
-            drugs.randomElement(),
-            sign.randomElement(),
-            diet.randomElement(),
-            Math.random() >= 0.5 // Boolean random
         ];
         return (this.selectRequest(sql, values)); //.insertId;
     };
@@ -303,36 +316,6 @@ class userServices {
 }
 export default new userServices();
 
-// const city = getCities(country[0]).randomElement;
-
-const ethnicity = [
-    'Asian',
-    'Indian',
-    'Caucasian',
-    'Black',
-    'Hispanic',
-    'Other'
-];
-const religion = ['Atheism', 'Christianity', 'Judaism', 'Islam', 'Other'];
-const status = ['Single', 'Seeing Someone', 'Married', 'Open Relationship'];
-const smoke = ['Yes', 'No', 'Sometimes'];
-const drink = ['Yes', 'No', 'Sometimes'];
-const drugs = ['Yes', 'No', 'Sometimes'];
-const sign = [
-    'Aquarius',
-    'Pisces',
-    'Aries',
-    'Taurus',
-    'gemini',
-    'Cancer',
-    'Leo',
-    'Virgo',
-    'Libra',
-    'Scorpio',
-    'Sagittarius',
-    'Capricorn'
-];
-const diet = ['Omnivore', 'Vegetarian', 'Vegan'];
 const indoorTags = [
     'Music',
     'Foot',

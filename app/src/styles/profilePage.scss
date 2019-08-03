@@ -28,10 +28,35 @@
     left: 180px;
 }
 
-.basicValue {
-    position: absolute;
-    left: 180px;
+.basicRow .basicSize {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+
 }
+
+.basicRow input {
+    background: transparent;
+    border: none;
+    padding: 13px 0;
+    width: 40px;
+}
+
+.ui.inline.dropdown {
+
+    &.basicValue {
+        position: absolute;
+        left: 180px;
+    }
+
+    &.basicValueUpdated {
+        color: var(--gold);
+        position: absolute;
+        left: 180px;
+    }
+}
+
+
 
 #userPageMain .section-clickable {
     &:hover {

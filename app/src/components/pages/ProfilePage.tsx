@@ -1,16 +1,20 @@
 import * as React from 'react';
-import * as moment from 'moment';
 import ProfilBasicsEdit from '../Profile/ProfileBasicsEdit';
 import MatchaMap from '../misc/matchaMap';
-import { Flag, Icon, TextAreaProps } from 'semantic-ui-react';
-import Api from '../../services/api';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTags } from '@fortawesome/free-solid-svg-icons';
+import { Flag, Icon, Dropdown } from 'semantic-ui-react';
 import LoadingPage from './LoadingPage';
 import { connect } from 'react-redux';
+import { getUserProfil } from '../../helpers/photosTools';
+import { getAge } from '../../helpers/userTools';
+import { UserProfileProps } from '../forms/formTypes';
+import { updateUserTraitsDispatch } from '../state/actions/users';
+import { bindActionCreators } from 'redux';
+import api from '../../services/api';
+import * as _ from 'lodash';
 
-export interface UserProfileProps {
-    user: any;
+export interface ProfileProps {
+    user: UserProfileProps;
+    updateUserTraitsDispatch: Function;
     loading: boolean;
 }
 
@@ -22,11 +26,12 @@ export interface UserProfileState {
     zoom: any;
     openModal: boolean;
     textOneOpen: boolean;
+    otherTags: any;
 }
 
-class UserProfile extends React.Component<UserProfileProps, UserProfileState> {
+class UserProfile extends React.Component<ProfileProps, UserProfileState> {
     _tOne!: HTMLTextAreaElement;
-    constructor(props: UserProfileProps) {
+    constructor(props: ProfileProps) {
         super(props);
 
         // this.fromAddress = this.fromAddress.bind(this);
@@ -38,16 +43,28 @@ class UserProfile extends React.Component<UserProfileProps, UserProfileState> {
                 lat: 40.7446790,
                 lng: -73.9485420
             },
-            zoom: 10
+            zoom: 10,
+            otherTags: undefined,
         };
     }
 
     componentWillMount() {
-        //
+        this.getAllTags();
+    }
+
+    getAllTags = () => {
+        api.tags.getNotUserTags()
+            .then((tags) => {
+                this.setState({ otherTags: tags });
+            });
     }
 
     close = () => this.setState({ openModal: false });
     open = () => this.setState({ openModal: true });
+    changeTags = (e: any, data: any) => {
+        console.log(data);
+    }
+
     toggleTextOne = async () => {
         await this.setState({ textOneOpen: !this.state.textOneOpen });
         if (this._tOne) {
@@ -69,20 +86,19 @@ class UserProfile extends React.Component<UserProfileProps, UserProfileState> {
     //     });
     // }
 
-    getAge = () => {
-        return parseInt(moment(this.props.user.dob, 'YYYY-MM-DD h:mm:ss').fromNow(), 10);
-    }
-
     render() {
         const { user, loading } = this.props;
-        const { textOneOpen } = this.state;
+        const { info, album, traits, tags, location } = user;
+        const { textOneOpen, otherTags } = this.state;
+        const picture = getUserProfil(user);
+        const tagsOptions = _.map(otherTags, (tag, index) => ({
+            key: tag.id,
+            text: tag.tag,
+            value: tag.id,
+        }));
         if (loading) { return <LoadingPage />; }
-        const pos = user.photos.findIndex((i: any) => i.isProfil === 1);
-        let picture = 'http://via.placeholder.com/100x100';
-        if (user && user.photos && user.photos[pos].link) {
-            picture = 'http://localhost:3000' + `/photos/${user.login}/${user.photos[pos].link}`;
-        }
-        const gender = user.gender === 'male' ?
+
+        const gender = traits.gender === 1 ?
             <Icon color="yellow" name="man" /> : <Icon color="yellow" name="woman" />;
 
         return (
@@ -90,20 +106,18 @@ class UserProfile extends React.Component<UserProfileProps, UserProfileState> {
                 <div id="whole-bg" />
                 <div id="plop1">
                     <img
-                        src={typeof (picture) === 'string' ? picture : 'http://via.placeholder.com/160'}
+                        src={picture}
                         alt="background"
                         id="header-bg" // more specific
                     /></div>
                 <header>
                     <img
-                        src={typeof (picture) === 'string' ? picture : 'http://via.placeholder.com/160'}
+                        src={picture}
                         alt="Profil picture"
                         className="section-img profile" // more specific
                     />
-                    <h1 className="title">{user.firstname} {user.lastname} <Flag name={user.nat} /></h1>
-                    <p className="location">{this.getAge()} • {gender}• {user.city}, {user.country}</p>
-                    {/* <h2>{user.login}<Icon name="circle" color="green" /></h2> */}
-                    <div className="options" />
+                    <h1 className="title">{info.login}<Flag name={info.nat} /></h1>
+                    <p className="location">{getAge(info.dob)} • {gender} • {location.city}, {location.country}</p>
                 </header>
                 <main id="userPageMain">
                     <div id="main-bg" />
@@ -113,7 +127,7 @@ class UserProfile extends React.Component<UserProfileProps, UserProfileState> {
                             <textarea
                                 className="textAreaSection"
                                 ref={(ref) => { this._tOne = ref as HTMLTextAreaElement; }}
-                                defaultValue={user.text1} />
+                                defaultValue={info.text1} />
                             <div className="textAreaButtons">
                                 <button className="cancelButton" onClick={this.toggleTextOne}>Cancel</button>
                                 <button className="saveButton">Save</button>
@@ -121,29 +135,35 @@ class UserProfile extends React.Component<UserProfileProps, UserProfileState> {
                         </section>
                         : <section className="section-clickable">
                             <h2>Who I am</h2>
-                            <div onClick={this.toggleTextOne}><p>{user.text1}</p></div>
+                            <div onClick={this.toggleTextOne}><p>{info.text1}</p></div>
                         </section>
                     }
                     <section>
                         <h2>What I like doing</h2>
-                        <p>{user.text2}</p>
+                        <p>{info.text2}</p>
                     </section>
                     <section>
                         <h2>What I am looking for</h2>
-                        <p>{user.text3}</p>
+                        <p>{info.text3}</p>
                     </section>
                     <section>
                         <h2>About me</h2>
-                        <ProfilBasicsEdit user={user} />
+                        <ProfilBasicsEdit user={user} updateUserTraits={this.props.updateUserTraitsDispatch} />
                     </section>
                     <section style={{ padding: 0 }}>
                         <MatchaMap />
-                        {/* <img className="section-img" src="../../data/images/googleMap.png" alt="google PAM" /> */}
                     </section>
-                    {/* <GoogleMap center={this.state.center} zoom={this.state.zoom}/> */}
                     <section>
                         <h2>My interest</h2>
-                        <p><FontAwesomeIcon icon={faTags} /> Foot, Computer, Science, Video Games, Music, ...</p>
+                        <Dropdown
+                            placeholder="Please choose some interest !"
+                            fluid
+                            multiple
+                            search
+                            selection
+                            onChange={this.changeTags}
+                            options={tagsOptions}
+                        />
                     </ section>
                 </main>
             </div>
@@ -156,4 +176,9 @@ const mapStateToProps = (state: any) => ({
     user: state.user.user
 });
 
-export default connect<UserProfileProps>(mapStateToProps)(UserProfile);
+const mapDispatchToProps = (dispatch: any) => {
+    return bindActionCreators(
+        { updateUserTraitsDispatch }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);

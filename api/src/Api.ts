@@ -15,7 +15,7 @@ import TagsRouter from './routes/tagsRoutes';
 import PhotosRouter from './routes/photosRoutes';
 
 class Api {
-    public express : express.Application;
+    public express: express.Application;
 
     constructor() {
         this.express = express();
@@ -30,16 +30,16 @@ class Api {
         this.routes();
     }
 
-    private middleware() : void {
+    private middleware(): void {
         this
             .express
-            .use(bodyParser.json({limit: '10mb'}));
+            .use(bodyParser.json({ limit: '10mb' }));
         this
             .express
             .use(cors());
         this
             .express
-            .use(bodyParser.urlencoded({limit: '10mb', extended: false}));
+            .use(bodyParser.urlencoded({ limit: '10mb', extended: false }));
         this
             .express
             .use(function (req, res, next) {
@@ -64,7 +64,7 @@ class Api {
                 if (err) {
                     return res
                         .status(401)
-                        .send({success: false, message: 'Sign in to continue.'});
+                        .send({ success: false, message: 'Sign in to continue.' });
                 } else {
                     res.locals.UserID = decoded.payload.id;
                     console.log(res.locals.UserID);
@@ -76,15 +76,15 @@ class Api {
             // if there is no token return an error
             return res
                 .status(401)
-                .send({success: false, message: 'Sign in to continue.'});
+                .send({ success: false, message: 'Sign in to continue.' });
         }
     }
 
-    private routes() : void {
+    private routes(): void {
         let router = express.Router();
 
         router.get('/', (req, res, next) => {
-            res.json({message: 'Hello World !'});
+            res.json({ message: 'Hello World !' });
         });
 
         this

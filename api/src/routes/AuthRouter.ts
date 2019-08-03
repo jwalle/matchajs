@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import userServices from '../services/service.user'
 import * as jwt from "jsonwebtoken";
+import userControllers from '../controllers/userControllers';
 
 export interface userType {
     email: string;
@@ -68,29 +69,17 @@ export class AuthRouter {
             if (err)
                 throw err;
             const UserID = _res.payload.id;
-            userServices
-                .getUserProfile(UserID, UserID)
-                .then((user: any) => {
-                    userServices
-                        .getUserPhotos(UserID)
-                        .then((photos) => {
-                            return user[0] = {
-                                ...user[0],
-                                photos
-                            }
-                        })
-                        .then((_user) => {
-                            if (_user) {
-                                res
-                                    .status(200)
-                                    .send({ user: user[0], token });
-                            } else {
-                                res
-                                    .status(404)
-                                    .send({ message: 'no user found whit this id.', status: res.status });
-                            }
-                        })
-                        .catch((err) => console.log(err));
+            userControllers.getMainUser(UserID)
+                .then((_user) => {
+                    if (_user) {
+                        res
+                            .status(200)
+                            .send({ user: _user, token });
+                    } else {
+                        res
+                            .status(404)
+                            .send({ message: 'no user found whit this id.', status: res.status });
+                    }
                 })
                 .catch((err) => console.log('error getUserProfile : ', err))
         })

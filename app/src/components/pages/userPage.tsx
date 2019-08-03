@@ -253,7 +253,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                     {/* <GoogleMap center={this.state.center} zoom={this.state.zoom}/> */}
                     <section>
                         <h2>My interest</h2>
-                        <p><FontAwesomeIcon icon={faTags} /> Foot, Computer, Science, Video Games, Music, ...</p>
+                        {/* <p>{tags.map((tag: any, i: number) => tag.tag + i !== tags.length ? ', ' : ''}</p> */}
                     </ section>
                     <section>
                         <h2>You might also like</h2>

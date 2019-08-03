@@ -1,6 +1,8 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import userServices from '../services/service.user'
 import * as jwt from "jsonwebtoken";
+import UserControllers from '../controllers/userControllers';
+import userControllers from '../controllers/userControllers';
 let request = require('request');
 
 export interface userType {
@@ -173,8 +175,9 @@ export class UserRouter {
         let url = user.picture.large;
 
         userServices
-            .insertNewUser(user)
+            .insertNewRandUser(user)
             .then((result1: any) => {
+                userServices.createUserTraits(result1.insertId);
                 userServices
                     .downloadPhoto(url, user.login.username)
                     .then((result2) => {
@@ -280,9 +283,11 @@ export class UserRouter {
             })
     }
 
-    public updateUserRelation(req: Request, res: Response, next: NextFunction): void {
+    public async updateUserRelation(req: Request, res: Response, next: NextFunction) {
         let { TargetID, Type } = req.body;
         const { UserID } = res.locals;
+        const user = await UserControllers.getMainUser(TargetID);
+        console.log(user);
         userServices
             .likeOrBlockUser(UserID, TargetID, Type)
             .then((results: any) => {
@@ -293,6 +298,25 @@ export class UserRouter {
                             res.status(200).send(user[0]);
                         })
                         .catch((err) => {
+                            res.status(400).end();
+                        })
+                }
+            })
+    }
+
+    public async updateTraits(req: Request, res: Response, next: NextFunction) {
+        let { Traits } = req.body;
+        const { UserID } = res.locals;
+        userServices
+            .updateUserTraits(UserID, Traits)
+            .then((results: any) => {
+                if (results) {
+                    userControllers.getMainUser(UserID)
+                        .then((user) => {
+                            res.status(200).send(user);
+                        })
+                        .catch((err) => {
+                            console.log(err);
                             res.status(400).end();
                         })
                 }
@@ -403,6 +427,9 @@ export class UserRouter {
         this
             .router
             .post('/updateUserRelation', this.updateUserRelation);
+        this
+            .router
+            .post('/updateTraits', this.updateTraits);
     }
 }
 
