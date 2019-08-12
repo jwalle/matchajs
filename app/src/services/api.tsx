@@ -29,6 +29,8 @@ export default {
             fetchApi('/api/user/reportUser', { UserID }, 'post').then(res => res.data),
         updateTraits: (Traits: any) =>
             fetchApi('/api/user/updateTraits', { Traits }, 'post').then(res => res),
+        updateTags: (Tags: any) =>
+            fetchApi('/api/user/updateTags', { Tags }, 'post').then(res => res),
         blockUser: (UserID: number) =>
             fetchApi('/api/user/blockUser', { UserID }, 'post').then(res => res.data),
         updateUserRelation: (TargetID: number, Type: number) =>

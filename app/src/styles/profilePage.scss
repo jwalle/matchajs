@@ -42,6 +42,121 @@
     width: 40px;
 }
 
+.mainInfos {
+    border: 3px solid transparent;
+    cursor: pointer;
+    width: fit-content;
+    margin: 0 auto;
+    background-color: #23242473;
+    padding: 10;
+
+    &:hover {
+        border-color: var(--gold);
+    }
+
+    p {
+        text-align: center;
+        color: white;
+        margin: 0px;
+    }
+
+    p.login .flagIcon {
+        vertical-align: top;
+        margin-left: 5px;
+    }
+
+    p.login {
+        font-size: 1.5em;
+        opacity: 0.8;
+    }
+
+    p.name {
+        font-size: 1.2em;
+    }
+
+    p.location {
+        font-size: 1.0em;
+    }
+}
+
+.idev {
+    border: 1px solid red;
+}
+
+.circular-popu {
+    width: 160px;
+}
+
+.info-top {
+    display: flex;
+    justify-content: center;
+    padding-top: 10;
+    width: 200px;
+    position: relative;
+    margin: 0 auto;
+    text-shadow: none;
+}
+
+.infos-left {
+
+    position: absolute;
+    left: -80px;
+    top: 20;
+
+    .info-age-gender {
+        font-size: 2em;
+        color: var(--gold);
+        text-align: end;
+        margin-right: -25px;
+    }
+
+    .info-city {
+        font-size: 1.5em;
+        font-family: $champagne;
+        color: var(--prussian);
+        text-align: right;
+    }
+}
+
+.info-popu {
+    font-size: 1.2em;
+    position: absolute;
+    bottom: 15px;
+    color: var(--gold);
+}
+
+.info-right {
+    position: absolute;
+    left: 180px;
+    bottom: 30;
+    font-size: 1.2em;
+    font-family: $champagne;
+    font-weight: 600;
+    color: var(--gold);
+}
+
+.info-login {
+    font-family: $champagne;
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--prussian);
+    max-width: fit-content;
+    margin: 0 auto;
+    text-shadow: none;
+}
+
+.ui.modal {
+    top: 25%;
+}
+
+.mainEditInfos {
+    background-color: var(--ivory);
+    max-width: min-content;
+    padding: 20;
+    position: relative;
+    margin: 0 auto;
+}
+
 .ui.inline.dropdown {
 
     &.basicValue {
@@ -53,6 +168,15 @@
         color: var(--gold);
         position: absolute;
         left: 180px;
+    }
+}
+
+.profileTagsDropdown {
+
+    input {
+        color: var(--gold);
+        min-width: 100px;
+        border: 1px solid var(--gold);
     }
 }
 

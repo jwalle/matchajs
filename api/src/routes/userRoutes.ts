@@ -1,5 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import userServices from '../services/service.user'
+import tagsServices from '../services/service.tag'
 import * as jwt from "jsonwebtoken";
 import UserControllers from '../controllers/userControllers';
 import userControllers from '../controllers/userControllers';
@@ -323,6 +324,32 @@ export class UserRouter {
             })
     }
 
+    public async updateTags(req: Request, res: Response, next: NextFunction) {
+        let { Tags } = req.body;
+        const { UserID } = res.locals;
+        tagsServices
+            .deleteUserTags(UserID)
+            .then(() => {
+                return Tags.map((tag) => {
+                    tagsServices.addTagToUser(UserID, tag);
+
+                })
+            })
+            .then((results) => {
+                console.log(results);
+                if (results) {
+                    userControllers.getMainUser(UserID)
+                        .then((user) => {
+                            res.status(200).send(user);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            res.status(400).end();
+                        })
+                }
+            })
+    }
+
     public getSearchResults(req: Request, res: Response, next: NextFunction): void {
         let filters = req.body.filters;
         const { UserID } = res.locals;
@@ -430,6 +457,9 @@ export class UserRouter {
         this
             .router
             .post('/updateTraits', this.updateTraits);
+        this
+            .router
+            .post('/updateTags', this.updateTags);
     }
 }
 

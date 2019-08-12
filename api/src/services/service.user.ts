@@ -91,6 +91,12 @@ class userServices {
         return (this.selectRequest(sql, value))
     }
 
+    public getUserInfos(UserID) {
+        let sql = "SELECT * FROM users_infos WHERE UserID=?";
+        let value = [UserID];
+        return (this.selectRequest(sql, value))
+    }
+
     public getUserProfile(ProfileID, UserID) {
         let sql = `SELECT u.*, ur.Type AS relation\
         FROM users u\
@@ -237,11 +243,10 @@ class userServices {
     };
 
     createUserTraits(UserID): Promise<object> {
-        let sql = "INSERT INTO traits (UserID, size, gender, orientation, kids, status, ethnicity, religion, smoke, drink, drugs, diet, sign) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        let sql = "INSERT INTO traits (UserID, size, orientation, kids, status, ethnicity, religion, smoke, drink, drugs, diet, sign) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         let values = [
             UserID,
             getRandomInt(150, 200),
-            getRandomInt(0, 3),
             getRandomInt(0, 3),
             getRandomInt(0, 2),
             getRandomInt(0, 3),

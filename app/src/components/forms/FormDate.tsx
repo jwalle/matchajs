@@ -1,8 +1,7 @@
 import * as React from 'react';
-import * as Moment from 'moment';
 import { Danger } from '../messages/Message';
-import { Container, Header, Divider, Form, FormGroup, Button, Dropdown } from 'semantic-ui-react';
-import * as formTypes from './formTypes'; 
+import { Form } from 'semantic-ui-react';
+import * as formTypes from './formTypes';
 
 export interface FormDateProps {
     submitDate: Function;
@@ -16,7 +15,7 @@ export interface FormDateState {
     years: any;
 }
 
-export default class SignupFormDate extends React.Component < FormDateProps, FormDateState > {
+export default class SignupFormDate extends React.Component<FormDateProps, FormDateState> {
     constructor(props: FormDateProps) {
         super(props);
 
@@ -27,17 +26,14 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
             days: [],
             years: []
         };
-        this.onSelectDay = this.onSelectDay.bind(this);
-        this.onSelectYear = this.onSelectYear.bind(this);
-        this.onSelectMonth = this.onSelectMonth.bind(this);
     }
 
     componentWillMount() {
-        this.getDays(this.state.data.birthday.month || '01');
+        this.getNumberOfDaysForMonth(this.state.data.birthday.month || '01');
         this.getYears();
     }
 
-    async onSelectMonth(e: any, {value}: any) {
+    onSelectMonth = async (e: any, { value }: any) => {
         await this.setState({
             data: {
                 ...this.state.data,
@@ -47,11 +43,11 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
                 }
             }
         });
-        await this.getDays(value);
-        this.submitDate();        
+        await this.getNumberOfDaysForMonth(value);
+        this.submitDate();
     }
 
-    async onSelectDay(e: any, {value}: any ) {
+    onSelectDay = async (e: any, { value }: any) => {
         await this.setState({
             data: {
                 ...this.state.data,
@@ -60,16 +56,16 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
                     day: value
                 }
             }
-            });
-        this.submitDate();        
+        });
+        this.submitDate();
     }
 
-    async onSelectYear(e: any, {value}: any) {
+    onSelectYear = async (e: any, { value }: any) => {
         await this.setState({
             data: {
                 ...this.state.data,
                 birthday: {
-                    ...this.state.data.birthday,                    
+                    ...this.state.data.birthday,
                     year: value
                 }
             }
@@ -78,35 +74,34 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
     }
 
     submitDate = () => {
-        let {day, month, year} = this.state.data.birthday;
+        let { day, month, year } = this.state.data.birthday;
         if (day && month && year) {
             this.props.submitDate(this.state.data.birthday);
         }
     }
 
-    getDays = (month: string) => {
-            let days = [];
-            var key = 1;
-            let maxDays: number = (longMonth.indexOf(month) > -1) ? 32 : 31;
-            if (month === '02') {
-                maxDays = 29;
-            }
-            while (key < maxDays) {
-                days.push({key , value: key, text: key});
-                key++;
-            }
-            this.setState({ days });
+    getNumberOfDaysForMonth = (month: string) => {
+        let days = [];
+        var key = 1;
+        let maxDays: number = (longMonth.indexOf(month) > -1) ? 32 : 31;
+        if (month === '02') {
+            maxDays = 29;
+        }
+        while (key < maxDays) {
+            days.push({ key, value: key, text: key });
+            key++;
+        }
+        this.setState({ days });
     }
 
     getYears = () => {
         let years = [];
-        let now = Moment().year;
         var key = 0;
-        while (key < 100) {
-            years.push({key , value: (2018 - key), text: (2018 - key)}); // TODO: from 'this' year
+        while (key < 120) {
+            years.push({ key, value: (2019 - key), text: (2019 - key) });
             key++;
         }
-        this.setState({ years });        
+        this.setState({ years });
     }
 
     render() {
@@ -114,8 +109,8 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
         const { data } = this.state;
         return (
             <div>
-            <label htmlFor="birthday">Your birthday :</label>
-                <Form.Group className="flex" style={{padding: '15px'}}>                    
+                <label htmlFor="birthday">Your birthday :</label>
+                <Form.Group className="flex" style={{ padding: '15px' }}>
                     <Form.Select
                         selection
                         placeholder="Month"
@@ -124,7 +119,7 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
                         value={data.birthday.month}
                         options={months}
                         onChange={this.onSelectMonth}
-                        style={{minWidth: '140px'}}
+                        style={{ minWidth: '140px' }}
                     />
                     <Form.Select
                         selection
@@ -133,7 +128,7 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
                         value={data.birthday.day}
                         options={this.state.days}
                         onChange={this.onSelectDay}
-                        style={{minWidth: '85px'}}
+                        style={{ minWidth: '85px' }}
                     />
                     <Form.Select
                         selection
@@ -144,9 +139,9 @@ export default class SignupFormDate extends React.Component < FormDateProps, For
                         onChange={this.onSelectYear}
                     />
                 </Form.Group>
-                {errors.birthday && <Danger title="Birthday" text={errors.birthday} />}                
+                {errors.birthday && <Danger title="Birthday" text={errors.birthday} />}
             </div>
-            
+
         );
     }
 }
@@ -166,4 +161,4 @@ const months = [
     { value: '10', text: 'October' },
     { value: '11', text: 'November' },
     { value: '12', text: 'December' },
-  ];
+];

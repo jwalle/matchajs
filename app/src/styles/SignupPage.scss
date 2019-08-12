@@ -7,7 +7,8 @@
     border-radius: 10px;
 }
 
-#centralContainer label, h1{
+#centralContainer label,
+h1 {
     color: #1cb4ff;
 }
 
@@ -31,6 +32,12 @@
     color: wheat;
 }
 
+#formOneButtons {
+    display: flex;
+    flex-direction: column;
+    max-width: min-content;
+}
+
 #genderButtons {
     padding: 15px;
     border-bottom: solid 2px $ivory;
@@ -49,7 +56,7 @@ input[type='radio'] {
     -ms-appearance: none;
     appearance: none;
     outline: none;
-    
+
     &:after {
         font-family: 'FontAwesome';
         display: inline-block;
@@ -61,10 +68,10 @@ input[type='radio'] {
         // color: rgba(0,0,0,.4);
         transition: box-shadow 1s, color 1s;
     }
-    
+
     &:checked {
         &:after {
-            box-shadow: 2px 2px 14px rgba(0,0,0,.4);
+            box-shadow: 2px 2px 14px rgba(0, 0, 0, .4);
             border: solid 1px $gold;
             color: $gold;
         }

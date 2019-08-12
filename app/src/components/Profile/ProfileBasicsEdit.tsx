@@ -50,7 +50,6 @@ export default class ProfileBasics extends React.Component<Props, State> {
 
     render() {
         const { traits }: any = this.state;
-        console.log('TRAITS :: ', traits);
 
         // TODO : find how to add IconProps
         let basics: { id: number, icon: any, key: string, name: string, value: any, options: {}[] }[] = [

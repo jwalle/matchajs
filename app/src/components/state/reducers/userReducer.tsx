@@ -1,5 +1,5 @@
 import { USER_LOGGED_IN, USER_LOGGED_OUT } from '../actions/auth';
-import { UPDATE_USER_TRAITS } from '../actions/users';
+import { UPDATE_USER } from '../actions/users';
 
 const initialState = {
     user: {},
@@ -18,7 +18,7 @@ export default function user(state: any = initialState, action: any = {}) {
             };
         case USER_LOGGED_OUT:
             return {};
-        case UPDATE_USER_TRAITS:
+        case UPDATE_USER:
             return {
                 ...state,
                 user: action.user

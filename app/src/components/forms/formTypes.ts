@@ -32,7 +32,6 @@ export interface UserProfileProps {
 export interface UserTraits {
     size: number | string;
     orientation: number;
-    gender: number;
     kids: number;
     status: number;
     ethnicity: number;
@@ -44,23 +43,27 @@ export interface UserTraits {
     sign: number;
 }
 
-export interface UserInfos {
-    login: string;
-    size: number;
-    dob: Date;
-    lastseen: Date;
-    nat: any;
+export interface UserStatus {
     isConnected: boolean;
-    confirmed: boolean;
+    lastseen: Date;
     firstLogin: boolean;
-    text1: string;
-    text2: string;
-    text3: string;
+    confirmed: boolean;
+}
+
+export interface UserInfos {
+    city: string;
+    login: string;
+    firstname: string;
+    lastname: string;
+    dob: Date;
+    nat: any;
+    gender: number;
+    text1?: string;
+    text2?: string;
+    text3?: string;
 }
 
 export interface UserLocation {
-    city: string;
-    country: string;
     position: {
         lat: number;
         lng: number;

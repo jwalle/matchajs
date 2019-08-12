@@ -16,7 +16,7 @@ class SignupPage extends React.Component<SignupPageProps, {}> {
     super(props);
   }
 
-  submit = (data: any) => this.props.signup(data).then(() => this.props.history.push('/dashboard'));
+  submit = (data: any) => this.props.signup(data).then(() => this.props.history.push('/'));
 
   render() {
     return (

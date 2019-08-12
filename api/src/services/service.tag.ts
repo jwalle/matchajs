@@ -65,6 +65,23 @@ class tagServices {
         return (this.request(sql, values));
     }
 
+    public addTagToUser(UserID: number, TagID: number) {
+        let sql = "INSERT INTO users_tags(user_id, tag_id) VALUES (?,?)";
+        let values = [
+            UserID,
+            TagID
+        ];
+        return (this.request(sql, values));
+    }
+
+    public deleteUserTags(UserID: number) {
+        let sql = "DELETE FROM `users_tags` WHERE user_id=?";
+        let values = [
+            UserID
+        ];
+        return (this.request(sql, values));
+    }
+
     public getUserTags(user_id: number) {
         let sql = "SELECT p1.id, p1.tag FROM tags AS p1 \
             INNER JOIN users_tags AS p2 ON p1.id = p2.tag_id AND \
@@ -74,6 +91,8 @@ class tagServices {
         ];
         return (this.request(sql, values));
     }
+
+
 }
 
 export default new tagServices();

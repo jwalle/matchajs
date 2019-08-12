@@ -18,12 +18,9 @@ export class tagsRouter {
         tagsService.addTag(newTag, inOrOut)
             .then((results: any) => {
                 if (results) {
-                    // console.log('RESULTS ---> ',results);
                     let tag = {
                         id: results.insertId,
-                        tag: newTag,
-                        in_or_out: inOrOut,
-                        value: false
+                        tag: newTag
                     };
                     res.status(200).send(tag);
                 }
