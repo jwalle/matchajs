@@ -4,7 +4,6 @@ import tagsServices from '../services/service.tag'
 import * as jwt from "jsonwebtoken";
 import UserControllers from '../controllers/userControllers';
 import userControllers from '../controllers/userControllers';
-let request = require('request');
 
 export interface userType {
     email: string;
@@ -19,21 +18,6 @@ export class UserRouter {
         this.init();
     }
 
-    public makeUser = () => {
-        return new Promise(function (resolve, reject) {
-            let options = {
-                url: 'https://randomuser.me/api/?nat=gb,fr,dk,ca,us,de',
-                dataType: 'json'
-            };
-            request.get(options, function (error, response, body) {
-                if (!error) {
-                    resolve(body);
-                } else {
-                    reject('error request user : ' + error);
-                }
-            })
-        })
-    }
 
     public getUserProfilePhoto(req: Request, res: Response, next: NextFunction) {
         let query = parseInt(req.params.id, 10);
@@ -170,37 +154,6 @@ export class UserRouter {
                         .send({ message: 'no new user found.', status: res.status });
                 }
             })
-    }
-
-    public fillDb(user) {
-        let url = user.picture.large;
-
-        userServices
-            .insertNewRandUser(user)
-            .then((result1: any) => {
-                userServices.createUserTraits(result1.insertId);
-                userServices
-                    .downloadPhoto(url, user.login.username)
-                    .then((result2) => {
-                        userServices
-                            .insertNewPhoto(result2, result1.insertId, 1)
-                            .then(() => { })
-                    })
-            });
-    }
-
-    public makeOneUser(req: Request, res: Response, next: NextFunction): void {
-        this
-            .makeUser()
-            .then((user: any) => {
-                return ((JSON.parse(user).results[0]));
-            })
-            .then((response) => {
-                this.fillDb(response)
-            })
-            .catch((error) => {
-                throw error
-            });
     }
 
     public signup(req: Request, res: Response, next: NextFunction): void {
@@ -409,9 +362,6 @@ export class UserRouter {
     }
 
     init() {
-        this
-            .router
-            .get('/makeUser', this.makeOneUser.bind(this));
         this
             .router
             .get('/getProfilePhoto/:id', this.getUserProfilePhoto);

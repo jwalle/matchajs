@@ -86,7 +86,7 @@ class userServices {
     }
 
     public getUserTraits(UserID) {
-        let sql = "SELECT * FROM traits WHERE UserID=?";
+        let sql = "SELECT * FROM users_traits WHERE UserID=?";
         let value = [UserID];
         return (this.selectRequest(sql, value))
     }
@@ -172,7 +172,7 @@ class userServices {
     }
 
     public updateUserTraits(UserID: number, Traits: any) {
-        let sql = `UPDATE traits SET size=?, orientation=?, kids=?, status=?, ethnicity=?, religion=?, smoke=?, drink=?, drugs=?, diet=?, sign=? WHERE UserID=?`;
+        let sql = `UPDATE users_traits SET size=?, orientation=?, kids=?, status=?, ethnicity=?, religion=?, smoke=?, drink=?, drugs=?, diet=?, sign=? WHERE UserID=?`;
         let value = [
             Traits.size,
             Traits.orientation,
@@ -242,73 +242,6 @@ class userServices {
         return (this.selectRequest(sql, values));
     };
 
-    createUserTraits(UserID): Promise<object> {
-        let sql = "INSERT INTO traits (UserID, size, orientation, kids, status, ethnicity, religion, smoke, drink, drugs, diet, sign) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-        let values = [
-            UserID,
-            getRandomInt(150, 200),
-            getRandomInt(0, 3),
-            getRandomInt(0, 2),
-            getRandomInt(0, 3),
-            getRandomInt(0, 6),
-            getRandomInt(0, 5),
-            getRandomInt(0, 3),
-            getRandomInt(0, 3),
-            getRandomInt(0, 3),
-            getRandomInt(0, 3),
-            getRandomInt(0, 12),
-        ];
-        return (this.selectRequest(sql, values));
-    };
-
-    insertNewRandUser(user): Promise<object> {
-        let sql = "INSERT INTO users (\
-            login,\
-            firstname,\
-            lastname,\
-            password,\
-            email,\
-            dob,\
-            registered,\
-            city,\
-            country,\
-            nat,\
-            isconnected,\
-            confirmed,\
-            lastseen,\
-            text1,\
-            text2,\
-            text3,\
-            size\
-        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        let values = [
-            user.login.username,
-            user.name.first,
-            user.name.last,
-            user.login.password,
-            user.email,
-            new Date(user.dob.date),
-            new Date(user.registered.date),
-            city,
-            country, // ???
-            user.nat.toLowerCase(),
-            Math.random() >= 0.5, // Boolean random
-            1,
-            randomDate(user.registered),
-            loremIpsum({
-                count: getRandomInt(1, 10)
-            }),
-            loremIpsum({
-                count: getRandomInt(1, 10)
-            }),
-            loremIpsum({
-                count: getRandomInt(1, 10)
-            }),
-            getRandomInt(150, 200),
-        ];
-        return (this.selectRequest(sql, values)); //.insertId;
-    };
-
     public insertNewPhoto(link, idUser, isProfil) {
         let sql = "INSERT INTO photos (link, idUser, created, isProfil) VALUES (?,?,?,?)";
         let values = [
@@ -320,113 +253,3 @@ class userServices {
 
 }
 export default new userServices();
-
-const indoorTags = [
-    'Music',
-    'Foot',
-    'Computer',
-    'Science',
-    'Gaming',
-    'Movies',
-    'Acting',
-    'Cooking',
-    'Crocheting',
-    'Crossword puzzles',
-    'Dance',
-    'DIY',
-    'Fashion',
-    'Homebrewing',
-    'CTG',
-    'Sculpting',
-    'Reading',
-    'WoodWorking',
-    'Painting',
-    'Playing musical instruments',
-    'Singing',
-    'Watching TV',
-    'drawing',
-    'Yoga'
-];
-const outdoorTags = [
-    'Archery',
-    'Astronomy',
-    'Basketball',
-    'Camping',
-    'Canyoning',
-    'Driving',
-    'Fishing',
-    'Geocaching',
-    'Hiking',
-    'Horseback Riding',
-    'Hunting',
-    'Jogging',
-    'Martial Art',
-    'Motor sports',
-    'Paintball',
-    'Parkour',
-    'Photography',
-    'Rock climbing',
-    'Roller skating',
-    'Skateboarding',
-    'Rugby',
-    'Skiing',
-    'Snowboarding',
-    'Walking'
-];
-declare global {
-    interface Array<T> {
-        randomElement(): T;
-    }
-
-    interface Object {
-        RandomElement(): string;
-    }
-}
-
-Array.prototype.randomElement = function () {
-    return this[Math.floor(Math.random() * this.length)]
-};
-
-Object.prototype.RandomElement = function () {
-    return this[Math.floor(Math.random() * this.length)]
-};
-
-function getCountries(): string[] {
-    let countries = countriesJSON.countries;
-    let arr: string[] = new Array;
-    for (let x in countries) {
-        if (countries.hasOwnProperty(x)) {
-            arr.push(x);
-        }
-    }
-    return arr;
-}
-
-function getCities(country: string): Array<string> {
-    let countries = countriesJSON.countries;
-    let cities = countries[country];
-    let arr = [];
-    for (let x in cities) {
-        if (cities.hasOwnProperty(x)) {
-            arr.push(cities[x]);
-        }
-    }
-    return arr;
-}
-
-const countries = getCountries();
-const country = countries.randomElement();
-const cities = getCities(country);
-const city = cities.randomElement();
-
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-}
-
-function randomDate(startString) {
-    let end = new Date();
-    let start = new Date(startString);
-    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-}

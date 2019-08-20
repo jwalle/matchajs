@@ -1,5 +1,6 @@
-declare module NodeJS  {
+declare module NodeJS {
     interface Global {
-        appRoot: string
+        appRoot: string,
+        io: SocketIO.Server,
     }
 }

@@ -42,18 +42,17 @@ class tagServices {
         })
     }
 
-    public addTag(tag: string, in_or_out: string) {
-        let sql = "INSERT INTO tags (tag, in_or_out) VALUE (?, ?)";
+    public addTag(tag: string) {
+        let sql = "INSERT INTO tags (tag) VALUE (?)";
         let values = [
             tag,
-            in_or_out
         ];
         return (this.request(sql, values));
     }
 
     public getAll() {
-        let sql = "SELECT * FROM ??";
-        let values = ['tags']; //placeholder
+        let sql = "SELECT * FROM tags";
+        let values = []; //placeholder
         return (this.request(sql, values));
     }
 

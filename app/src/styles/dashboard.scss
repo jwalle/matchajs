@@ -1,0 +1,26 @@
+.main-dashboard {
+    height: 100%;
+    background-color: var(--ivory);
+    padding: 30;
+}
+
+.addUsersInput {
+    display: flex;
+    align-items: center;
+    margin-top: 20;
+
+    .ui.input {
+        margin: 0 10;
+        max-width: 80;
+        padding: 0;
+    }
+
+    .btn {
+        margin-left: 10;
+    }
+
+    p {
+        color: var(--sky);
+
+    }
+}

@@ -31,8 +31,8 @@ export class AppRouter extends React.Component<{}> {
                     <UserRoute path="/welcome" component={ProfilePage} />
                     <UserRoute path="/search" component={SearchPage} />
                     <UserRoute path="/user/:idUser" component={userPage} />
-                    <UserRoute path="/dashboard" component={dashboard} />
                     <UserRoute path="/profile" component={ProfilePage} />
+                    <Route exact path="/dashboard" component={dashboard} />
                     <Route component={NotFoundPage} />
                 </Switch>
             </App>

@@ -9,6 +9,7 @@ import * as download from 'download-file';
 import * as bodyParser from 'body-parser';
 var jwt = require('jsonwebtoken');
 
+import DevRouter from './routes/devRoutes';
 import UserRouter from './routes/userRoutes';
 import AuthRouter from './routes/AuthRouter';
 import TagsRouter from './routes/tagsRoutes';
@@ -101,6 +102,9 @@ class Api {
         this
             .express
             .use('/api/auth', AuthRouter.router);
+        this
+            .express
+            .use('/api/dev', DevRouter.router);
         this
             .express
             .use('/api/user', this.isLoggedIn, UserRouter.router);

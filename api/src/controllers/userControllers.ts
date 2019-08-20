@@ -4,7 +4,7 @@ import servicePhotos from "../services/service.photos";
 import * as moment from 'moment';
 
 class UserControllers {
-    constructor() { }
+    //constructor() { }
 
     public getMainUser = (UserID) => {
         return new Promise(async (resolve, reject) => {

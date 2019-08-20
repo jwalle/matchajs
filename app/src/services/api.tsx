@@ -57,5 +57,11 @@ export default {
             axios.delete('/api/photos/deletePhoto/' + photoId),
         swapToProfil: (photoId: number, userId: number) =>
             fetchApi('/api/photos/swapToProfil/', { photoId, userId }, 'post')
+    },
+    dev: {
+        getDBinfos: () =>
+            fetchApi('/api/dev/getDBinfos').then(res => res.data),
+        makeUser: () =>
+            fetchApi('/api/dev/makeUser')
     }
 };

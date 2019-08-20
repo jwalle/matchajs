@@ -1,23 +1,22 @@
-import {createPool} from 'mysql';
+import { createPool } from 'mysql';
 
 
-    let pool = createPool({
-            connectionLimit: 10,
-            // host: 'mysql_1', //Docker
-            host: 'localhost',
-            user: 'root',
-            password: 'root',
-            database: 'matchadb'
-        });
+let pool = createPool({
+  connectionLimit: 10,
+  // host: 'mysql_1', //Docker
+  host: 'localhost',
+  user: 'root',
+  password: 'root',
+  database: 'matchadb'
+});
 
-    pool.getConnection(function (err, connection) {
-      if (err) throw err;
-    });
+pool.getConnection(function (err, connection) {
+  if (err) throw err;
+});
 
-    module.exports = {
-    pool: pool
+module.exports = {
+  pool: pool
 }
-
 
 //findOne
 //findById

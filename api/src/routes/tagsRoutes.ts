@@ -14,8 +14,8 @@ export class tagsRouter {
     // @desc    add a tag
     // @access  Public
     public addTag(req: Request, res: Response, next: NextFunction): void {
-        const { newTag, inOrOut } = req.body;
-        tagsService.addTag(newTag, inOrOut)
+        const { newTag } = req.body;
+        tagsService.addTag(newTag)
             .then((results: any) => {
                 if (results) {
                     let tag = {
