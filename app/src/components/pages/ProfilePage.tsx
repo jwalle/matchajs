@@ -1,21 +1,17 @@
 import * as React from 'react';
 import ProfilBasicsEdit from '../Profile/ProfileBasicsEdit';
 import MatchaMap from '../misc/matchaMap';
-import { Flag, Icon, Dropdown, Label, Input, Modal } from 'semantic-ui-react';
+import { Dropdown } from 'semantic-ui-react';
 import LoadingPage from './LoadingPage';
 import { connect } from 'react-redux';
 import { getUserProfil } from '../../helpers/photosTools';
-import { getAge } from '../../helpers/userTools';
 import { UserProfileProps } from '../forms/formTypes';
 import { updateUserTraitsDispatch, updateUserTagsDispatch } from '../state/actions/users';
 import { bindActionCreators } from 'redux';
 import api from '../../services/api';
 import * as _ from 'lodash';
-import ProfileMainInfos from '../Profile/ProfileMainInfos';
 import Textarea from 'react-textarea-autosize';
-import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
-import CountUp from 'react-countup';
+import UserHeader from '../Profile/UserHeader';
 
 export interface ProfileProps {
     user: UserProfileProps; // TODO;
@@ -62,10 +58,6 @@ class UserProfile extends React.Component<ProfileProps, UserProfileState> {
         this.getAllTags();
         this.tagsToValues();
         this.setState({ tagsSelected: this.tagsToValues() });
-    }
-
-    componentDidMount() {
-        setTimeout(() => this.setState({ percentage: 60 }), 1000);
     }
 
     tagsToValues = (): number[] => {
@@ -153,12 +145,9 @@ class UserProfile extends React.Component<ProfileProps, UserProfileState> {
             text: tag.tag,
             value: tag.id,
         }));
-        const percentage = 66;
         let tagsValues = this.props.user.tags.map((tag) => tag.id);
         let tagsChanged = !_.isEqual(_.sortBy(tagsValues), _.sortBy(this.state.tagsSelected));
         if (loading) { return <LoadingPage />; }
-        // const gender = info.gender === 1 ?
-        //     <Icon color="yellow" name="man" /> : <Icon color="yellow" name="woman" />;
         console.log('==> ', tagsValues, this.state.tagsSelected);
         return (
             <div>
@@ -169,71 +158,8 @@ class UserProfile extends React.Component<ProfileProps, UserProfileState> {
                         alt="background"
                         id="header-bg" // more specific
                     /></div>
-                <header>
-                    <div className="header-infos">
-                        <div className="info-top">
-                            <span className="infos-left">
-                                <p className="info-age-gender">
-                                    {getAge(info.dob)}, <Icon color="yellow" name="woman" />
-                                </p>
-                                <p className="info-city">{info.city}</p>
-                            </span>
-                            <ProgressProvider valueStart={0} valueEnd={this.state.percentage}>
-                                {(value: any) => <CircularProgressbarWithChildren
-                                    value={value}
-                                    className="circular-popu"
-                                    styles={{
-                                        path: {
-                                            // Path color
-                                            stroke: `rgba(217, 179, 16, 1)`,
-                                            strokeLinecap: 'butt',
-                                            // Customize transition animation
-                                            transition: 'stroke-dashoffset 0.5s ease 0s',
-                                        },
-                                        // Customize the circle behind the path, i.e. the "total progress"
-                                        trail: {
-                                            // Trail color
-                                            stroke: 'transparent',
-                                            strokeLinecap: 'butt',
-                                        },
-                                        // Customize the text
-                                        text: {
-                                            // Text color
-                                            fill: '#d9b310',
-                                            // Text size
-                                            fontSize: '16px',
-                                        },
-                                        // Customize background - only used when the `background` prop is true
-                                        background: {
-                                            fill: '#3e98c7',
-
-                                        },
-                                    }}
-                                >
-                                    <img
-                                        src={picture}
-                                        alt="Profil picture"
-                                        className="section-img profile" // more specific
-                                    />
-
-                                    <div className="info-popu">
-                                        <CountUp
-                                            start={0}
-                                            end={percentage}
-                                            delay={1}
-                                            separator=" "
-                                            suffix=" %"
-                                        />
-                                    </div>
-                                </CircularProgressbarWithChildren>}
-                            </ProgressProvider>
-                            <span className="info-right">
-                                <p className="info-connected">Connected</p>
-                            </span>
-                        </div>
-                        <p className="info-login">{info.login}</p>
-                        {/* <ProfileMainInfos user={user} /> */}
-                    </div>
+                <header className="clickable-header">
+                    <UserHeader user={user} />
                 </header>
                 <main id="userPageMain">
                     <div id="main-bg" />
@@ -309,10 +235,3 @@ const mapDispatchToProps = (dispatch: any) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);
-
-const ProgressProvider = ({ valueStart, valueEnd, children }: any) => {
-    const [value, setValue] = React.useState(valueStart);
-    React.useEffect(() => { setValue(valueEnd); }, [valueEnd]);
-
-    return children(value);
-};

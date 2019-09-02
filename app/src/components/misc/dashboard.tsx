@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Info from '../messages/Message';
 import api from '../../services/api';
 import { logout } from '../state/actions/auth';
-import { Input } from 'semantic-ui-react';
+import { Input, Progress } from 'semantic-ui-react';
 import * as socketIOClient from 'socket.io-client';
 
 interface Props {
@@ -18,6 +18,7 @@ interface State {
         connectedUsers: number;
     };
     usersToAdd: string;
+    usersAdded: number;
     //
 }
 
@@ -31,6 +32,7 @@ class Dashboard extends React.Component<Props, State> {
                 connectedUsers: 0,
             },
             usersToAdd: '',
+            usersAdded: 0,
         };
     }
 
@@ -69,17 +71,18 @@ class Dashboard extends React.Component<Props, State> {
 
     makeUsers = () => {
         let nb = parseInt(this.state.usersToAdd, 10);
-        if (nb > 0 && nb < 1500) {
+        if (nb > 0 && nb <= 1500) {
             const socket = socketIOClient('http://localhost:3000/makeUsers');
             socket.emit('NUMBER', nb);
-            socket.on('COUCOU', (data: any) => console.log(data));
+            socket.on('COUCOU', (users: any) => this.setState({ usersAdded: users }));
         }
     }
 
     render() {
         const { user } = this.props;
-        const { dbInfos, usersToAdd } = this.state;
+        const { dbInfos, usersToAdd, usersAdded } = this.state;
         const userConnected = (user && user.info && user.info.login) ? user.info.login : 'None';
+
         return (
             <div className="main-dashboard">
                 <h1>Connected as user : {userConnected}</h1>
@@ -100,6 +103,9 @@ class Dashboard extends React.Component<Props, State> {
                     <p>users.</p>
                     <button className="btn btn-primary" onClick={this.makeUsers}>==></button>
                 </div>
+                {usersAdded ? <div style={{ width: 400, marginTop: 20 }}>
+                    <Progress indicating value={usersAdded} total={usersToAdd} progress="ratio" />
+                </div> : ''}
             </div>
 
         );

@@ -4,7 +4,8 @@ import { Divider, Icon, Container, IconProps, Dropdown } from 'semantic-ui-react
 
 interface Props {
     user: formTypes.UserProfileProps;
-    updateUserTraits: Function;
+    updateUserTraits: Function; // TODO: DANGEROUS ?
+    disabled?: boolean;
 }
 
 interface State {
@@ -214,6 +215,7 @@ export default class ProfileBasics extends React.Component<Props, State> {
                             <span className="basicName">{b.name}</span>
                             <Dropdown
                                 inline
+                                disabled={this.props.disabled}
                                 className={traits[b.key] !== propsTraits[b.key] ? 'basicValueUpdated ' : 'basicValue'}
                                 options={b.options}
                                 id={b.id}

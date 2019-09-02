@@ -58,24 +58,36 @@ export class DevRouter {
             })
     }
 
-    public fillDb(user) {
-        let url = user.picture.large;
+    public fillUserRelations = (UserID) => {
+        userServices
+            .getRandUsers(UserID, 20)
+            .then((users: any) => {
+                users.map((user) => {
+                    userServices.likeOrBlockUser(UserID, user.id, 1);
+                })
+            })
+    }
 
-        devServices
-            .insertNewRandUser(user)
-            .then((result1: any) => {
-                const UserID = result1.insertId;
-                devServices.createUserTraits(UserID);
-                devServices.createUserInfo(UserID, user);
-                this.fillUserTags(UserID);
-                devServices
-                    .downloadPhoto(url, user.login.username)
-                    .then((result2) => {
-                        userServices
-                            .insertNewPhoto(result2, UserID, 1)
-                            .then(() => { })
-                    })
-            });
+    public fillDb = (user) => {
+        let url = user.picture.large;
+        return new Promise((res, rej) => {
+            devServices
+                .insertNewRandUser(user)
+                .then((result1: any) => {
+                    const UserID = result1.insertId;
+                    devServices.createUserTraits(UserID);
+                    devServices.createUserInfo(UserID, user);
+                    this.fillUserTags(UserID);
+                    this.fillUserRelations(UserID);
+                    devServices
+                        .downloadPhoto(url, user.login.username)
+                        .then((result2) => {
+                            userServices
+                                .insertNewPhoto(result2, UserID, 1)
+                                .then((result3: any) => { console.log('RESULT3 ->>> ', result3.insertId); res(true) })
+                        })
+                });
+        })
     }
 
     public makeOneUser(req: Request, res: Response, next: NextFunction): void {
@@ -85,7 +97,7 @@ export class DevRouter {
                 return ((JSON.parse(user).results[0]));
             })
             .then((response) => {
-                this.fillDb(response)
+                this.fillDb(response);
             })
             .catch((error) => {
                 throw error
@@ -95,11 +107,11 @@ export class DevRouter {
     public makeUsers(req: Request, res: Response, next: NextFunction): void {
         // let io = Global.io;
 
-        global.io.on('connection', (socket) => {
-            console.log('new client connected !!');
-            socket.emit('COUCOU', 12);
-            socket.on('disconnect', () => console.log('client disconnected !!'));
-        });
+        // global.io.on('connection', (socket) => {
+        //     console.log('new client connected !!');
+        //     socket.emit('COUCOU', 12);
+        //     socket.on('disconnect', () => console.log('client disconnected !!'));
+        // });
 
     }
 

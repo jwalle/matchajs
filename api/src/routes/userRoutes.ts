@@ -104,28 +104,29 @@ export class UserRouter {
             .catch((err) => console.log('error getUserProfile : ', err))
     }
 
-    public getRandUsers(req: Request, res: Response, next: NextFunction) {
-        // let UserID = 1;
-        const { UserID } = res.locals;
-        userServices
-            .getRandUsers()
-            .then((users) => {
-                if (users) {
-                    res
-                        .status(200)
-                        .send(users);
-                } else {
-                    res
-                        .status(404)
-                        .send({ message: 'no user found whit this id.', status: res.status });
-                }
-            })
-    }
+    // public getRandUsers(req: Request, res: Response, next: NextFunction) {
+    //     // let UserID = 1;
+    //     const { UserID } = res.locals;
+    //     userServices
+    //         .getRandUsers(6)
+    //         .then((users) => {
+    //             if (users) {
+    //                 res
+    //                     .status(200)
+    //                     .send(users);
+    //             } else {
+    //                 res
+    //                     .status(404)
+    //                     .send({ message: 'no user found whit this id.', status: res.status });
+    //             }
+    //         })
+    // }
 
-    public getLikedUsers(req: Request, res: Response, next: NextFunction) {
+    public async getLikedUsers(req: Request, res: Response, next: NextFunction) {
         const { UserID } = res.locals;
-        userServices
-            .getLikedUsers(UserID)
+        const usersID: any = await userServices.getLikedUsers(UserID);
+        const usersPromises = usersID.map((user) => userControllers.getUser(UserID, user.id));
+        Promise.all(usersPromises)
             .then((users) => {
                 if (users) {
                     res
@@ -139,10 +140,11 @@ export class UserRouter {
             })
     }
 
-    public getNewUsers(req: Request, res: Response, next: NextFunction) {
+    public async getNewUsers(req: Request, res: Response, next: NextFunction) {
         const { UserID } = res.locals;
-        userServices
-            .getNewUsers(UserID)
+        const usersID: any = await userServices.getNewUsers(UserID);
+        const usersPromises = usersID.map((user) => userControllers.getUser(UserID, user.id));
+        Promise.all(usersPromises)
             .then((users) => {
                 if (users) {
                     res
@@ -368,9 +370,9 @@ export class UserRouter {
         this
             .router
             .get('/getUserProfile/:UserID', this.getUserProfile);
-        this
-            .router
-            .get('/getRandUsers', this.getRandUsers);
+        // this
+        //     .router
+        //     .get('/getRandUsers', this.getRandUsers);
         this
             .router
             .get('/getLikedUsers', this.getLikedUsers);

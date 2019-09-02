@@ -69,7 +69,7 @@ class devServices {
             user.name.first,
             user.name.last,
             new Date(user.dob.date),
-            city,
+            user.location.city,
             loremIpsum({
                 count: getRandomInt(1, 10)
             }),

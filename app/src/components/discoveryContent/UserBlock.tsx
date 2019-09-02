@@ -2,6 +2,8 @@ import * as React from 'react';
 import moment = require('moment');
 import { withRouter, Link } from 'react-router-dom';
 import { Icon } from 'semantic-ui-react';
+import { getAge } from '../../helpers/userTools';
+import { getUserProfil } from '../../helpers/photosTools';
 
 export interface UserBlockProps {
   user: any; // TODO : Types
@@ -22,20 +24,15 @@ export default class UserBlock extends React.Component<UserBlockProps, UserBlock
 
   public render() {
     const { user } = this.props;
-    let photo = undefined;
-    let age = moment().diff(moment(user.dob), 'years');
-    if (user.link) {
-      photo = 'http://localhost:3000' + `/photos/${user.login}/${user.link}`;
-    } else {
-      photo = 'http://via.placeholder.com/200x200';
-    }
+    let photo = getUserProfil(user);
+    let age = getAge(user.info.dob);
     return (
-      <Link to={'/user/' + user.id} className="user-block">
+      <Link to={{ pathname: '/user/' + user.id, state: user }} className="user-block">
         <img src={photo} alt="user-image" />
-        {user.friend ? <span><Icon className="LikedUser" color="yellow" name="star" size="big" /></span> : ''}
+        {user.relation === 1 ? <span><Icon className="LikedUser" color="yellow" name="star" size="big" /></span> : ''}
         <div className="lower-user-block">
-          <h2>{user.login}</h2>
-          <p>{age} • {user.city}</p>
+          <h2>{user.info.login}</h2>
+          <p>{age} • {user.info.city}</p>
         </div>
       </Link>
     );

@@ -1,26 +1,31 @@
 import * as React from 'react';
 import axios from 'axios';
 const path = require('path');
-import * as moment from 'moment';
-import ProfilBasics from '../Profile/ProfileBasics';
 import MatchaMap from '../misc/matchaMap';
 import { Flag, Icon, Button, Image, Container, Dropdown, Loader, Modal, Header, Popup } from 'semantic-ui-react';
 import Api from '../../services/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFlag, faTimes, faEnvelope, faImages, faStar, faTags } from '@fortawesome/free-solid-svg-icons';
+import { faFlag, faTimes, faEnvelope, faImages, faStar, faTags, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 import LoadingPage from './LoadingPage';
-
-const PHOTOS_DIR = path.resolve(__dirname, '../data/photos/');
+import { getAge } from '../../helpers/userTools';
+import { getUserProfil } from '../../helpers/photosTools';
+import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
+import CircularProgressbar from '../misc/CircularProgressBar';
+import 'react-circular-progressbar/dist/styles.css';
+import CountUp from 'react-countup';
+import ProfileBasics from '../Profile/ProfileBasics';
+import UserHeader from '../Profile/UserHeader';
 
 export interface UserPageProps {
     params: any;
     match: any;
+    location: any;
 }
 
 export interface UserPageState {
     user: any;
+    percentage: number;
     loading: boolean;
-    age: any;
     mightLike: any;
     center: {
         lat: any,
@@ -34,14 +39,11 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
     constructor(props: UserPageProps) {
         super(props);
 
-        this.getMightLikeUsers = this.getMightLikeUsers.bind(this);
-        // this.fromAddress = this.fromAddress.bind(this);
-
         this.state = {
             user: undefined,
+            percentage: 0,
             openModal: false,
             loading: true,
-            age: 1,
             mightLike: [],
             center: {
                 lat: 40.7446790,
@@ -52,7 +54,14 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
     }
 
     componentWillMount() {
-        this.getUser();
+        if (!this.getUserFromProps()) {
+            this.getUser();
+        }
+        console.log('PLOP ==> ', this.props.location.state);
+    }
+
+    componentDidMount() {
+        setTimeout(() => this.setState({ percentage: 60 }), 1000);
     }
 
     close = () => this.setState({ openModal: false });
@@ -61,6 +70,17 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
         // Api.user.reportUser(this.state.user.id);
         this.close();
         history.back();
+    }
+
+    getUserFromProps = () => {
+        const user = this.props.location && this.props.location.state;
+        console.log('BORDEL = ', user);
+        if (user) {
+            console.log('coucou');
+            this.setState({ user });
+            return true;
+        }
+        return false;
     }
 
     updateUserRelation = (Type: number) => {
@@ -74,26 +94,7 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
             .catch((err: any) => console.log('error like :', err));
     }
 
-    // fromAddress() {
-    //     let address = this.state.user.country + ', ' + this.state.user.city;
-    //     let url = `${GOOGLE_API}?address=${encodeURI(address)}&key=${GEOCODE_API_KEY}`;
-    //     axios({
-    //         method: 'get',
-    //         url: url,
-    //         responseType: 'json'
-    //     }).then((res: any) => {
-    //         console.log(res);
-    //         const { lat, lng } = res.data.results[0].geometry.location;
-    //         this.setState({center: {lat, lng}});
-    //     });
-    // }
-
-    getAge = () => {
-        let age = parseInt(moment(this.state.user.dob, 'YYYY-MM-DD h:mm:ss').fromNow(), 10);
-        this.setState({ age });
-    }
-
-    getMightLikeUsers() {
+    getMightLikeUsers = () => {
         let self = this;
         Api.user.getMightLike()
             .then(res => {
@@ -114,29 +115,16 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
                     user: res.user[0]
                 });
             })
-            .then(this.getAge)
             .then(this.getMightLikeUsers)
             // .then(this.fromAddress)
             .catch(err => console.log('error axios user :', err));
     }
 
     render() {
-        const { user, loading } = this.state;
-        if (loading) { return <LoadingPage />; }
-        const flag = user.nat;
-        const pos = user.photos.findIndex((i: any) => i.isProfil === 1);
-        const { relation } = user;
-        let picture = 'http://via.placeholder.com/100x100';
-        if (user && user.photos && user.photos[pos].link) {
-            picture = 'http://localhost:3000' + `/photos/${user.login}/${user.photos[pos].link}`;
-        }
-        const gender = user.gender === 'male' ?
-            <Icon color="yellow" name="man" /> : <Icon color="yellow" name="woman" />;
-
-        const blockOptions = [
-            { key: 'block', text: 'Block', icon: 'user' },
-            { key: 'blockAndReport', text: 'Block and Report', icon: 'settings' },
-        ];
+        const { user } = this.state;
+        const { info, album, tags, location, relation } = user;
+        const picture = getUserProfil(user);
+        const percentage = 66;
 
         const ReportModal = () => (
             <Modal dimmer="blurring"
@@ -194,57 +182,51 @@ export default class UserPage extends React.Component<UserPageProps, UserPageSta
             content: 'Message User'
         }
         ];
-
         return (
             <div>
                 <ReportModal />
                 <div id="whole-bg" />
                 <div id="plop1">
                     <img
-                        src={typeof (picture) === 'string' ? picture : 'http://via.placeholder.com/160'}
+                        src={picture}
                         alt="background"
                         id="header-bg" // more specific
                     /></div>
                 <header>
-                    <img
-                        src={typeof (picture) === 'string' ? picture : 'http://via.placeholder.com/160'}
-                        alt="Profil picture"
-                        className="section-img profile" // more specific
-                    />
-                    <h1 className="title">{user.firstname} {user.lastname} <Flag name={user.nat} /></h1>
-                    <p className="location">{this.state.age} • {gender}• {user.city}, {user.country}</p>
-                    {/* <h2>{user.login}<Icon name="circle" color="green" /></h2> */}
-                    <div className="options">
-                        {Options.map((option, index) => {
-                            return <Popup
-                                key={index}
-                                trigger={<a onClick={option.action} className={option.className}>
-                                    <FontAwesomeIcon icon={option.icon} /></a>}
-                                content={option.content}
-                                style={style}
-                                position={option.content === 'Gallery' ? 'bottom center' : 'top center'}
-                                inverted
-                            />;
-                        })}
-                    </ div>
+                    <div className="header-infos">
+                        <UserHeader user={user} />
+                        <div className="options">
+                            {Options.map((option, index) => {
+                                return <Popup
+                                    key={index}
+                                    trigger={<a onClick={option.action} className={option.className}>
+                                        <FontAwesomeIcon icon={option.icon} /></a>}
+                                    content={option.content}
+                                    style={style}
+                                    position={option.content === 'Gallery' ? 'bottom center' : 'top center'}
+                                    inverted
+                                />;
+                            })}
+                        </ div>
+                    </div>
                 </header>
                 <main id="userPageMain">
                     <div id="main-bg" />
                     <section>
                         <h2>Who I am</h2>
-                        <p>{user.text1}</p>
+                        <p>{info.text1}</p>
                     </ section>
                     <section>
                         <h2>What I like doing</h2>
-                        <p>{user.text2}</p>
+                        <p>{info.text2}</p>
                     </section>
                     <section>
                         <h2>What I am looking for</h2>
-                        <p>{user.text3}</p>
+                        <p>{info.text3}</p>
                     </section>
                     <section>
                         <h2>About me</h2>
-                        <ProfilBasics user={user} />
+                        <ProfileBasics user={user} />
                     </section>
                     <section style={{ padding: 0 }}>
                         <MatchaMap />

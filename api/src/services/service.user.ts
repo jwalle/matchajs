@@ -98,7 +98,7 @@ class userServices {
     }
 
     public getUserProfile(ProfileID, UserID) {
-        let sql = `SELECT u.*, ur.Type AS relation\
+        let sql = `SELECT u.id, u.connected, u.lastSeen, ur.Type AS relation\
         FROM users u\
         LEFT JOIN users_relations ur\
         ON ur.UserID=? AND ur.TargetID=?\
@@ -107,43 +107,37 @@ class userServices {
         return (this.selectRequest(sql, value))
     }
 
-    public getRandUsers() {
-        let sql = "SELECT u.id, u.login, u.dob, u.city , p.link\
-        FROM `users` u\
-        LE" +
-            "FT JOIN photos p\
-        ON p.idUser = u.id AND p.isProfil = 1\
-        WHERE 1" +
-            "\
-        ORDER BY RAND()\
-        LIMIT 6";
-        let value = [];
+    public getMainUserProfile(UserID) {
+        let sql = `SELECT u.*\
+        FROM users u\
+        WHERE u.id=?`;
+        let value = [UserID];
+        return (this.selectRequest(sql, value))
+    }
+
+    public getRandUsers(UserID, limit) {
+        let sql = "SELECT u.id FROM `users` u WHERE u.id != ? ORDER BY RAND() LIMIT ?";
+        let value = [UserID, limit];
         return (this.selectRequest(sql, value))
     }
 
     public getNewUsers(UserID) {
-        let sql = `SELECT u.id, u.login, u.dob, u.city, p.link, ${this.isFriend}\
-        FROM users u\
-        LEFT JOIN photos p\
-        ON p.idUser = u.id AND p.isProfil = 1\
-        WHERE u.id != ?\
-        ORDER BY RAND()\
+        let sql = `SELECT u.id
+        FROM users u
+        WHERE u.id != ?
+        ORDER BY u.registered
         LIMIT 6`;
-        let value = [UserID, UserID];
+        let value = [UserID];
         return (this.selectRequest(sql, value))
     }
 
     public getLikedUsers(UserID) {
-        let sql = `SELECT u.id, u.login, u.dob, u.city, p.link, ${this.isFriend}\
-        FROM users_relations ur\
-        LEFT JOIN users u\
-        ON u.id=ur.TargetID\
-        LEFT JOIN photos p\
-        ON p.idUser = u.id AND p.isProfil = 1\
-        WHERE ur.UserID=? AND ur.Type=1\
-        ORDER BY RAND()\
+        let sql = `SELECT ur.TargetID as id
+        FROM users_relations ur
+        WHERE ur.UserID=? AND ur.Type=1
+        ORDER BY RAND()
         LIMIT 6`;
-        let value = [UserID, UserID];
+        let value = [UserID];
         return (this.selectRequest(sql, value))
     }
 

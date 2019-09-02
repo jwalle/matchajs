@@ -90,11 +90,9 @@
 .info-top {
     display: flex;
     justify-content: center;
-    padding-top: 10;
     width: 200px;
     position: relative;
-    margin: 0 auto;
-    text-shadow: none;
+    margin: 12 auto;
 }
 
 .infos-left {
@@ -113,7 +111,7 @@
     .info-city {
         font-size: 1.5em;
         font-family: $champagne;
-        color: var(--prussian);
+        color: #fefefe;
         text-align: right;
     }
 }
@@ -123,12 +121,13 @@
     position: absolute;
     bottom: 15px;
     color: var(--gold);
+    text-shadow: 1px 1px 2px #000000;
 }
 
 .info-right {
     position: absolute;
-    left: 180px;
-    bottom: 30;
+    left: 175px;
+    bottom: 20px;
     font-size: 1.2em;
     font-family: $champagne;
     font-weight: 600;
@@ -136,14 +135,16 @@
 }
 
 .info-login {
-    font-family: $champagne;
-    font-size: 1.5em;
-    font-weight: 600;
-    color: var(--prussian);
-    max-width: fit-content;
-    margin: 0 auto;
-    text-shadow: none;
+    font-family: "Champagne & Limousines";
+    font-size: 2.5em;
+    color: #fefefe;
+    position: absolute;
+    left: 177px;
+    top: 20px;
+    text-shadow: 2px 2px 2px #000000;
+
 }
+
 
 .ui.modal {
     top: 25%;

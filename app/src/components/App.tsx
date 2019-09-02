@@ -26,7 +26,7 @@ class App extends React.Component<AppProps, {}> {
     const style = isAuth ? 'user-container' : 'guest-container';
 
     return (
-      <div id="ui container">
+      <div id="ui container" className="appContainer">
         {isAuth ? <NavigationBar /> : ''}
         <div className={style}>
           {this.props.children}
