@@ -99,7 +99,8 @@
     "ts-loader": "^6.0.1",
     "tslint": "^5.16.0",
     "tslint-react": "^4.0.0",
-    "validator": "^10.11.0"
+    "validator": "^10.11.0",
+    "why-did-you-update": "^1.0.6"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.7",
@@ -110,6 +111,7 @@
     "@types/react-countup": "^4.0.1",
     "@types/react-textarea-autosize": "^4.3.4",
     "@types/webpack-env": "^1.13.9",
+    "@types/why-did-you-update": "0.0.10",
     "awesome-typescript-loader": "^5.2.1",
     "babel-core": "^6.26.3",
     "babel-jest": "^24.8.0",

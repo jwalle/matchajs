@@ -13,10 +13,12 @@ class UserControllers {
             let traits = JSON.parse(JSON.stringify(await serviceUser.getUserTraits(UserID)))[0];
             let infos = JSON.parse(JSON.stringify(await serviceUser.getUserInfos(UserID)))[0];
             delete traits.UserID;
+            delete infos.UserID;
             let album = JSON.parse(JSON.stringify(await servicePhotos.getAllFromUser(UserID)));
             if (user) {
                 resolve({
                     id: user.id,
+                    email: user.email,
                     info: infos,
                     location: {
                         position: {

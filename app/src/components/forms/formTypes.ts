@@ -21,6 +21,7 @@ export interface UserData {
 
 export interface UserProfileProps {
     id: number;
+    email: string;
     token: string;
     info: UserInfos;
     traits: UserTraits;
@@ -83,8 +84,10 @@ export interface UserPhoto {
 
 export interface ErrorsForm {
     global?: string;
-    username?: string;
+    // username?: string;
+    login?: string;
     name?: string;
+    city?: string;
     firstname?: string;
     lastname?: string;
     location?: string;

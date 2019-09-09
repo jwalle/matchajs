@@ -57,17 +57,19 @@ class devServices {
             login,\
             firstname,\
             lastname,\
+            gender,\
             dob,\
             city,\
             text1,\
             text2,\
             text3\
-        ) VALUES (?,?,?,?,?,?,?,?,?)";
+        ) VALUES (?,?,?,?,?,?,?,?,?,?)";
         let values = [
             UserID,
             user.login.username,
             user.name.first,
             user.name.last,
+            getRandomInt(1, 4),
             new Date(user.dob.date),
             user.location.city,
             loremIpsum({

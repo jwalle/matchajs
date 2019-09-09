@@ -4,62 +4,76 @@ import { Danger } from '../messages/Message';
 import * as formTypes from './formTypes';
 
 export interface FormNameProps {
-    updateName: Function;
+    updateName: any;
     data: formTypes.UserData;
-    errors: formTypes.ErrorsForm;
+    errors: formTypes.ErrorsForm | null;
 }
 
 export interface FormNameState {
-    data: formTypes.UserData;
+    firstname: string;
+    lastname: string;
 }
 
-export default class FormName extends React.Component < FormNameProps, FormNameState > {
+export default class FormName extends React.Component<FormNameProps, FormNameState> {
     constructor(props: FormNameProps) {
         super(props);
 
         this.state = {
-            data: {
-                ...this.props.data
-            },
+            firstname: this.props.data.firstname,
+            lastname: this.props.data.lastname,
         };
-        this.onSelect = this.onSelect.bind(this);
+        // this.onSelect = this.onSelect.bind(this);
     }
 
-    async onSelect(e: any) { 
-        await this.setState({
-            data: {
-                ...this.state.data,
-                [e.target.name]: e.target.value
-            }
+    // async onSelect(e: any) {
+    //     await this.setState({
+    //         data: {
+    //             ...this.state.data,
+    //             [e.target.name]: e.target.value
+    //         }
+    //     });
+    //     this.props.updateName(this.state.data);
+    // }
+
+    onChangeText = (e: any) => {
+        // console.log(e);
+        this.setState({
+            firstname: e.target.value
         });
-        this.props.updateName(this.state.data);    
+    }
+
+    onBlur = () => {
+        console.log(this.state);
     }
 
     render() {
-        const { data } = this.state;
-        const { errors } = this.props;
+        console.log('wtf names');
+        const { firstname, lastname } = this.state;
+        const { errors, data } = this.props;
         return (
             <div>
-                <label htmlFor="location">Your Name :</label>
+                <label htmlFor="location">Your Name</label>
                 <div className="flex">
                     <input
                         className="myInput"
-                        value={data.firstname}
+                        value={firstname}
                         autoComplete="given-name"
                         placeholder="First name"
                         name="firstname"
-                        onChange={this.onSelect}
+                        onBlur={this.onBlur}
+                        onChange={this.onChangeText}
                     />
+                    <div style={{ width: 20 }} />
                     <input
                         className="myInput"
-                        value={data.lastname}
+                        value={lastname}
                         placeholder="Last name"
                         autoComplete="family-name"
                         name="lastname"
-                        onChange={this.onSelect}
+                        onChange={this.onChangeText}
                     />
                 </div>
-                {errors.name && <Danger title="Name" text={errors.name} />}                
+                {errors && errors.name && <Danger title="Name" text={errors.name} />}
             </div>
         );
     }

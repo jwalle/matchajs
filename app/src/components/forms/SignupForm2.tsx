@@ -4,7 +4,7 @@ import { Danger } from '../messages/Message';
 import FormDate from './FormDate';
 import FormLocation from './FormLocation';
 import * as Moment from 'moment';
-import * as formTypes from './formTypes'; 
+import * as formTypes from './formTypes';
 
 export interface SignupFormProps {
     setStep?: Function;
@@ -14,12 +14,12 @@ export interface SignupFormProps {
 
 export interface SignupFormState {
     data: formTypes.UserData;
-    birthdayMoment: Moment.Moment;  
+    birthdayMoment: Moment.Moment;
     loading: boolean;
     errors: formTypes.ErrorsForm;
 }
 
-export default class SignupForm2 extends React.Component < SignupFormProps, SignupFormState > {
+export default class SignupForm2 extends React.Component<SignupFormProps, SignupFormState> {
     constructor(props: SignupFormProps) {
         super(props);
 
@@ -30,13 +30,13 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
             birthdayMoment: Moment('1987-01-19'), // TODO: should this be null ?            
             loading: false,
             errors: {
-                username: '',
-                location : '',
+                login: '',
+                location: '',
                 global: '',
                 birthday: ''
             }
         };
-        this.onSelectBirthday = this.onSelectBirthday.bind(this);        
+        this.onSelectBirthday = this.onSelectBirthday.bind(this);
     }
 
     async onSelectBirthday(birthday: formTypes.UserData['birthday']) {
@@ -49,7 +49,7 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
         this.makeBirthdayMoment();
     }
 
-    onSelectLocation = (data: formTypes.UserData) =>  {
+    onSelectLocation = (data: formTypes.UserData) => {
         this.setState({
             data: {
                 ...this.state.data,
@@ -70,8 +70,8 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
         e.preventDefault();
         const errors = this.validate(this.state.data);
         this.setState({ errors });
-        if (Object.keys(errors).length === 0 ) {
-            this.setState({loading: true});
+        if (Object.keys(errors).length === 0) {
+            this.setState({ loading: true });
             this.props.updateData(this.state.data);
             if (this.props.setStep) {
                 this.props.setStep('login');
@@ -87,7 +87,7 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
 
     // Transform the birthday object in a Moment object.
     makeBirthdayMoment = () => {
-        let {day, month, year} = this.state.data.birthday;
+        let { day, month, year } = this.state.data.birthday;
         if (day && month && year) {
             if (parseInt(day, 10) < 10) {
                 day = '0' + day;
@@ -101,7 +101,7 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
 
     // Check if the date give 18+ yo.
     isMajor = () => {
-        let age = parseInt(Moment(this.state.birthdayMoment, 'YYYY-MM-DD h:mm:ss').fromNow(), 10);        
+        let age = parseInt(Moment(this.state.birthdayMoment, 'YYYY-MM-DD h:mm:ss').fromNow(), 10);
         if (age >= 18) {
             return 1;
         }
@@ -110,8 +110,8 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
 
     validate = (data: SignupFormState['data']) => {
         const errors: any = {};
-        if (!data.username) { errors.username = 'You have to enter your username !'; }
-        // TODO: Check il username taken        
+        if (!data.login) { errors.login = 'You have to enter your login !'; }
+        // TODO: Check il login taken        
         if (!data.country || !data.city) { errors.location = 'You have to select a place !'; }
         if (!data.birthday) { errors.birthday = 'You have to enter your birthday !'; }
         if (!this.state.birthdayMoment.isValid) { errors.birthday = 'You have to enter a valid date !'; }
@@ -122,33 +122,33 @@ export default class SignupForm2 extends React.Component < SignupFormProps, Sign
 
     render() {
 
-        const {data, errors, loading} = this.state;
+        const { data, errors, loading } = this.state;
         return (
             <div>
                 <form onSubmit={this.onSubmit} className="flex-col login-form">
                     {errors.global && <Danger title="Global error" text="Something went wrong" />}
                     <div>
-                        <label htmlFor="username">Username :</label>
+                        <label htmlFor="login">login :</label>
                         <input
                             className="myInput"
-                            id="username"
-                            name="username"
+                            id="login"
+                            name="login"
                             placeholder="toto420"
-                            value={data.username}
+                            value={data.login}
                             onChange={this.onChange}
                         />
-                        {errors.username && <Danger title="Username" text={errors.username} />}
+                        {errors.login && <Danger title="login" text={errors.login} />}
                     </div>
-                    <FormDate data={data} errors={errors} submitDate={this.onSelectBirthday}/>
+                    <FormDate birthday={data.birthday} errors={errors} submitDate={this.onSelectBirthday} />
                     <FormLocation data={data} errors={errors} updateLocation={this.onSelectLocation} />
-                    <div style={{width: '80%'}}>
+                    <div style={{ width: '80%' }}>
                         <button
                             className="btn btn-primary"
-                            style={{float: 'left'}}
+                            style={{ float: 'left' }}
                             type="button"
                             onClick={this.onPrevious}
                         >Back</button>
-                        <button className="btn btn-primary" style={{float: 'right'}}>Next</button>
+                        <button className="btn btn-primary" style={{ float: 'right' }}>Next</button>
                     </div>
                 </form>
             </div>

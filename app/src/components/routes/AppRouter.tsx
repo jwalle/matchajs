@@ -27,8 +27,8 @@ export class AppRouter extends React.Component<{}> {
                 <Switch>
                     <GuestRoute exact path="/" component={HomePage} />
                     <FirstRoute path="/first" component={FirstLoginPage} />
-                    <UserRoute path="/welcome" component={ContentPage} />
-                    {/* <UserRoute path="/welcome" component={ProfilePage} /> */}
+                    {/* <UserRoute path="/welcome" component={ContentPage} /> */}
+                    <UserRoute path="/welcome" component={ProfilePage} />
                     <UserRoute path="/search" component={SearchPage} />
                     <UserRoute path="/user/:idUser" component={userPage} />
                     <UserRoute path="/profile" component={ProfilePage} />

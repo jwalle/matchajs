@@ -215,11 +215,11 @@ export default class ProfileBasics extends React.Component<Props, State> {
                             <span className="basicName">{b.name}</span>
                             <Dropdown
                                 inline
-                                disabled={this.props.disabled}
                                 className={traits[b.key] !== propsTraits[b.key] ? 'basicValueUpdated ' : 'basicValue'}
                                 options={b.options}
                                 id={b.id}
                                 name={b.key}
+                                direction="right"
                                 onChange={(e: any, data: any) => this.change(e, data)}
                                 value={b.value} />
                         </div>

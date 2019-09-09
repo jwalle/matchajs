@@ -152,10 +152,16 @@
 
 .mainEditInfos {
     background-color: var(--ivory);
-    max-width: min-content;
+    // max-width: min-content;
     padding: 20;
     position: relative;
     margin: 0 auto;
+    color: var(--sky);
+    font-family: $champagne;
+
+    label {
+        font-size: 22px;
+    }
 }
 
 .ui.inline.dropdown {
@@ -255,5 +261,36 @@
         width: 0px;
         background: transparent;
         /* Chrome/Safari/Webkit */
+    }
+}
+
+#genderButtons input[type='radio'] {
+    background: $prussian;
+    border: solid 1px black;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    outline: none;
+
+    &:after {
+        font-family: 'FontAwesome';
+        display: inline-block;
+        text-align: center;
+        font-size: 40px;
+        content: attr(data-icon);
+        padding: 20px 20px;
+        color: $ivory;
+        // color: rgba(0,0,0,.4);
+        transition: box-shadow 1s, color 1s;
+    }
+
+    &:checked {
+        &:after {
+            box-shadow: 2px 2px 14px rgba(0, 0, 0, .4);
+            border: solid 1px $gold;
+            color: $gold;
+        }
     }
 }

@@ -5,12 +5,12 @@ import * as formTypes from './formTypes';
 
 export interface FormDateProps {
     submitDate: Function;
-    errors: formTypes.ErrorsForm;
-    data: formTypes.UserData;
+    errors: formTypes.ErrorsForm | null;
+    birthday: any;
 }
 
 export interface FormDateState {
-    data: formTypes.UserData;
+    birthday: any;
     days: any;
     years: any;
 }
@@ -20,8 +20,8 @@ export default class SignupFormDate extends React.Component<FormDateProps, FormD
         super(props);
 
         this.state = {
-            data: {
-                ...this.props.data
+            birthday: {
+                ...this.props.birthday
             },
             days: [],
             years: []
@@ -29,18 +29,15 @@ export default class SignupFormDate extends React.Component<FormDateProps, FormD
     }
 
     componentWillMount() {
-        this.getNumberOfDaysForMonth(this.state.data.birthday.month || '01');
+        this.getNumberOfDaysForMonth(this.state.birthday.month || '01');
         this.getYears();
     }
 
     onSelectMonth = async (e: any, { value }: any) => {
         await this.setState({
-            data: {
-                ...this.state.data,
-                birthday: {
-                    ...this.state.data.birthday,
-                    month: value
-                }
+            birthday: {
+                ...this.state.birthday,
+                month: value
             }
         });
         await this.getNumberOfDaysForMonth(value);
@@ -49,12 +46,10 @@ export default class SignupFormDate extends React.Component<FormDateProps, FormD
 
     onSelectDay = async (e: any, { value }: any) => {
         await this.setState({
-            data: {
-                ...this.state.data,
-                birthday: {
-                    ...this.state.data.birthday,
-                    day: value
-                }
+
+            birthday: {
+                ...this.state.birthday,
+                day: value
             }
         });
         this.submitDate();
@@ -62,21 +57,18 @@ export default class SignupFormDate extends React.Component<FormDateProps, FormD
 
     onSelectYear = async (e: any, { value }: any) => {
         await this.setState({
-            data: {
-                ...this.state.data,
-                birthday: {
-                    ...this.state.data.birthday,
-                    year: value
-                }
+            birthday: {
+                ...this.state.birthday,
+                year: value
             }
         });
         this.submitDate();
     }
 
     submitDate = () => {
-        let { day, month, year } = this.state.data.birthday;
+        let { day, month, year } = this.state.birthday;
         if (day && month && year) {
-            this.props.submitDate(this.state.data.birthday);
+            this.props.submitDate(this.state.birthday);
         }
     }
 
@@ -106,40 +98,43 @@ export default class SignupFormDate extends React.Component<FormDateProps, FormD
 
     render() {
         const { errors } = this.props;
-        const { data } = this.state;
+        const { birthday } = this.state;
+        console.log('wtf');
         return (
             <div>
-                <label htmlFor="birthday">Your birthday :</label>
-                <Form.Group className="flex" style={{ padding: '15px' }}>
+                <label htmlFor="birthday">Your birthday</label>
+                <Form.Group className="flex" style={{ padding: '15px 0' }}>
                     <Form.Select
                         selection
                         placeholder="Month"
                         fluid
                         name="month"
-                        value={data.birthday.month}
+                        value={birthday.month}
                         options={months}
                         onChange={this.onSelectMonth}
                         style={{ minWidth: '140px' }}
                     />
+                    <div style={{ width: 10 }} />
                     <Form.Select
                         selection
                         placeholder="Day"
                         fluid
-                        value={data.birthday.day}
+                        value={birthday.day}
                         options={this.state.days}
                         onChange={this.onSelectDay}
                         style={{ minWidth: '85px' }}
                     />
+                    <div style={{ width: 10 }} />
                     <Form.Select
                         selection
                         placeholder="Year"
                         fluid
-                        value={data.birthday.year}
+                        value={birthday.year}
                         options={this.state.years}
                         onChange={this.onSelectYear}
                     />
                 </Form.Group>
-                {errors.birthday && <Danger title="Birthday" text={errors.birthday} />}
+                {errors && errors.birthday && <Danger title="Birthday" text={errors.birthday} />}
             </div>
 
         );

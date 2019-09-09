@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ProfilBasicsEdit from '../Profile/ProfileBasicsEdit';
 import MatchaMap from '../misc/matchaMap';
-import { Dropdown } from 'semantic-ui-react';
+import { Dropdown, Modal } from 'semantic-ui-react';
 import LoadingPage from './LoadingPage';
 import { connect } from 'react-redux';
 import { getUserProfil } from '../../helpers/photosTools';
@@ -12,6 +12,7 @@ import api from '../../services/api';
 import * as _ from 'lodash';
 import Textarea from 'react-textarea-autosize';
 import UserHeader from '../Profile/UserHeader';
+import ProfileMainInfos from '../Profile/ProfileMainInfos';
 
 export interface ProfileProps {
     user: UserProfileProps; // TODO;
@@ -158,9 +159,15 @@ class UserProfile extends React.Component<ProfileProps, UserProfileState> {
                         alt="background"
                         id="header-bg" // more specific
                     /></div>
-                <header className="clickable-header">
-                    <UserHeader user={user} />
-                </header>
+                <Modal
+                    centered={false}
+                    trigger={
+                        <header className="clickable-header">
+                            <UserHeader user={user} />
+                        </header>
+                    }>
+                    <ProfileMainInfos user={user} />
+                </Modal>
                 <main id="userPageMain">
                     <div id="main-bg" />
                     {textOneOpen
