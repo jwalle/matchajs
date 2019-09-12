@@ -1,5 +1,5 @@
 #basics .divider {
-    margin: 5px;
+    margin: 0px;
 }
 
 /* #basics:hover {
@@ -11,6 +11,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    padding: 7 0;
 }
 
 .basicRow span {
@@ -38,8 +39,12 @@
 .basicRow input {
     background: transparent;
     border: none;
-    padding: 13px 0;
-    width: 40px;
+    padding: 4 0;
+    width: 35;
+}
+
+#options-menu {
+    height: 451;
 }
 
 .mainInfos {
@@ -136,11 +141,11 @@
 
 .info-login {
     font-family: "Champagne & Limousines";
-    font-size: 2.5em;
+    font-size: 4.5vw;
     color: #fefefe;
     position: absolute;
-    left: 177px;
-    top: 20px;
+    left: calc(1vw + 170px);
+    top: 12px;
     text-shadow: 2px 2px 2px #000000;
 
 }

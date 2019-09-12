@@ -197,7 +197,6 @@ class UserProfile extends React.Component<ProfileProps, UserProfileState> {
                         <p>{info.text3}</p>
                     </section>
                     <section>
-                        <h2>About me</h2>
                         <ProfilBasicsEdit user={user} updateUserTraits={this.props.updateUserTraitsDispatch} />
                     </section>
                     <section style={{ padding: 0 }}>

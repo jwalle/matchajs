@@ -18,7 +18,7 @@ export default class ProfileBasics extends React.Component<ProfileBasicsProps, {
         // TODO : find how to add IconProps
         let basics: { id: number, icon: any, key: string, name: string, value: any, options: {}[] }[] = [
             {
-                id: 1,
+                id: 0,
                 icon: 'intergender',
                 name: 'Orientation',
                 key: 'orientation',
@@ -30,7 +30,108 @@ export default class ProfileBasics extends React.Component<ProfileBasicsProps, {
                     { key: 3, value: 3, text: 'Bisexuel' },
                 ]
             }, {
-                id: 11,
+                id: 1,
+                icon: 'child',
+                name: 'Kid(s)',
+                key: 'kids',
+                value: traits.kids,
+                options: [
+                    { key: 0, value: 0, text: '...' },
+                    { key: 1, value: 1, text: 'Sometimes' },
+                    { key: 2, value: 2, text: 'None' },
+                ]
+            }, {
+                id: 2,
+                icon: 'users',
+                name: 'Status',
+                key: 'status',
+                value: traits.status,
+                options: [
+                    { key: 0, value: 0, text: '...' },
+                    { key: 1, value: 1, text: 'Single' },
+                    { key: 2, value: 2, text: 'Seeing Someone' },
+                    { key: 3, value: 3, text: 'Married' },
+                    { key: 4, value: 4, text: 'Open Relationship' },
+                ]
+            }, {
+                id: 3,
+                icon: 'smile',
+                name: 'Ethnicity',
+                key: 'ethnicity',
+                value: traits.ethnicity,
+                options: [
+                    { key: 0, value: 0, text: '...' },
+                    { key: 1, value: 1, text: 'Asian' },
+                    { key: 2, value: 2, text: 'Indian' },
+                    { key: 3, value: 3, text: 'Caucasian' },
+                    { key: 4, value: 4, text: 'Black' },
+                    { key: 5, value: 5, text: 'Hispanic' },
+                    { key: 6, value: 6, text: 'Other' },
+                ]
+            }, {
+                id: 4,
+                icon: 'game',
+                name: 'Religion',
+                key: 'religion',
+                value: traits.religion,
+                options: [
+                    { key: 0, value: 0, text: '...' },
+                    { key: 1, value: 1, text: 'Atheism' },
+                    { key: 2, value: 2, text: 'Gay' },
+                    { key: 3, value: 3, text: 'Judaism' },
+                    { key: 4, value: 4, text: 'Islam' },
+                    { key: 5, value: 5, text: 'Other' },
+                ]
+            }, {
+                id: 5,
+                icon: 'leaf',
+                name: 'Smoke',
+                key: 'smoke',
+                value: traits.smoke,
+                options: [
+                    { key: 0, value: 0, text: '...' },
+                    { key: 1, value: 1, text: 'Yes' },
+                    { key: 2, value: 2, text: 'No' },
+                    { key: 3, value: 3, text: 'Sometimes' },
+                ]
+            }, {
+                id: 6,
+                icon: 'bar',
+                name: 'Drink',
+                key: 'drink',
+                value: traits.drink,
+                options: [
+                    { key: 0, value: 0, text: '...' },
+                    { key: 1, value: 1, text: 'Yes' },
+                    { key: 2, value: 2, text: 'No' },
+                    { key: 3, value: 3, text: 'Sometimes' },
+                ]
+            }, {
+                id: 7,
+                icon: 'tree',
+                name: 'Drugs',
+                key: 'drugs',
+                value: traits.drugs,
+                options: [
+                    { key: 0, value: 0, text: '...' },
+                    { key: 1, value: 1, text: 'Yes' },
+                    { key: 2, value: 2, text: 'No' },
+                    { key: 3, value: 3, text: 'Sometimes' },
+                ]
+            }, {
+                id: 8,
+                icon: 'food',
+                name: 'Diet',
+                key: 'diet',
+                value: traits.diet,
+                options: [
+                    { key: 0, value: 0, text: '...' },
+                    { key: 1, value: 1, text: 'Omnivore' },
+                    { key: 2, value: 2, text: 'Vegetarian' },
+                    { key: 3, value: 3, text: 'Vegan' },
+                ]
+            }, {
+                id: 9,
                 icon: 'star',
                 name: 'Sign',
                 key: 'sign',
@@ -49,107 +150,6 @@ export default class ProfileBasics extends React.Component<ProfileBasicsProps, {
                     { key: 10, value: 10, text: 'Scorpio' },
                     { key: 11, value: 11, text: 'Sagittarius' },
                     { key: 12, value: 12, text: 'Capricorn' },
-                ]
-            }, {
-                id: 2,
-                icon: 'child',
-                name: 'Kid(s)',
-                key: 'kids',
-                value: traits.kids,
-                options: [
-                    { key: 0, value: 0, text: '...' },
-                    { key: 1, value: 1, text: 'Sometimes' },
-                    { key: 2, value: 2, text: 'None' },
-                ]
-            }, {
-                id: 3,
-                icon: 'users',
-                name: 'Status',
-                key: 'status',
-                value: traits.status,
-                options: [
-                    { key: 0, value: 0, text: '...' },
-                    { key: 1, value: 1, text: 'Single' },
-                    { key: 2, value: 2, text: 'Seeing Someone' },
-                    { key: 3, value: 3, text: 'Married' },
-                    { key: 4, value: 4, text: 'Open Relationship' },
-                ]
-            }, {
-                id: 4,
-                icon: 'smile',
-                name: 'Ethnicity',
-                key: 'ethnicity',
-                value: traits.ethnicity,
-                options: [
-                    { key: 0, value: 0, text: '...' },
-                    { key: 1, value: 1, text: 'Asian' },
-                    { key: 2, value: 2, text: 'Indian' },
-                    { key: 3, value: 3, text: 'Caucasian' },
-                    { key: 4, value: 4, text: 'Black' },
-                    { key: 5, value: 5, text: 'Hispanic' },
-                    { key: 6, value: 6, text: 'Other' },
-                ]
-            }, {
-                id: 6,
-                icon: 'game',
-                name: 'Religion',
-                key: 'religion',
-                value: traits.religion,
-                options: [
-                    { key: 0, value: 0, text: '...' },
-                    { key: 1, value: 1, text: 'Atheism' },
-                    { key: 2, value: 2, text: 'Gay' },
-                    { key: 3, value: 3, text: 'Judaism' },
-                    { key: 4, value: 4, text: 'Islam' },
-                    { key: 5, value: 5, text: 'Other' },
-                ]
-            }, {
-                id: 7,
-                icon: 'leaf',
-                name: 'Smoke',
-                key: 'smoke',
-                value: traits.smoke,
-                options: [
-                    { key: 0, value: 0, text: '...' },
-                    { key: 1, value: 1, text: 'Yes' },
-                    { key: 2, value: 2, text: 'No' },
-                    { key: 3, value: 3, text: 'Sometimes' },
-                ]
-            }, {
-                id: 8,
-                icon: 'bar',
-                name: 'Drink',
-                key: 'drink',
-                value: traits.drink,
-                options: [
-                    { key: 0, value: 0, text: '...' },
-                    { key: 1, value: 1, text: 'Yes' },
-                    { key: 2, value: 2, text: 'No' },
-                    { key: 3, value: 3, text: 'Sometimes' },
-                ]
-            }, {
-                id: 9,
-                icon: 'tree',
-                name: 'Drugs',
-                key: 'drugs',
-                value: traits.drugs,
-                options: [
-                    { key: 0, value: 0, text: '...' },
-                    { key: 1, value: 1, text: 'Yes' },
-                    { key: 2, value: 2, text: 'No' },
-                    { key: 3, value: 3, text: 'Sometimes' },
-                ]
-            }, {
-                id: 10,
-                icon: 'food',
-                name: 'Diet',
-                key: 'diet',
-                value: traits.diet,
-                options: [
-                    { key: 0, value: 0, text: '...' },
-                    { key: 1, value: 1, text: 'Omnivore' },
-                    { key: 2, value: 2, text: 'Vegetarian' },
-                    { key: 3, value: 3, text: 'Vegan' },
                 ]
             }
         ];
