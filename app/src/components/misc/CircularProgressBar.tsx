@@ -3,6 +3,13 @@ import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import CountUp from 'react-countup';
 
+const ProgressProvider = ({ valueStart, valueEnd, children }: any) => {
+    const [value, setValue] = React.useState(valueStart);
+    React.useEffect(() => { setValue(valueEnd); }, [valueEnd]);
+
+    return children(value);
+};
+
 interface Props {
     percentage: number;
 }
@@ -29,7 +36,7 @@ export default class UserPage extends React.Component<Props, State> {
         let { percentage } = this.state;
 
         return (
-            <ProgressProvider valueStart={0} valueEnd={percentage}>
+            <ProgressProvider className="infos-center" valueStart={0} valueEnd={percentage}>
                 {(value: any) => <CircularProgressbarWithChildren
                     value={value}
                     className="circular-popu"
@@ -57,7 +64,6 @@ export default class UserPage extends React.Component<Props, State> {
                         // Customize background - only used when the `background` prop is true
                         background: {
                             fill: '#3e98c7',
-
                         },
                     }}
                 >
@@ -77,10 +83,3 @@ export default class UserPage extends React.Component<Props, State> {
         );
     }
 }
-
-const ProgressProvider = ({ valueStart, valueEnd, children }: any) => {
-    const [value, setValue] = React.useState(valueStart);
-    React.useEffect(() => { setValue(valueEnd); }, [valueEnd]);
-
-    return children(value);
-};

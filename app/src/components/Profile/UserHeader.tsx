@@ -28,13 +28,15 @@ export default class UserHeader extends React.Component<Props> {
                     </p>
                     <p className="info-city">{info.city}</p>
                 </span>
+                <div className="infos-center">
                 <CircularProgressbar percentage={percentage}>
                     <img
                         src={picture}
                         alt="Profil picture"
                         className="section-img profile" // more specific
-                    />
+                        />
                 </CircularProgressbar>
+                        </div>
                 <span className="info-right">
                     <p className="info-connected">Connected</p>
                 </span>

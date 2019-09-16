@@ -57,6 +57,7 @@ class MakeUsers {
                         })
                     }
                 })
+                .catch((err) => console.log('makeUsers => ', err))
 
         }
 

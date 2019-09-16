@@ -89,15 +89,16 @@
 }
 
 .circular-popu {
-    width: 160px;
+    // width: 160px;
 }
 
 .info-top {
     display: flex;
+    align-items: center;
     justify-content: center;
     width: 200px;
     position: relative;
-    margin: 12 auto;
+    margin: 0 auto;
 }
 
 .infos-left {
@@ -127,6 +128,11 @@
     bottom: 15px;
     color: var(--gold);
     text-shadow: 1px 1px 2px #000000;
+}
+
+.infos-center {
+    width: 85%;
+    height: 85%;
 }
 
 .info-right {
