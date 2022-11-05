@@ -57,7 +57,7 @@
     "eslint-plugin-promise": "3.4.0",
     "eslint-plugin-react": "6.8.0",
     "eslint-plugin-standard": "2.0.1",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-typescript": "^4.0.0",
     "main-bower-files": "2.13.1",
     "mocha": "^5.0.1",
