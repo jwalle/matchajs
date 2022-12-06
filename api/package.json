@@ -24,7 +24,7 @@
     "debug": "^3.1.0",
     "dotenv": "^5.0.0",
     "download-file": "^0.1.5",
-    "express": "4.13.4",
+    "express": "4.17.3",
     "ip": "^1.1.5",
     "jsonwebtoken": "^8.1.1",
     "lorem-ipsum": "^1.0.4",
